@@ -3,1166 +3,814 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة خدمات ماليزيا الشاملة | Malaysia Services Platform</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
+    <title>عرب ماليزيا | Arab Malaysia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* CSS المتكامل والتأثيرات الزجاجية والثلاثية الأبعاد */
         :root {
-            --primary-color: #007aff;
-            --primary-glow: rgba(0, 122, 255, 0.5);
-            --bg-glass: rgba(255, 255, 255, 0.06);
-            --border-glass: rgba(255, 255, 255, 0.12);
-            --text-color: #ffffff;
-            --text-muted: #b0b0b0;
-            --body-bg: #0d1117;
-            --card-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            --primary-color: #008080;
+            --secondary-color: #ff9900;
+            --dark-color: #333;
+            --light-color: #f4f4f4;
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', sans-serif;
-            transition: background 0.3s ease, border-color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
-            background-color: var(--body-bg);
-            color: var(--text-color);
-            overflow-x: hidden;
-            position: relative;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            transition: all 0.3s ease;
         }
-
-        /* الخلفية الديناميكية المشعة */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.15) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(0, 242, 254, 0.12) 0%, transparent 40%);
-            z-index: -2;
-        }
-
-        /* الهيدر الزجاجي المعلق */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(13, 17, 23, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-glass);
+        /* Navbar */
+        nav {
+            background: white;
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-
         .logo {
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(45deg, var(--primary-color), #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px var(--primary-glow);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        nav {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-
-        nav a:hover, nav a.active {
-            background: var(--bg-glass);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+            font-weight: bold;
             color: var(--primary-color);
         }
-
-        /* شريط تخصيص الألوان التفاعلي */
-        .color-picker-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-glass);
-            padding: 10px 20px;
-            border-radius: 30px;
+        .nav-buttons {
             display: flex;
-            align-items: center;
             gap: 15px;
-            box-shadow: var(--card-shadow);
+            align-items: center;
         }
-
-        .color-picker-panel span {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .theme-slider {
-            -webkit-appearance: none;
-            width: 150px;
-            height: 8px;
-            border-radius: 5px;
-            background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-            outline: none;
-            cursor: pointer;
-        }
-
-        .theme-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #ffffff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            cursor: pointer;
-            border: 2px solid var(--primary-color);
-        }
-
-        .lang-btn {
-            background: var(--primary-color);
-            border: none;
-            color: white;
+        .btn {
             padding: 8px 16px;
-            border-radius: 12px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 0 15px var(--primary-glow);
+            font-weight: bold;
+            text-decoration: none;
         }
-
-        /* البطل أو الواجهة الترحيبية */
-        .hero {
-            padding: 80px 5% 40px;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
-            font-weight: 700;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
-
-        /* الحاوية الرئيسية والمجموعات */
-        .container {
-            width: 90%;
-            max-width: 1400px;
-            margin: 0 auto 60px;
-        }
-
-        .section-title {
-            font-size: 28px;
-            margin-bottom: 30px;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 10px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50%;
-            height: 4px;
+        .btn-lang {
             background: var(--primary-color);
-            border-radius: 2px;
-            box-shadow: 0 0 10px var(--primary-glow);
+            color: white;
         }
-
-        /* شبكة الكروت ثلاثية الأبعاد والتأثيرات الزجاجية */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+        .btn-admin {
+            background: #e74c3c;
+            color: white;
         }
-
-        .card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 25px;
-            box-shadow: var(--card-shadow);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s;
+        /* Top Banner Slider */
+        .banner-slider {
+            width: 100%;
+            height: 400px;
             position: relative;
             overflow: hidden;
+            background: #ddd;
         }
-
-        .card::before {
-            content: '';
+        .slide {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-            transform: skewX(-25deg);
-            transition: 0.75s;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        .card:hover::before {
-            left: 150%;
+        .slide.active {
+            opacity: 1;
         }
-
-        .card:hover {
-            transform: translateY(-10px) rotateX(4deg) rotateY(-4deg);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 20px rgba(var(--primary-color), 0.2);
-            border-color: rgba(255,255,255,0.25);
+        .slide-overlay {
+            background: rgba(0,0,0,0.4);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
         }
-
-        .card-header {
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
         }
-
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-glow);
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
         }
-
-        .card-tag {
-            background: rgba(255,255,255,0.08);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            border: 1px solid var(--border-glass);
-        }
-
-        .card h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        /* معرض الصور الدوار المتسلسل التلقائي واليدوي */
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 180px;
-            border-radius: 16px;
+        .card {
+            background: white;
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-glass);
-        }
-
-        .slider-track {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.5s ease-in-out;
+            flex-direction: column;
         }
-
-        .slide {
-            min-width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .slide-overlay {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: linear-gradient(transparent, rgba(0,0,0,0.85));
-            padding: 10px;
-            font-size: 12px;
-            color: #fff;
+        .card-title {
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #fff;
+            border-bottom: 1px solid #eee;
             text-align: center;
         }
-
-        .slider-nav {
+        /* Card Gallery Slider */
+        .gallery-slider {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: #eee;
+        }
+        .gallery-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .gallery-slide.active {
+            opacity: 1;
+        }
+        .slider-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(0,0,0,0.6);
-            border: 1px solid var(--border-glass);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            backdrop-filter: blur(5px);
-        }
-
-        .slider-nav.prev { right: 10px; }
-        .slider-nav.next { left: 10px; }
-
-        /* لوحة التحكم الاحترافية المدمجة */
-        .admin-panel {
-            background: rgba(20, 25, 35, 0.65);
-            border: 2px dashed var(--primary-color);
-            border-radius: 30px;
-            padding: 40px;
-            margin-top: 50px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .admin-badge {
-            position: absolute;
-            top: -15px;
-            right: 30px;
-            background: var(--primary-color);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .admin-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .admin-grid { grid-template-columns: 1fr; }
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .form-control {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-glass);
-            border-radius: 12px;
-            padding: 12px;
-            color: white;
-            font-size: 14px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider-toggle {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #333;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider-toggle:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider-toggle { background-color: var(--primary-color); }
-        input:checked + .slider-toggle:before { transform: translateX(24px); }
-
-        .btn-submit {
-            background: linear-gradient(45deg, var(--primary-color), #00f2fe);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 14px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
             cursor: pointer;
-            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .slider-btn:hover {
+            background: var(--primary-color);
+        }
+        .prev-btn { right: 10px; }
+        .next-btn { left: 10px; }
+        
+        /* Admin Modal Screen */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
         }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px var(--primary-glow);
-        }
-
-        /* تفاصيل لوحة التحكم وإرشاد المجلدات */
-        .folder-guide {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 15px;
-        }
-
-        .folder-structure {
-            font-family: monospace;
-            font-size: 13px;
-            color: #00f2fe;
-            direction: ltr;
-            text-align: left;
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
+        .admin-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
             border-radius: 10px;
-            margin-top: 10px;
-            white-space: pre-wrap;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
         }
-
-        /* زر الواتساب العائم بتأثير النبض */
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .tab-btn {
+            padding: 8px 16px;
+            background: #eee;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Footer */
+        footer {
+            background: #222;
+            color: white;
+            padding: 40px 5% 20px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+        .footer-col h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        .footer-col p, .footer-col a {
+            color: #bbb;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+        /* Sticky Elements */
         .whatsapp-float {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 20px;
+            right: 20px;
             background-color: #25d366;
             color: white;
             width: 60px;
             height: 60px;
             border-radius: 50%;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            font-size: 32px;
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
-            z-index: 9999;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 999;
             text-decoration: none;
+            transition: transform 0.3s;
         }
-
-        .whatsapp-float::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: #25d366;
-            opacity: 0.5;
-            z-index: -1;
-            animation: pulse 2s infinite;
+        .whatsapp-float:hover {
+            transform: scale(1.1);
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        /* الفوتر والإحصائيات */
-        footer {
-            background: rgba(10, 14, 20, 0.95);
-            border-top: 1px solid var(--border-glass);
-            padding: 40px 5%;
-            text-align: center;
-            margin-top: 8px;
-        }
-
-        .counter-box {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-glass);
-            padding: 15px 30px;
+        .visitor-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 15px;
             border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            box-shadow: var(--card-shadow);
-        }
-
-        .counter-number {
-            font-size: 24px;
-            font-weight: 700;
-            color: #00f2fe;
-            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-        }
-
-        .footer-text {
-            color: var(--text-muted);
             font-size: 14px;
+            z-index: 999;
+            direction: ltr;
         }
+        
+        /* English Direction Support */
+        body.en {
+            direction: ltr;
+        }
+        body.en .footer-grid {
+            text-align: left;
+        }
+        body.en .prev-btn { left: 10px; right: auto; }
+        body.en .next-btn { right: 10px; left: auto; }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر الرئيسي للموقع -->
-    <header>
-        <div class="logo">
-            <i class="fa-solid fa-cubes"></i>
-            <span id="site-logo-text">دليل ماليزيا الشامل</span>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo" id="logoText">عرب ماليزيا</div>
+        <div class="nav-buttons">
+            <button class="btn btn-lang" onclick="toggleLanguage()" id="langBtn">English</button>
+            <button class="btn btn-admin" onclick="openAdmin()" id="adminNavBtn">لوحة التحكم / Admin</button>
         </div>
-        
-        <!-- شريط تغيير اللون اللحظي الاختياري للمستخدم -->
-        <div class="color-picker-panel">
-            <span id="picker-label"><i class="fa-solid fa-palette"></i> مظهر الموقع:</span>
-            <input type="range" min="0" max="360" value="210" class="theme-slider" id="hue-slider">
-        </div>
+    </nav>
 
-        <nav>
-            <a href="#ads-section" class="active" id="nav-ads">الأقسام الإعلانية</a>
-            <a href="#jobs-section" id="nav-jobs">التوظيف والعمل</a>
-            <a href="#maintenance-section" id="nav-maintenance">خدمات الصيانة</a>
-            <button class="lang-btn" onclick="toggleLanguage()" id="lang-btn">English</button>
-        </nav>
-    </header>
-
-    <!-- الواجهة الترحيبية الهيرو -->
-    <section class="hero">
-        <h1 id="hero-title">منصة الخدمات المتكاملة للجاليات في ماليزيا</h1>
-        <p id="hero-desc">دليلك الأول للوصول لأفضل المطاعم، المكاتب، الخدمات المهنية، وفرص العمل في ماليزيا بلمسات عصرية فريدة.</p>
-    </section>
-
-    <div class="container">
-
-        <!-- 1. الأقسام الإعلانية والتجارية -->
-        <div id="ads-section">
-            <h2 class="section-title" id="title-ads">الأقسام الإعلانية والدعائية</h2>
-            <div class="grid" id="ads-container">
-                
-                <!-- كرت المطاعم العربية -->
-                <div class="card" data-category="ads">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
-                        <div class="card-tag lang-tag" data-ar="مطاعم" data-en="Restaurants">مطاعم</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="مطعم حضرموت النخبة" data-en="Hadramout Elite Restaurant">مطعم حضرموت النخبة</h3>
-                    <p class="lang-text" data-ar="أفخم الوجبات العربية واليمنية الأصيلة في قلب كوالالمبور. عروض غداء يومية وصور حية للوجبات." data-en="The finest authentic Arabic & Yemeni meals in KL. Daily lunch offers and live meal updates.">أفخم الوجبات العربية واليمنية الأصيلة في قلب كوالالمبور. عروض غداء يومية وصور حية للوجبات.</p>
-                    
-                    <!-- معرض الصور التلقائي المتسلسل -->
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?auto=format&fit=crop&w=500&q=80" alt="Meal">
-                                <div class="slide-overlay">Mandi Chicken / مندي دجاج - مأخوذ من مجلد: arab_restaurants</div>
-                            </div>
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=500&q=80" alt="Meal">
-                                <div class="slide-overlay">Mix Grill / مشويات مشكلة - مأخوذ من مجلد: arab_restaurants</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- كرت تأجير السيارات -->
-                <div class="card" data-category="ads">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-car"></i></div>
-                        <div class="card-tag lang-tag" data-ar="تأجير سيارات" data-en="Car Rental">تأجير سيارات</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="مكتب الأمانة لتأجير السيارات" data-en="Al-Amanah Car Rental">مكتب الأمانة لتأجير السيارات</h3>
-                    <p class="lang-text" data-ar="أحدث أنواع السيارات العائلية والاقتصادية بأسعار تنافسية مع تأمين شامل وخدمة استلام من المطار." data-en="Latest family and economy cars at competitive rates with comprehensive insurance and airport pickup.">أحدث أنواع السيارات العائلية والاقتصادية بأسعار تنافسية مع تأمين شامل وخدمة استلام من المطار.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80" alt="Car">
-                                <div class="slide-overlay">SUV Family Car - مأخوذ من مجلد: car_rental_images</div>
-                            </div>
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=500&q=80" alt="Car">
-                                <div class="slide-overlay">Sedan Economic - مأخوذ من مجلد: car_rental_images</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- كرت شركات الطباعة -->
-                <div class="card" data-category="ads">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-print"></i></div>
-                        <div class="card-tag lang-tag" data-ar="خدمات طباعة" data-en="Printing">خدمات طباعة</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="شركة كوالالمبور برينت" data-en="KL Printing Solutions">شركة كوالالمبور برينت</h3>
-                    <p class="lang-text" data-ar="طباعة لوحات إعلانية، بروشورات، وهويات بصرية متكاملة للشركات بأعلى جودة وتوصيل مجاني." data-en="High-quality banner printing, brochures, and full corporate visual identity with free shipping.">طباعة لوحات إعلانية، بروشورات، وهويات بصرية متكاملة للشركات بأعلى جودة وتوصيل مجاني.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" alt="Print">
-                                <div class="slide-overlay">Digital Press / الطباعة الرقمية - ملف: print_image</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- كرت البقالات العربية -->
-                <div class="card" data-category="ads">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-basket-shopping"></i></div>
-                        <div class="card-tag lang-tag" data-ar="بقالة عربية" data-en="Arab Grocery">بقالة عربية</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="سوبرماركت المدينة" data-en="Al-Madina Arab Grocery">سوبرماركت المدينة</h3>
-                    <p class="lang-text" data-ar="جميع المنتجات والسلع الغذائية الشرق أوسطية الأصلية، الأجبان، اللحوم الحلال والعروض الأسبوعية الحصرية." data-en="All authentic Middle Eastern food products, cheese, halal meat, and exclusive weekly special offers.">جميع المنتجات والسلع الغذائية الشرق أوسطية الأصلية، الأجبان، اللحوم الحلال والعروض الأسبوعية الحصرية.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=500&q=80" alt="Grocery">
-                                <div class="slide-overlay">Middle East Spices - مأخوذ من مجلد: arab_groceries</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- مكاتب السياحة -->
-                <div class="card" data-category="ads">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-plane-departure"></i></div>
-                        <div class="card-tag lang-tag" data-ar="سياحة وسفر" data-en="Tourism Office">سياحة وسفر</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="مكتب آفاق ماليزيا للسياحة" data-en="Afaq Malaysia Tours">مكتب آفاق ماليزيا للسياحة</h3>
-                    <p class="lang-text" data-ar="تنظيم رحلات وعروض سياحية متكاملة لجزر لنكاوي، بينانغ، وكاميرون هايلاندز بأقل الأسعار الشاملة للفنادق." data-en="Comprehensive tour packages to Langkawi, Penang, and Cameron Highlands at the lowest all-inclusive rates.">تنظيم رحلات وعروض سياحية متكاملة لجزر لنكاوي، بينانغ، وكاميرون هايلاندز بأقل الأسعار الشاملة للفنادق.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80" alt="Tourism">
-                                <div class="slide-overlay">Langkawi Beach Tour - مأخوذ من مجلد: tourism_offices</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- مراكز التدريب -->
-                <div class="card" data-category="ads">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <div class="card-tag lang-tag" data-ar="مراكز تدريب" data-en="Training Center">مراكز تدريب</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="أكاديمية الاتقان للغات والكمبيوتر" data-en="Al-Itqan Academy">أكاديمية الاتقان للغات والكمبيوتر</h3>
-                    <p class="lang-text" data-ar="دورات مكثفة في اللغة الإنجليزية والماليزية، بالإضافة لبرامج البرمجة والتصميم المعتمدة دولياً." data-en="Intensive English & Malay language courses, along with internationally accredited coding & design programs.">دورات مكثفة في اللغة الإنجليزية والماليزية، بالإضافة لبرامج البرمجة والتصميم المعتمدة دولياً.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=500&q=80" alt="Training">
-                                <div class="slide-overlay">Interactive Classroom - مأخوذ من مجلد: training_centers</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+    <!-- Top General Banner Slider -->
+    <div class="banner-slider" id="topBanner">
+        <!-- Default Ad/General Slides -->
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deceeaf7?auto=format&fit=crop&w=1200&q=80')">
+            <div class="slide-overlay">
+                <h1 id="b1-title">أهلاً بكم في عرب ماليزيا</h1>
+                <p id="b1-desc">دليلك الشامل للمطاعم، الفنادق، والخدمات السياحية</p>
             </div>
         </div>
-
-        <!-- 2. خدمات التوظيف والعمل الباحثين -->
-        <div id="jobs-section">
-            <h2 class="section-title" id="title-jobs">خدمات التوظيف والعمل</h2>
-            <div class="grid" id="jobs-container">
-                
-                <!-- عرض وظيفة شاغرة من شركة -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-briefcase"></i></div>
-                        <div class="card-tag lang-tag" data-ar="وظيفة شاغرة" data-en="Company Job">وظيفة شاغرة</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="مطلوب موظف خدمة عملاء - شركة تقنية" data-en="Customer Service Agent Required">مطلوب موظف خدمة عملاء - شركة تقنية</h3>
-                    <p class="lang-text" data-ar="تعلن شركة حلول برمجية في سيلانجور عن حاجتها لموظف دعم يتحدث العربية والإنجليزية بطلاقة. راتب مجزي وإقامة عمل." data-en="A software solutions company in Selangor needs an Arabic & English speaking support agent. Good salary & work permit provided.">تعلن شركة حلول برمجية في سيلانجور عن حاجتها لموظف دعم يتحدث العربية والإنجليزية بطلاقة. راتب مجزي وإقامة عمل.</p>
-                    <div class="card-tag" style="display:inline-block; border-color: #00f2fe; color: #00f2fe;">سيلانجور | Selangor</div>
-                </div>
-
-                <!-- عامل باحث عن عمل -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-user-tie"></i></div>
-                        <div class="card-tag lang-tag" data-ar="باحث عن عمل" data-en="Job Seeker">باحث عن عمل</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="أخصائي تسويق رقمي متفرغ" data-en="Digital Marketing Specialist">أخصائي تسويق رقمي متفرغ</h3>
-                    <p class="lang-text" data-ar="شاب عربي مقيم في كوالالمبور خبرة 5 سنوات في إدارة الحملات الإعلانية المدفوعة على السوشيال ميديا وتهيئة محركات البحث SEO." data-en="Arabic specialist in KL with 5 years experience in managing paid social media ads and SEO operations. ready to join.">شاب عربي مقيم في كوالالمبور خبرة 5 سنوات في إدارة الحملات الإعلانية المدفوعة على السوشيال ميديا وتهيئة محركات البحث SEO.</p>
-                    <div class="card-tag" style="display:inline-block; border-color: #25d366; color: #25d366;">كوالالمبور | KL</div>
-                </div>
-
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1596450526732-263a233b66d4?auto=format&fit=crop&w=1200&q=80')">
+            <div class="slide-overlay">
+                <h1 id="b2-title">أفضل المطاعم العربية</h1>
+                <p id="b2-desc">استمتع بأشهى المأكولات الشرقية في قلب كوالالمبور</p>
             </div>
         </div>
-
-        <!-- 3. خدمات الصيانة والحرفيين -->
-        <div id="maintenance-section">
-            <h2 class="section-title" id="title-maintenance">خدمات الصيانة والحرفيين</h2>
-            <div class="grid" id="maintenance-container">
-                
-                <!-- أعمال بناء وتشييد -->
-                <div class="card" data-category="maintenance">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-hammer"></i></div>
-                        <div class="card-tag lang-tag" data-ar="أعمال بناء" data-en="Construction">أعمال بناء</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="المعلم أبو كنان لأعمال الديكور والترميم" data-en="Abu Kinan Building & Decor">المعلم أبو كنان لأعمال الديكور والترميم</h3>
-                    <p class="lang-text" data-ar="تنفيذ كافة أعمال البناء المقاولات، تركيب الجبس بورد الحديث، الجدران المستعارة بجودة هندسية ممتازة." data-en="Executing all construction contracting works, modern gypsum board installation, and partition walls with engineering quality.">تنفيذ كافة أعمال البناء المقاولات، تركيب الجبس بورد الحديث، الجدران المستعارة بجودة هندسية ممتازة.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=500&q=80" alt="Construction">
-                                <div class="slide-overlay">Gypsum & Decor Work - مأخوذ من مجلد: construction_images</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- أعمال سباكة -->
-                <div class="card" data-category="maintenance">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-wrench"></i></div>
-                        <div class="card-tag lang-tag" data-ar="أعمال سباكة" data-en="Plumbing">أعمال سباكة</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="الفني السريع للسباكة وكشف التسربات" data-en="Express Plumbing Services">الفني السريع للسباكة وكشف التسربات</h3>
-                    <p class="lang-text" data-ar="إصلاح جميع أعطال وتمديدات السباكة المنزلية، تركيب الفلاتر، صيانة الخزانات والمضخات بأحدث الأجهزة الفنية." data-en="Repairing all domestic plumbing network faults, filter installations, tank and pump maintenance with modern devices.">إصلاح جميع أعطال وتمديدات السباكة المنزلية، تركيب الفلاتر، صيانة الخزانات والمضخات بأحدث الأجهزة الفنية.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=500&q=80" alt="Plumbing">
-                                <div class="slide-overlay">Plumbing Repair - مأخوذ من مجلد: plumbing_images</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- أعمال دهان -->
-                <div class="card" data-category="maintenance">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fa-solid fa-paint-roller"></i></div>
-                        <div class="card-tag lang-tag" data-ar="أعمال دهان" data-en="Painting Service">أعمال دهان</div>
-                    </div>
-                    <h3 class="lang-text" data-ar="محترفو الطلاء والأصباغ الحديثة" data-en="Modern Painting Professionals">محترفو الطلاء والأصباغ الحديثة</h3>
-                    <p class="lang-text" data-ar="دهان شقق، فلل، ومكاتب بأحدث كتالوجات الألوان الجذابة والمقاومة للرطوبة العالية في ماليزيا." data-en="Painting apartments, villas, and offices with the latest anti-moisture color catalogs suitable for Malaysia.">دهان شقق، فلل، ومكاتب بأحدث كتالوجات الألوان الجذابة والمقاومة للرطوبة العالية في ماليزيا.</p>
-                    
-                    <div class="slider-container">
-                        <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                        <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                        <div class="slider-track" data-current="0">
-                            <div class="slide">
-                                <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=500&q=80" alt="Painting">
-                                <div class="slide-overlay">Wall Painting - مأخوذ من مجلد: painting_images</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <!-- 4. لوحة التحكم الشاملة لإدارة المحتوى والأقسام والمجلدات -->
-        <section class="admin-panel">
-            <div class="admin-badge" id="admin-badge-text">لوحة تحكم الإدارة والمطور</div>
-            <h2 style="margin-bottom: 25px; text-shadow: 0 0 10px var(--primary-glow);" id="admin-title"><i class="fa-solid fa-sliders"></i> التحكم الذكي في أقسام وميزات الموقع</h2>
-            
-            <div class="admin-grid">
-                <!-- فورم إضافة قسم إعلاني أو مهني جديد -->
-                <div>
-                    <h3 style="margin-bottom: 15px; color: #00f2fe;" id="form-add-title">إضافة قسم أو كرت جديد فوراً</h3>
-                    <form id="newSectionForm" onsubmit="addNewCard(event)">
-                        <div class="form-group">
-                            <label id="lbl-select-cat">نوع المجموعة الكبرى:</label>
-                            <select class="form-control" id="form-category">
-                                <option value="ads">أقسام دعاية وإعلانات (مطاعم، سيارات الخ..)</option>
-                                <option value="maintenance">أقسام خدمات صيانة وأعمال حرة</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label id="lbl-item-name">اسم المنشأة / اسم الحرفي (بالعربية):</label>
-                            <input type="text" class="form-control" id="form-name-ar" placeholder="مثال: بقالة الياسمين العربية" required>
-                        </div>
-                        <div class="form-group">
-                            <label id="lbl-item-name-en">اسم المنشأة (بالإنجليزية):</label>
-                            <input type="text" class="form-control" id="form-name-en" placeholder="Example: Al-Yasmin Arab Grocery" required>
-                        </div>
-                        <div class="form-group">
-                            <label id="lbl-item-desc">الوصف والخدمات والعروض (بالعربية):</label>
-                            <textarea class="form-control" id="form-desc-ar" rows="3" placeholder="اكتب تفاصيل العروض والخدمات الحالية هنا..." required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label id="lbl-item-desc-en">الوصف (بالإنجليزية):</label>
-                            <textarea class="form-control" id="form-desc-en" rows="3" placeholder="Write description and promotions here..." required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label id="lbl-folder-name">اسم مجلد الصور المستهدف للقسم للتحكم التلقائي:</label>
-                            <input type="text" class="form-control" id="form-folder" placeholder="مثال: yasmin_grocery_images" required>
-                        </div>
-                        <button type="submit" class="btn-submit" id="btn-add-section">إدراج وتفعيل القسم الجديد فوراً</button>
-                    </form>
-                </div>
-
-                <!-- التحكم بميزات العرض والنظام والمجلدات -->
-                <div>
-                    <h3 style="margin-bottom:15px; color: #00f2fe;" id="features-control-title">التحكم في الميزات وهيكلة الملفات</h3>
-                    
-                    <div class="form-group">
-                        <label id="lbl-toggle-slider-desc">تنشيط أو حذف ميزة معرض الصور المتحرك تلقائياً ويدوياً:</label>
-                        <div class="toggle-container">
-                            <label class="switch">
-                                <input type="checkbox" id="slider-toggle-checkbox" checked onchange="toggleSliderFeature(this)">
-                                <span class="slider-toggle"></span>
-                            </label>
-                            <span id="slider-status-text" style="font-weight: 600; color: #25d366;">الميزة مفعّلة ونشطة الآن في كافة الأقسام</span>
-                        </div>
-                    </div>
-
-                    <div class="folder-guide">
-                        <h4 style="margin-bottom:8px; font-size:15px;" id="folder-guide-title"><i class="fa-solid fa-folder-tree"></i> دليل هيكلة مجلدات الصور حسب لوحة التحكم:</h4>
-                        <p style="font-size:13px; color: var(--text-muted);" id="folder-guide-desc">لتغيير أو إضافة صور لأي قسم، يرجى وضع الصور داخل المجلد المخصص له باسم القسم المطابق للوحة التحكم كالتالي:</p>
-                        <div class="folder-structure" id="folder-struct-text">
-📁 Website Root /
-    ├── index.html (هذا الملف المستلم)
-    ├── 📁 arab_restaurants/       <-- صور قسم المطاعم العربية
-    ├── 📁 car_rental_images/      <-- صور مكاتب تأجير السيارات
-    ├── 📁 print_image/            <-- صور شركات ومطابع الطباعة
-    ├── 📁 arab_groceries/         <-- صور البقالات العربية
-    ├── 📁 tourism_offices/        <-- صور مكاتب السياحة والرحلات
-    ├── 📁 training_centers/       <-- صور مراكز التدريب والتعليم
-    ├── 📁 construction_images/    <-- صور أعمال البناء المقاولات
-    ├── 📁 plumbing_images/        <-- صور الحرفيين وأعمال السباكة
-    └── 📁 painting_images/        <-- صور الفنيين وأعمال الدهان</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </div>
 
-    <!-- زر الواتساب العائم للتواصل الفوري المباشر مع الدعم أو المنشأة -->
-    <a href="https://wa.me/60123456789" class="whatsapp-float" target="_blank" aria-label="Contact on WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
+    <!-- Website Sections Container -->
+    <div class="container" id="sectionsContainer">
+        <!-- Sections will be injected dynamicallly here by JS -->
+    </div>
+
+    <!-- Admin Panel Control Modal -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-content">
+            <span class="close-modal" onclick="closeAdmin()">&times;</span>
+            <h2 style="margin-bottom: 20px;" id="adminTitle">لوحة التحكم المحمية</h2>
+            
+            <div id="loginFormSection">
+                <div class="form-group">
+                    <label>اسم المستخدم / Username</label>
+                    <input type="text" id="adminUser" class="form-control" placeholder="admin">
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور / Password</label>
+                    <input type="password" id="adminPass" class="form-control" placeholder="admin123">
+                </div>
+                <button class="btn btn-lang" onclick="handleLogin()">تسجيل الدخول / Login</button>
+            </div>
+
+            <div id="adminPanelDashboard" style="display: none;">
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="switchTab('tab1')" id="tab1-btn">إدارة الأقسام</button>
+                    <button class="tab-btn" onclick="switchTab('tab2')" id="tab2-btn">إدارة المربعات والصور</button>
+                </div>
+
+                <!-- Tab 1: Manage Sections -->
+                <div id="tab1" class="tab-content active">
+                    <h3>إضافة قسم جديد</h3>
+                    <div class="form-group">
+                        <label>اسم القسم بالعربي</label>
+                        <input type="text" id="newSecAr" class="form-control" placeholder="مثال: مكاتب السياحة">
+                    </div>
+                    <div class="form-group">
+                        <label>اسم القسم بالانجليزي</label>
+                        <input type="text" id="newSecEn" class="form-control" placeholder="Example: Tourism Offices">
+                    </div>
+                    <div class="form-group">
+                        <label>اسم مجلد الصور المقترح (سيظهر إرشادياً)</label>
+                        <input type="text" id="newSecFolder" class="form-control" placeholder="مثال: travelphoto">
+                    </div>
+                    <button class="btn btn-lang" onclick="addNewSection()">حفظ القسم الجديد</button>
+                    
+                    <h3 style="margin-top:20px;">الأقسام الحالية</h3>
+                    <ul id="currentSectionsList" style="margin-top:10px; padding-right:20px;"></ul>
+                </div>
+
+                <!-- Tab 2: Manage Cards & Galleries -->
+                <div id="tab2" class="tab-content">
+                    <h3>إضافة مربع جديد (محل/مكتب) إلى قسم</h3>
+                    <div class="form-group">
+                        <label>اختر القسم</label>
+                        <select id="selectSection" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>الاسم بالعربي</label>
+                        <input type="text" id="cardNameAr" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>الاسم بالانجليزي</label>
+                        <input type="text" id="cardNameEn" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>روابط الصور (ضع رابط في كل سطر أو افصل بفاصلة)</label>
+                        <textarea id="cardImages" class="form-control" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
+                    </div>
+                    <button class="btn btn-lang" onclick="addNewCard()">إضافة المربع والالبوم</button>
+
+                    <h3 style="margin-top: 30px;">تعديل / حذف ألبومات الصور الحالية</h3>
+                    <div id="manageGalleriesList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Sticky Icon -->
+    <a href="https://wa.me/60123456789" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- الفوتر مع عداد الزيارات التلقائي الفوري -->
+    <!-- Visitor Counter Element -->
+    <div class="visitor-counter">
+        <i class="fa fa-eye"></i> Visitors: <span id="counterValue">1,482</span>
+    </div>
+
+    <!-- Beautiful Footer -->
     <footer>
-        <div class="counter-box">
-            <span id="counter-label"><i class="fa-solid fa-eye"></i> إجمالي عدد زيارات المنصة الحالية:</span>
-            <span class="counter-number" id="visit-counter">142,583</span>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3 id="f-about-title">حول عرب ماليزيا</h3>
+                <p id="f-about-desc">المنصة الأولى والاضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.</p>
+            </div>
+            <div class="footer-col">
+                <h3 id="f-links-title">روابط سريعة</h3>
+                <p><a href="#">الرئيسية</a></p>
+                <p><a href="#" onclick="openAdmin()">لوحة تحكم المسؤول</a></p>
+            </div>
+            <div class="footer-col">
+                <h3 id="f-contact-title">اتصل بنا</h3>
+                <p>الرقم الماليـزي المباشر:</p>
+                <p dir="ltr" style="color:var(--secondary-color); font-weight:bold;">+60 12-345 6789</p>
+                <p>كوالالمبور، ماليزيا</p>
+            </div>
         </div>
-        <div class="footer-text" id="footer-copy">
-            &copy; 2026 دليل الخدمات المتكامل في ماليزيا. جميع الحقوق محفوظة. تم التطوير بلمسات زجاجية وثلاثية الأبعاد فائقة الجاذبية.
-        </div>
+        <hr style="border: 0; border-top: 1px solid #444; margin-bottom: 20px;">
+        <p>&copy; 2026 Arab Malaysia. All Rights Reserved.</p>
     </footer>
 
+    <!-- JavaScript Application Logic -->
     <script>
-        // نظام تبديل اللغات الفوري لجميع عناصر الموقع (عربي / إنجليزي)
+        // App Language State
         let currentLang = 'ar';
-        const langData = {
+
+        // Translations Dictionary
+        const translations = {
             ar: {
-                logo: "دليل ماليزيا الشامل",
-                navAds: "الأقسام الإعلانية",
-                navJobs: "التوظيف والعمل",
-                navMaintenance: "خدمات الصيانة",
-                heroTitle: "منصة الخدمات المتكاملة للجاليات في ماليزيا",
-                heroDesc: "دليلك الأول للوصول لأفضل المطاعم، المكاتب، الخدمات المهنية، وفرص العمل في ماليزيا بلمسات عصرية فريدة.",
-                titleAds: "الأقسام الإعلانية والدعائية",
-                titleJobs: "خدمات التوظيف والعمل",
-                titleMaintenance: "خدمات الصيانة والحرفيين",
-                pickerLabel: " مظهر الموقع:",
-                adminBadge: "لوحة تحكم الإدارة والمطور",
-                adminTitle: " التحكم الذكي في أقسام وميزات الموقع",
-                formAddTitle: "إضافة قسم أو كرت جديد فوراً",
-                lblSelectCat: "نوع المجموعة الكبرى:",
-                lblItemName: "اسم المنشأة / اسم الحرفي (بالعربية):",
-                lblItemNameEn: "اسم المنشأة (بالإنجليزية):",
-                lblItemDesc: "الوصف والخدمات والعروض (بالعربية):",
-                lblItemDescEn: "الوصف (بالإنجليزية):",
-                lblFolderName: "اسم مجلد الصور المستهدف للقسم للتحكم التلقائي:",
-                btnAddSection: "إدراج وتفعيل القسم الجديد فوراً",
-                featuresControlTitle: "التحكم في الميزات وهيكلة الملفات",
-                lblToggleSliderDesc: "تنشيط أو حذف ميزة معرض الصور المتحرك تلقائياً ويدوياً:",
-                sliderActive: "الميزة مفعّلة ونشطة الآن في كافة الأقسام",
-                sliderInactive: "تم إخفاء وحذف ميزة معرض الصور الدوار من الموقع بنجاح",
-                folderGuideTitle: " دليل هيكلة مجلدات الصور حسب لوحة التحكم:",
-                folderGuideDesc: "لتغيير أو إضافة صور لأي قسم، يرجى وضع الصور داخل المجلد المخصص له باسم القسم المطابق للوحة التحكم كالتالي:",
-                counterLabel: " إجمالي عدد زيارات المنصة الحالية:",
-                footerCopy: "© 2026 دليل الخدمات المتكامل في ماليزيا. جميع الحقوق محفوظة. تم التطوير بلمسات زجاجية وثلاثية الأبعاد فائقة الجاذبية."
+                logo: "عرب ماليزيا",
+                b1_t: "أهلاً بكم في عرب ماليزيا",
+                b1_d: "دليلك الشامل للمطاعم، الفنادق، والخدمات السياحية",
+                b2_t: "أفضل المطاعم العربية",
+                b2_d: "استمتع بأشهى المأكولات الشرقية في قلب كوالالمبور",
+                f_about_t: "حول عرب ماليزيا",
+                f_about_d: "المنصة الأولى والاضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.",
+                f_links_t: "روابط سريعة",
+                f_contact_t: "اتصل بنا",
+                adminTitle: "لوحة التحكم المحمية"
             },
             en: {
-                logo: "Malaysia Mega Guide",
-                navAds: "Advertising Hub",
-                navJobs: "Jobs & Careers",
-                navMaintenance: "Maintenance Work",
-                heroTitle: "Integrated Services Platform in Malaysia",
-                heroDesc: "Your premium directory to access the finest Arab restaurants, rental offices, professional craftsmanship, and jobs.",
-                titleAds: "Advertising & Promotional Sections",
-                titleJobs: "Recruitment & Job Seeker Services",
-                titleMaintenance: "Maintenance & Artisan Services",
-                pickerLabel: " System Theme:",
-                adminBadge: "Admin & Developer Control Panel",
-                adminTitle: " Smart Control Over Content & Features",
-                formAddTitle: "Add New Section Card Instantly",
-                lblSelectCat: "Major Classification Category:",
-                lblItemName: "Business / Craftsman Name (Arabic):",
-                lblItemNameEn: "Business Name (English):",
-                lblItemDesc: "Description, Services & Offers (Arabic):",
-                lblItemDescEn: "Description & Offers (English):",
-                lblFolderName: "Target Image Folder Name (For Admin File Sync):",
-                btnAddSection: "Deploy and Activate New Section Right Now",
-                featuresControlTitle: "Feature Controls & System Architecture",
-                lblToggleSliderDesc: "Activate or delete automatic/manual photo carousel feature:",
-                sliderActive: "Carousel feature is fully active across all sections",
-                sliderInactive: "Photo carousel feature has been removed and hidden",
-                folderGuideTitle: " Image Folder Structure Layout Reference Guide:",
-                folderGuideDesc: "To upload photos, place them inside the designated folder matching the admin folder name parameter:",
-                counterLabel: " Total Current Platform Visits Visitor Counter:",
-                footerCopy: "© 2026 Malaysia Integrated Services. All Rights Reserved. Crafted with Glassmorphism & 3D Depth Layering Effects."
+                logo: "Arab Malaysia",
+                b1_t: "Welcome to Arab Malaysia",
+                b1_d: "Your comprehensive guide to restaurants, hotels, and tourism services",
+                b2_t: "Best Arab Restaurants",
+                b2_d: "Enjoy the finest Eastern cuisine in the heart of Kuala Lumpur",
+                f_about_t: "About Arab Malaysia",
+                f_about_d: "The first and largest platform serving and guiding the Arab community and visitors in Malaysia.",
+                f_links_t: "Quick Links",
+                f_contact_t: "Contact Us",
+                adminTitle: "Protected Admin Control Panel"
             }
         };
 
+        // Complete Initial Database State
+        let siteData = [
+            {
+                id: "restaurants",
+                titleAr: "قسم المطاعم",
+                titleEn: "Restaurants Section",
+                folder: "restaurantphoto",
+                cards: [
+                    {
+                        id: "r1",
+                        nameAr: "مطعم الطربوش العربي",
+                        nameEn: "Al Tarboush Arab Restaurant",
+                        images: [
+                            "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80",
+                            "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=400&q=80",
+                            "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80"
+                        ],
+                        activeIndex: 0
+                    },
+                    {
+                        id: "r2",
+                        nameAr: "مطعم حضرموت لاند",
+                        nameEn: "Hadramout Land Restaurant",
+                        images: [
+                            "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80",
+                            "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80"
+                        ],
+                        activeIndex: 0
+                    },
+                    {
+                        id: "r3",
+                        nameAr: "مطعم ومقهى ناديا",
+                        nameEn: "Nadia Restaurant & Cafe",
+                        images: [
+                            "https://images.unsplash.com/photo-1498654896293-37aaea113fd9?auto=format&fit=crop&w=400&q=80",
+                            "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=400&q=80"
+                        ],
+                        activeIndex: 0
+                    }
+                ]
+            },
+            {
+                id: "cars",
+                titleAr: "قسم السيارات",
+                titleEn: "Car Rental Section",
+                folder: "carphoto",
+                cards: [
+                    {
+                        id: "c1",
+                        nameAr: "مكتب شاهين لتأجير السيارات",
+                        nameEn: "Shaheen Car Rental",
+                        images: [
+                            "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=400&q=80",
+                            "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=400&q=80"
+                        ],
+                        activeIndex: 0
+                    },
+                    {
+                        id: "c2",
+                        nameAr: "مكتب ماليزيا الدولي للسيارات",
+                        nameEn: "Malaysia International Cars",
+                        images: [
+                            "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=400&q=80",
+                            "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=400&q=80"
+                        ],
+                        activeIndex: 0
+                    },
+                    {
+                        id: "c3",
+                        nameAr: "مكتب الكورنيش لتأجير السيارات",
+                        nameEn: "Al Corniche Car Hire",
+                        images: [
+                            "https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&w=400&q=80",
+                            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=400&q=80"
+                        ],
+                        activeIndex: 0
+                    }
+                ]
+            }
+        ];
+
+        // Automatic LocalStorage synchronization
+        if(localStorage.getItem('siteData')){
+            siteData = JSON.parse(localStorage.getItem('siteData'));
+        } else {
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+        }
+
+        // Initialize Visitor Random Simulation Tracker
+        let count = parseInt(localStorage.getItem('visitorCount') || "1482");
+        count += Math.floor(Math.random() * 5) + 1;
+        localStorage.setItem('visitorCount', count);
+        document.getElementById('counterValue').innerText = count.toLocaleString();
+
+        // Banner Slider Auto-Rotation Implementation
+        let bannerIdx = 0;
+        const slides = document.querySelectorAll('.banner-slider .slide');
+        setInterval(() => {
+            slides[bannerIdx].classList.remove('active');
+            bannerIdx = (bannerIdx + 1) % slides.length;
+            slides[bannerIdx].classList.add('active');
+        }, 5000);
+
+        // Core Render Function for Sections & Dynamic Galleries
+        function renderSite() {
+            const container = document.getElementById('sectionsContainer');
+            container.innerHTML = '';
+
+            siteData.forEach((section) => {
+                const title = currentLang === 'ar' ? section.titleAr : section.titleEn;
+                
+                const secHtml = `
+                    <div class="section-title">
+                        <h2>${title}</h2>
+                        <span style="font-size:12px; color:#aaa; font-weight:normal;">Folder: /images/${section.folder}/</span>
+                    </div>
+                    <div class="grid" id="grid-${section.id}"></div>
+                `;
+                container.insertAdjacentHTML('beforeend', secHtml);
+
+                const grid = document.getElementById(`grid-${section.id}`);
+                section.cards.forEach((card) => {
+                    const cardName = currentLang === 'ar' ? card.nameAr : card.nameEn;
+                    
+                    let imagesHtml = '';
+                    if (card.images.length === 0) {
+                        imagesHtml = `<div class="gallery-slide active" style="background:#ccc; display:flex; align-items:center; justify-content:center; color:#666;">No Images</div>`;
+                    } else {
+                        card.images.forEach((img, index) => {
+                            const activeClass = index === card.activeIndex ? 'active' : '';
+                            imagesHtml += `<div class="gallery-slide ${activeClass}" style="background-image: url('${img}')"></div>`;
+                        });
+                    }
+
+                    const cardHtml = `
+                        <div class="card">
+                            <div class="card-title">${cardName}</div>
+                            <div class="gallery-slider">
+                                <button class="slider-btn prev-btn" onclick="moveSlide('${section.id}', '${card.id}', -1)">&#10095;</button>
+                                ${imagesHtml}
+                                <button class="slider-btn next-btn" onclick="moveSlide('${section.id}', '${card.id}', 1)">&#10094;</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.insertAdjacentHTML('beforeend', cardHtml);
+                });
+            });
+        }
+
+        // Individual Dynamic Card Gallery Arrow Stepper
+        function moveSlide(secId, cardId, direction) {
+            const section = siteData.find(s => s.id === secId);
+            if (!section) return;
+            const card = section.cards.find(c => c.id === cardId);
+            if (!card || card.images.length === 0) return;
+
+            card.activeIndex = (card.activeIndex + direction + card.images.length) % card.images.length;
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+            renderSite();
+        }
+
+        // Global Multilingual Language Switcher Control
         function toggleLanguage() {
             currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.body.className = currentLang;
             document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.lang = currentLang;
-            
-            // تحديث النصوص الثابتة
-            document.getElementById('site-logo-text').innerText = langData[currentLang].logo;
-            document.getElementById('nav-ads').innerText = langData[currentLang].navAds;
-            document.getElementById('nav-jobs').innerText = langData[currentLang].navJobs;
-            document.getElementById('nav-maintenance').innerText = langData[currentLang].navMaintenance;
-            document.getElementById('hero-title').innerText = langData[currentLang].heroTitle;
-            document.getElementById('hero-desc').innerText = langData[currentLang].heroDesc;
-            document.getElementById('title-ads').innerText = langData[currentLang].titleAds;
-            document.getElementById('title-jobs').innerText = langData[currentLang].titleJobs;
-            document.getElementById('title-maintenance').innerText = langData[currentLang].titleMaintenance;
-            document.getElementById('picker-label').innerHTML = `<i class="fa-solid fa-palette"></i> ` + langData[currentLang].pickerLabel;
-            document.getElementById('admin-badge-text').innerText = langData[currentLang].adminBadge;
-            document.getElementById('admin-title').innerHTML = `<i class="fa-solid fa-sliders"></i> ` + langData[currentLang].adminTitle;
-            document.getElementById('form-add-title').innerText = langData[currentLang].formAddTitle;
-            document.getElementById('lbl-select-cat').innerText = langData[currentLang].lblSelectCat;
-            document.getElementById('lbl-item-name').innerText = langData[currentLang].lblItemName;
-            document.getElementById('lbl-item-name-en').innerText = langData[currentLang].lblItemNameEn;
-            document.getElementById('lbl-item-desc').innerText = langData[currentLang].lblItemDesc;
-            document.getElementById('lbl-item-desc-en').innerText = langData[currentLang].lblItemDescEn;
-            document.getElementById('lbl-folder-name').innerText = langData[currentLang].lblFolderName;
-            document.getElementById('btn-add-section').innerText = langData[currentLang].btnAddSection;
-            document.getElementById('features-control-title').innerText = langData[currentLang].featuresControlTitle;
-            document.getElementById('lbl-toggle-slider-desc').innerText = langData[currentLang].lblToggleSliderDesc;
-            
-            const isChecked = document.getElementById('slider-toggle-checkbox').checked;
-            document.getElementById('slider-status-text').innerText = isChecked ? langData[currentLang].sliderActive : langData[currentLang].sliderInactive;
-            
-            document.getElementById('folder-guide-title').innerHTML = `<i class="fa-solid fa-folder-tree"></i> ` + langData[currentLang].folderGuideTitle;
-            document.getElementById('folder-guide-desc').innerText = langData[currentLang].folderGuideDesc;
-            document.getElementById('counter-label').innerHTML = `<i class="fa-solid fa-eye"></i> ` + langData[currentLang].counterLabel;
-            document.getElementById('footer-copy').innerHTML = langData[currentLang].footerCopy;
-            document.getElementById('lang-btn').innerText = currentLang === 'ar' ? 'English' : 'العربية';
 
-            // تحويل نصوص الكروت الديناميكية المجهزة بالاتساق
-            document.querySelectorAll('.lang-text, .lang-tag').forEach(el => {
-                const text = el.getAttribute(`data-${currentLang}`);
-                if(text) el.innerText = text;
-            });
+            // UI Label Overhaul
+            document.getElementById('langBtn').innerText = currentLang === 'ar' ? 'English' : 'العربية';
+            document.getElementById('logoText').innerText = translations[currentLang].logo;
+            document.getElementById('b1-title').innerText = translations[currentLang].b1_t;
+            document.getElementById('b1-desc').innerText = translations[currentLang].b1_d;
+            document.getElementById('b2-title').innerText = translations[currentLang].b2_t;
+            document.getElementById('b2-desc').innerText = translations[currentLang].b2_d;
+            document.getElementById('f-about-title').innerText = translations[currentLang].f_about_t;
+            document.getElementById('f-about-desc').innerText = translations[currentLang].f_about_d;
+            document.getElementById('f-links-title').innerText = translations[currentLang].f_links_t;
+            document.getElementById('f-contact-title').innerText = translations[currentLang].f_contact_t;
+            document.getElementById('adminTitle').innerText = translations[currentLang].adminTitle;
+
+            renderSite();
         }
 
-        // نظام تغيير لون الـ Hue المتكامل للمستخدم ليتغير الموقع ديناميكياً بلمسة إصبع
-        const hueSlider = document.getElementById('hue-slider');
-        hueSlider.addEventListener('input', (e) => {
-            const hue = e.target.value;
-            document.documentElement.style.setProperty('--primary-color', `hsl(${hue}, 100%, 50%)`);
-            document.documentElement.style.setProperty('--primary-glow', `hsla(${hue}, 100%, 50%, 0.5)`);
-        });
-
-        // تشغيل وإدارة عارض المعارض المنزلقة التلقائي واليدوي
-        function moveSlide(button, direction) {
-            const track = button.parentElement.querySelector('.slider-track');
-            const slidesCount = track.children.length;
-            let currentIdx = parseInt(track.getAttribute('data-current')) || 0;
-            
-            currentIdx += direction;
-            if (currentIdx >= slidesCount) currentIdx = 0;
-            if (currentIdx < 0) currentIdx = slidesCount - 1;
-            
-            track.setAttribute('data-current', currentIdx);
-            track.style.transform = `translateX(${currentIdx * 100}%)`;
+        // Administrative Protection & Modal Interfaces
+        function openAdmin() {
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+        function closeAdmin() {
+            document.getElementById('adminModal').style.display = 'none';
         }
 
-        // الحركة التلقائية لمعارض الصور لكل 4 ثوانٍ
-        let autoSliderInterval = setInterval(() => {
-            document.querySelectorAll('.slider-track').forEach(track => {
-                const slidesCount = track.children.length;
-                if(slidesCount <= 1) return;
-                let currentIdx = parseInt(track.getAttribute('data-current')) || 0;
-                currentIdx = (currentIdx + 1) % slidesCount;
-                track.setAttribute('data-current', currentIdx);
-                track.style.transform = `translateX(${currentIdx * 100}%)`;
-            });
-        }, 4000);
-
-        // وظيفة لوحة التحكم: تفعيل أو حذف وإخفاء ميزة معرض الصور الدوار بالكامل من الموقع فورياً
-        function toggleSliderFeature(checkbox) {
-            const statusText = document.getElementById('slider-status-text');
-            const sliders = document.querySelectorAll('.slider-container');
-            
-            if(checkbox.checked) {
-                sliders.forEach(s => s.style.display = 'block');
-                statusText.innerText = langData[currentLang].sliderActive;
-                statusText.style.color = '#25d366';
-                // إعادة تشغيل التناوب التلقائي
-                autoSliderInterval = setInterval(() => {
-                    document.querySelectorAll('.slider-track').forEach(track => {
-                        const slidesCount = track.children.length;
-                        if(slidesCount <= 1) return;
-                        let currentIdx = parseInt(track.getAttribute('data-current')) || 0;
-                        currentIdx = (currentIdx + 1) % slidesCount;
-                        track.setAttribute('data-current', currentIdx);
-                        track.style.transform = `translateX(${currentIdx * 100}%)`;
-                    });
-                }, 4000);
+        function handleLogin() {
+            const u = document.getElementById('adminUser').value;
+            const p = document.getElementById('adminPass').value;
+            if(u === 'admin' && p === 'admin123') {
+                document.getElementById('loginFormSection').style.display = 'none';
+                document.getElementById('adminPanelDashboard').style.display = 'block';
+                populateAdminDash();
             } else {
-                sliders.forEach(s => s.style.display = 'none');
-                statusText.innerText = langData[currentLang].sliderInactive;
-                statusText.style.color = '#ff3b30';
-                clearInterval(autoSliderInterval);
+                alert('خطأ في اسم المستخدم أو كلمة المرور / Wrong credentials');
             }
         }
 
-        // وظيفة لوحة التحكم: إضافة كرت/قسم جديد بالكامل بشكل فوري ديناميكي مع تحديد المجلد المستهدف للصور
-        function addNewCard(event) {
-            event.preventDefault();
-            
-            const category = document.getElementById('form-category').value;
-            const nameAr = document.getElementById('form-name-ar').value;
-            const nameEn = document.getElementById('form-name-en').value;
-            const descAr = document.getElementById('form-desc-ar').value;
-            const descEn = document.getElementById('form-desc-en').value;
-            const folder = document.getElementById('form-folder').value;
-            
-            const containerId = category === 'ads' ? 'ads-container' : 'maintenance-container';
-            const container = document.getElementById(containerId);
-            
-            // إنشاء كارت متكامل غني بتأثيرات الزجاج ثلاثي الأبعاد
-            const newCard = document.createElement('div');
-            newCard.className = 'card';
-            newCard.setAttribute('data-category', category);
-            
-            const iconClass = category === 'ads' ? 'fa-rectangle-ad' : 'fa-screwdriver-wrench';
-            const tagAr = category === 'ads' ? 'إعلان جديد' : 'خدمة مضافة';
-            const tagEn = category === 'ads' ? 'New Ad' : 'New Service';
-            
-            // بناء محتوى الكرت الجديد بدقة متناهية
-            newCard.innerHTML = `
-                <div class="card-header">
-                    <div class="card-icon"><i class="fa-solid ${iconClass}"></i></div>
-                    <div class="card-tag lang-tag" data-ar="${tagAr}" data-en="${tagEn}">${currentLang === 'ar' ? tagAr : tagEn}</div>
-                </div>
-                <h3 class="lang-text" data-ar="${nameAr}" data-en="${nameEn}">${currentLang === 'ar' ? nameAr : nameEn}</h3>
-                <p class="lang-text" data-ar="${descAr}" data-en="${descEn}">${currentLang === 'ar' ? descAr : descEn}</p>
-                
-                <div class="slider-container" style="display: ${document.getElementById('slider-toggle-checkbox').checked ? 'block' : 'none'};">
-                    <div class="slider-nav prev" onclick="moveSlide(this, -1)">&#10094;</div>
-                    <div class="slider-nav next" onclick="moveSlide(this, 1)">&#10095;</div>
-                    <div class="slider-track" data-current="0">
-                        <div class="slide">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500&q=80" alt="Service Image">
-                            <div class="slide-overlay">صورة تلقائية | تم ربطها برمجياً بالمجلد الفعلي: 📁 ${folder}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(newCard);
-            
-            // تحديث دليل المجلدات المعروض تفاعلياً لمساعدة مسؤول الموقع
-            const structText = document.getElementById('folder-struct-text');
-            structText.innerText += `\n    ├── 📁 ${folder}/         <-- المجلد الجديد لصور (${nameAr})`;
-            
-            // تصفير الفورم بنجاح والتنبيه الفوري بلغة الموقع الحالية
-            document.getElementById('newSectionForm').reset();
-            alert(currentLang === 'ar' ? 'تم إضافة القسم الجديد بنجاح وربطه بمجلد الصور الخاص به!' : 'New section added successfully and mapped to its respective image folder!');
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById(tabId + '-btn').classList.add('active');
         }
 
-        // عداد زيارات تفاعلي يرتفع بشكل طبيعي لمحاكاة حركة الزوار الحية بالموقع
-        setInterval(() => {
-            const counterEl = document.getElementById('visit-counter');
-            let count = parseInt(counterEl.innerText.replace(/,/g, ''));
-            count += Math.floor(Math.random() * 4) + 1;
-            counterEl.innerText = count.toLocaleString();
-        }, 3000);
+        // Admin Dashboard Engine
+        function populateAdminDash() {
+            // Update Select Option lists
+            const select = document.getElementById('selectSection');
+            select.innerHTML = '';
+            
+            const list = document.getElementById('currentSectionsList');
+            list.innerHTML = '';
+
+            siteData.forEach(s => {
+                select.insertAdjacentHTML('beforeend', `<option value="${s.id}">${s.titleAr} (${s.titleEn})</option>`);
+                list.insertAdjacentHTML('beforeend', `<li>${s.titleAr} [Folder: ${s.folder}]</li>`);
+            });
+
+            // Update Gallery management display view
+            const gallList = document.getElementById('manageGalleriesList');
+            gallList.innerHTML = '';
+
+            siteData.forEach(s => {
+                s.cards.forEach(c => {
+                    const html = `
+                        <div style="border:1px solid #ddd; padding:10px; margin-top:10px; border-radius:5px;">
+                            <strong>[${s.titleAr}] ${c.nameAr}</strong>
+                            <div style="margin-top:5px;">
+                                <label style="font-size:12px;">روابط الصور الحالية (مفصولة بأسطر):</label>
+                                <textarea id="edit-img-${s.id}-${c.id}" class="form-control" rows="2">${c.images.join('\n')}</textarea>
+                            </div>
+                            <div style="margin-top:5px; display:flex; gap:10px;">
+                                <button class="btn btn-lang" style="padding:4px 10px; font-size:12px;" onclick="updateGallery('${s.id}', '${c.id}')">تحديث الصور</button>
+                                <button class="btn btn-admin" style="padding:4px 10px; font-size:12px;" onclick="deleteCard('${s.id}', '${c.id}')">حذف المربع بالكامل</button>
+                            </div>
+                        </div>
+                    `;
+                    gallList.insertAdjacentHTML('beforeend', html);
+                });
+            });
+        }
+
+        function addNewSection() {
+            const ar = document.getElementById('newSecAr').value.trim();
+            const en = document.getElementById('newSecEn').value.trim();
+            let folder = document.getElementById('newSecFolder').value.trim();
+
+            if(!ar || !en) { alert('الرجاء تعبئة الحقول الأساسية'); return; }
+            if(!folder) folder = "customphoto";
+
+            const newId = "sec_" + Date.now();
+            siteData.push({
+                id: newId,
+                titleAr: "قسم " + ar,
+                titleEn: en + " Section",
+                folder: folder,
+                cards: []
+            });
+
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+            populateAdminDash();
+            renderSite();
+            alert(`تم إنشاء القسم الجديد بنجاح! وتم ربطه تخيلياً بمجلد الصور: images/${folder}/`);
+            document.getElementById('newSecAr').value = '';
+            document.getElementById('newSecEn').value = '';
+            document.getElementById('newSecFolder').value = '';
+        }
+
+        function addNewCard() {
+            const secId = document.getElementById('selectSection').value;
+            const ar = document.getElementById('cardNameAr').value.trim();
+            const en = document.getElementById('cardNameEn').value.trim();
+            const imgsRaw = document.getElementById('cardImages').value.trim();
+
+            if(!ar || !en) { alert('الرجاء تعبئة الاسم'); return; }
+
+            const imgs = imgsRaw ? imgsRaw.split(/\n|,/).map(i => i.trim()).filter(i => i.length > 0) : [];
+            const section = siteData.find(s => s.id === secId);
+            
+            section.cards.push({
+                id: "card_" + Date.now(),
+                nameAr: ar,
+                nameEn: en,
+                images: imgs,
+                activeIndex: 0
+            });
+
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+            populateAdminDash();
+            renderSite();
+            alert('تمت إضافة المربع والمعرض التابع له بنجاح!');
+            document.getElementById('cardNameAr').value = '';
+            document.getElementById('cardNameEn').value = '';
+            document.getElementById('cardImages').value = '';
+        }
+
+        function updateGallery(secId, cardId) {
+            const textarea = document.getElementById(`edit-img-${secId}-${cardId}`);
+            const imgs = textarea.value.split('\n').map(i => i.trim()).filter(i => i.length > 0);
+            
+            const section = siteData.find(s => s.id === secId);
+            const card = section.cards.find(c => c.id === cardId);
+            
+            card.images = imgs;
+            card.activeIndex = 0;
+
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+            renderSite();
+            alert('تم تحديث ألبوم الصور بنجاح!');
+        }
+
+        function deleteCard(secId, cardId) {
+            if(confirm('هل أنت متأكد من حذف هذا المربع بشكل نهائي؟')) {
+                const section = siteData.find(s => s.id === secId);
+                section.cards = section.cards.filter(c => c.id !== cardId);
+                
+                localStorage.setItem('siteData', JSON.stringify(siteData));
+                populateAdminDash();
+                renderSite();
+            }
+        }
+
+        // Trigger Initial Render
+        renderSite();
     </script>
 </body>
 </html>
