@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -810,6 +810,18 @@
 
                 <!-- Tab View Component 2: Structural Objects management and data modifications system -->
                 <div class="panel-tab" id="tabSections">
+                    <div class="manage-list-box" style="margin-bottom:20px;">
+                        <h3 style="margin-bottom:10px;color:var(--btn-color);">إدارة صور المربع المتحرك أعلى الموقع</h3>
+                        <p class="manage-help" style="margin-bottom:12px;">أضف الصور أو عدّل العناوين أو احذف الصور. يتم حفظ التغييرات سحابياً لتظهر لجميع الزوار.</p>
+                        <div id="promoSlidesAdminList"></div>
+                        <div style="border-top:1px solid #ddd;margin-top:15px;padding-top:15px;">
+                            <h4 style="margin-bottom:10px;">إضافة صورة جديدة</h4>
+                            <div class="form-group"><label>الصورة من الجهاز</label><input type="file" id="newPromoImageFile" accept="image/*"></div>
+                            <div class="form-group"><label>العنوان بالعربية</label><input type="text" id="newPromoTitleAr" placeholder="اكتب العنوان بالعربية"></div>
+                            <div class="form-group"><label>العنوان بالإنجليزية</label><input type="text" id="newPromoTitleEn" placeholder="Enter English title"></div>
+                            <button class="admin-btn" onclick="addPromoSlide()">إضافة الصورة إلى المربع المتحرك</button>
+                        </div>
+                    </div>
                     <!-- Insertion Block for Sections -->
                     <div style="background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:20px; border:1px solid #e2e8f0;">
                         <h4 id="lblAddSecTitle" style="margin-bottom:10px;">إضافة قسم جديد للموقع</h4>
@@ -887,6 +899,7 @@
             { img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80", titleAr: "خدمات تأجير السيارات الفاخرة بأسعار منافسة", titleEn: "Luxury Car Rental Services at Competitive Prices" },
             { img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", titleAr: "عروض الرحلات السياحية الشاملة في ماليزيا", titleEn: "Comprehensive Tour Package Offers in Malaysia" }
         ];
+        let promoSlides = JSON.parse(localStorage.getItem('promoSlidesData') || 'null') || defaultPromoSlides.map(slide => ({ ...slide }));
 
         const defaultSectionsData = [
             {
@@ -1095,10 +1108,88 @@
             if (isUserAdminLoggedIn) commitAndSyncSystemDatastores();
         }
 
+        function buildPromoSlidesAdminList() {
+            const host = document.getElementById('promoSlidesAdminList');
+            if (!host) return;
+            host.innerHTML = '';
+            if (!promoSlides.length) {
+                host.innerHTML = '<p style="padding:10px;text-align:center;color:#777;">لا توجد صور حالياً. أضف صورة جديدة من الأسفل.</p>';
+                return;
+            }
+            promoSlides.forEach((slide, index) => {
+                const row = document.createElement('div');
+                row.style.cssText = 'border:1px solid #ddd;border-radius:10px;padding:12px;margin:10px 0;background:#fff;';
+                row.innerHTML = `
+                    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+                        <img src="${slide.img}" alt="" style="width:90px;height:60px;object-fit:cover;border-radius:7px;">
+                        <strong>الصورة رقم ${index + 1}</strong>
+                    </div>
+                    <div class="form-group"><label>تغيير الصورة (اختياري)</label><input type="file" accept="image/*" id="promoFile_${index}"></div>
+                    <div class="form-group"><label>العنوان بالعربية</label><input type="text" id="promoAr_${index}" value="${escapeHtmlAttribute(slide.titleAr || '')}"></div>
+                    <div class="form-group"><label>العنوان بالإنجليزية</label><input type="text" id="promoEn_${index}" value="${escapeHtmlAttribute(slide.titleEn || '')}"></div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="admin-btn" onclick="savePromoSlide(${index})">حفظ التعديل</button>
+                        <button class="admin-btn" style="background:#c62828;" onclick="deletePromoSlide(${index})">حذف الصورة</button>
+                    </div>`;
+                host.appendChild(row);
+            });
+        }
+
+        function escapeHtmlAttribute(value) {
+            return String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        async function savePromoSlide(index) {
+            try {
+                const slide = promoSlides[index];
+                if (!slide) return;
+                const file = document.getElementById(`promoFile_${index}`).files[0];
+                if (file) {
+                    const oldUrl = slide.img;
+                    slide.img = await uploadImageToCloud(file, 'promo', `slide-${index}`);
+                    if (oldUrl !== slide.img) await deleteCloudImageIfOwned(oldUrl);
+                }
+                slide.titleAr = document.getElementById(`promoAr_${index}`).value.trim();
+                slide.titleEn = document.getElementById(`promoEn_${index}`).value.trim();
+                activePromoIdx = Math.min(activePromoIdx, promoSlides.length - 1);
+                await commitAndSyncSystemDatastores();
+                alert('تم حفظ تعديل الصورة بنجاح.');
+            } catch (error) { alert('تعذر حفظ الصورة: ' + error.message); }
+        }
+
+        async function addPromoSlide() {
+            try {
+                const file = document.getElementById('newPromoImageFile').files[0];
+                const titleAr = document.getElementById('newPromoTitleAr').value.trim();
+                const titleEn = document.getElementById('newPromoTitleEn').value.trim();
+                if (!file || !titleAr || !titleEn) {
+                    alert('اختر صورة واكتب العنوان بالعربية والإنجليزية.');
+                    return;
+                }
+                const imageUrl = await uploadImageToCloud(file, 'promo', `slide-${Date.now()}`);
+                promoSlides.push({ img: imageUrl, titleAr, titleEn });
+                await commitAndSyncSystemDatastores();
+                document.getElementById('newPromoImageFile').value = '';
+                document.getElementById('newPromoTitleAr').value = '';
+                document.getElementById('newPromoTitleEn').value = '';
+                alert('تمت إضافة الصورة بنجاح.');
+            } catch (error) { alert('تعذر إضافة الصورة: ' + error.message); }
+        }
+
+        async function deletePromoSlide(index) {
+            if (!confirm('هل أنت متأكد من حذف هذه الصورة من المربع المتحرك؟')) return;
+            const removed = promoSlides.splice(index, 1)[0];
+            if (removed) await deleteCloudImageIfOwned(removed.img);
+            activePromoIdx = promoSlides.length ? activePromoIdx % promoSlides.length : 0;
+            await commitAndSyncSystemDatastores();
+            alert('تم حذف الصورة.');
+        }
+
         function renderPromoBanners() {
             const container = document.getElementById('slideContainer');
             container.innerHTML = '';
-            defaultPromoSlides.forEach(slide => {
+            if (activePromoIdx >= promoSlides.length) activePromoIdx = 0;
+            promoSlides.forEach(slide => {
                 const title = currentLang === 'ar' ? slide.titleAr : slide.titleEn;
                 const slideDiv = document.createElement('div');
                 slideDiv.className = 'slide';
@@ -1112,18 +1203,21 @@
         }
 
         function moveSlide(dir, isManual = true) {
+            if (!promoSlides.length) return;
             if (isManual) {
                 clearInterval(autoSliderIntervalId);
                 startAutoSliderCycle();
             }
             activePromoIdx += dir;
-            if (activePromoIdx >= defaultPromoSlides.length) activePromoIdx = 0;
-            if (activePromoIdx < 0) activePromoIdx = defaultPromoSlides.length - 1;
+            if (activePromoIdx >= promoSlides.length) activePromoIdx = 0;
+            if (activePromoIdx < 0) activePromoIdx = promoSlides.length - 1;
             updateSliderPosition();
         }
 
         function updateSliderPosition() {
             const container = document.getElementById('slideContainer');
+            if (!promoSlides.length) { container.style.transform = 'translateX(0)'; return; }
+            activePromoIdx = Math.min(activePromoIdx, promoSlides.length - 1);
             const shiftFactor = currentLang === 'ar' ? activePromoIdx * 100 : -activePromoIdx * 100;
             container.style.transform = `translateX(${shiftFactor}%)`;
             container.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -1247,6 +1341,7 @@
                 document.getElementById('dashboardBox').style.display = 'flex';
                 buildAdminManagementListViewConsole();
                 buildCardsManagementListViewConsole();
+                buildPromoSlidesAdminList();
             } else {
                 document.getElementById('authBox').style.display = 'flex';
                 document.getElementById('dashboardBox').style.display = 'none';
@@ -1281,6 +1376,7 @@
                 renderDynamicSections();
                 buildAdminManagementListViewConsole();
                 buildCardsManagementListViewConsole();
+                buildPromoSlidesAdminList();
                 alert('تم تسجيل الدخول بنجاح.');
             } catch (error) {
                 console.error(error);
@@ -1306,13 +1402,16 @@
             cloudContentExists = !!data;
             if (data && data.content) {
                 if (Array.isArray(data.content.sections)) webSections = data.content.sections;
+                if (Array.isArray(data.content.promoSlides)) promoSlides = data.content.promoSlides;
                 if (data.content.theme) siteTheme = data.content.theme;
                 localStorage.setItem('webSectionsData', JSON.stringify(webSections));
                 localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
             } else {
                 webSections = JSON.parse(localStorage.getItem('webSectionsData')) || defaultSectionsData;
                 siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
+                promoSlides = JSON.parse(localStorage.getItem('promoSlidesData')) || promoSlides;
             }
+            localStorage.setItem('promoSlidesData', JSON.stringify(promoSlides));
             cloudContentReady = true;
         }
 
@@ -1699,14 +1798,17 @@
         async function commitAndSyncSystemDatastores() {
             localStorage.setItem('webSectionsData', JSON.stringify(webSections));
             localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
+            localStorage.setItem('promoSlidesData', JSON.stringify(promoSlides));
+            renderPromoBanners();
             renderDynamicSections();
+            buildPromoSlidesAdminList();
             buildAdminManagementListViewConsole();
             buildCardsManagementListViewConsole();
             populateAdminSectionConsoleDropdowns();
             if (!isUserAdminLoggedIn) return;
             const { error } = await supabaseClient.from('site_content').upsert({
                 id: 1,
-                content: { sections: webSections, theme: siteTheme },
+                content: { sections: webSections, theme: siteTheme, promoSlides: promoSlides },
                 updated_at: new Date().toISOString()
             }, { onConflict: 'id' });
             if (error) {
