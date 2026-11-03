@@ -251,7 +251,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
+            transition: transform 1.5s;
         }
 
         .card:hover .card-gallery img {
@@ -941,7 +941,7 @@
         let isUserAdminLoggedIn = false;
         let autoSliderIntervalId = null;
         let cardGalleryIntervals = [];
-        const SLIDER_INTERVAL_MS = 8000;
+        const SLIDER_INTERVAL_MS = 4000;
 
         const uiLexicon = {
             ar: {
@@ -1222,7 +1222,7 @@
             activePromoIdx = Math.min(activePromoIdx, promoSlides.length - 1);
             const shiftFactor = currentLang === 'ar' ? activePromoIdx * 100 : -activePromoIdx * 100;
             container.style.transform = `translateX(${shiftFactor}%)`;
-            container.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            container.style.transition = 'transform 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         }
 
         function startAutoSliderCycle() {
@@ -1287,7 +1287,12 @@
                             const liveCard = liveSection && liveSection.cards.find(item => item.id === card.id);
                             if (!liveCard || !liveCard.images || liveCard.images.length < 2 || !galleryImg.isConnected) return;
                             liveCard.currentImgIdx = ((liveCard.currentImgIdx || 0) + 1) % liveCard.images.length;
-                            galleryImg.src = liveCard.images[liveCard.currentImgIdx];
+                            galleryImg.style.opacity = '0';
+							setTimeout(() => {
+								if (!galleryImg.isConnected) return;
+								galleryImg.src = liveCard.images[liveCard.currentImgIdx];
+								galleryImg.style.opacity = '1';
+							}, 750);
                             localStorage.setItem('webSectionsData', JSON.stringify(webSections));
                         }, SLIDER_INTERVAL_MS);
                         cardGalleryIntervals.push(timer);
