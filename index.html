@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عرب ماليزيا | Arab Malaysia</title>
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #f8f9fa;
+            --bg-color: #f4f7f6;
             --text-color: #333333;
-            --hover-text-color: #007bff;
-            --btn-color: #008080;
-            --banner-footer-color: #222222;
+            --text-hover-color: #00bcd4;
+            --btn-color: #2196f3;
+            --banner-footer-color: #1a237e;
+            --card-bg: #ffffff;
         }
 
         * {
@@ -20,1047 +20,1204 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             overflow-x: hidden;
-            perspective: 1000px;
         }
 
-        /* Smart Scrollbar */
+        /* Custom Smart Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: var(--bg-color);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--btn-color);
             border-radius: 5px;
+            border: 2px solid var(--bg-color);
         }
         ::-webkit-scrollbar-thumb:hover {
-            filter: brightness(0.8);
+            background: var(--text-hover-color);
         }
 
-        /* Top Bar */
+        /* Header Navigation */
         header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 15px 20px;
+            background-color: var(--banner-footer-color);
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        .logo-section h1 {
-            color: #008080;
+        .logo {
+            color: #fff;
             font-size: 24px;
             font-weight: bold;
-        }
-
-        .nav-controls {
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        .icon-btn {
-            background: var(--btn-color);
-            color: white;
+        .nav-tools {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-icon-btn {
+            background: none;
             border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            position: relative;
             width: 45px;
             height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .icon-btn::before {
+        .nav-icon-btn:hover {
+            transform: scale(1.15) rotate(15deg);
+            background-color: var(--btn-color);
+            color: #fff;
+            box-shadow: 0 0 15px var(--btn-color);
+        }
+
+        .nav-icon-btn::after {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
-            background: rgba(255,255,255,0.3);
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 100%);
             transform: skewX(-25deg);
-            transition: 0.5s;
+            transition: 0.75s;
+        }
+        .nav-icon-btn:hover::after {
+            left: 120%;
         }
 
-        .icon-btn:hover::before {
-            left: 150%;
-        }
-
-        .icon-btn:hover {
-            transform: scale(1.1) rotate(15deg);
-            color: white;
-        }
-
-        /* Banner Slider */
-        .ad-banner {
-            background-color: var(--banner-footer-color);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin: 20px;
-            border-radius: 15px;
+        /* Main Promo Banner Slider */
+        .promo-banner {
+            max-width: 90%;
+            margin: 30px auto;
+            height: 380px;
             position: relative;
-            height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transform: perspective(1000px);
         }
 
-        .ad-slide {
-            display: none;
+        .slide-container {
             width: 100%;
             height: 100%;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .ad-slide.active {
             display: flex;
-            animation: fadeIn 0.5s ease-in-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Sections and Grid */
-        .site-section {
-            padding: 30px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            border-bottom: 3px solid var(--btn-color);
-            padding-bottom: 8px;
-            display: inline-block;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        /* 3D Card */
-        .card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-            transition: transform 0.1s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-
-        .card-content {
-            padding: 20px;
-            transform: translateZ(30px);
-        }
-
-        .card-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
-        .card-title:hover {
-            color: var(--hover-text-color);
-        }
-
-        /* Gallery Inside Card */
-        .gallery-container {
+        .slide {
+            min-width: 100%;
+            height: 100%;
             position: relative;
-            width: 100%;
-            height: 200px;
-            border-radius: 10px;
-            overflow: hidden;
-            background: #eee;
         }
 
-        .gallery-img {
+        .slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
-            transition: transform 0.5s ease;
         }
 
-        .gallery-img.active {
-            display: block;
+        .slide-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+            padding: 30px 20px 20px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
         }
 
-        .gallery-container:hover .gallery-img {
-            transform: scale(1.05);
-        }
-
-        .gallery-btn {
+        .slider-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(0,0,0,0.5);
-            color: white;
+            color: #fff;
             border: none;
-            width: 35px;
-            height: 35px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             cursor: pointer;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s;
             z-index: 10;
         }
 
-        .gallery-btn:hover {
+        .slider-arrow:hover {
             background: var(--btn-color);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 10px var(--btn-color);
         }
 
-        .gallery-prev { right: 10px; }
-        .gallery-next { left: 10px; }
+        .arrow-prev { right: 20px; }
+        .arrow-next { left: 20px; }
 
-        html[dir="ltr"] .gallery-prev { left: 10px; right: auto; }
-        html[dir="ltr"] .gallery-next { right: 10px; left: auto; }
+        html[dir="ltr"] .arrow-prev { left: 20px; right: auto; }
+        html[dir="ltr"] .arrow-next { right: 20px; left: auto; }
 
-        /* Floating Widgets */
+        /* Sections and 3D Cards Grid */
+        .section-container {
+            max-width: 90%;
+            margin: 50px auto;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 60%; height: 4px;
+            background: var(--btn-color);
+            border-radius: 2px;
+        }
+
+        html[dir="rtl"] .section-title::after { right: 0; left: auto; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* 3D and Hover Effects Card */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+            transition: transform 0.5s cubic-bezier(0.1, 0.8, 0.3, 1), box-shadow 0.5s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: perspective(1000px) translateY(-10px) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+        }
+
+        /* Card Shimmer Shiny Glow Effect */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: 0.6s;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .card:hover::before {
+            left: 120%;
+            top: 120%;
+        }
+
+        .card-gallery {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .card:hover .card-gallery img {
+            transform: scale(1.05);
+        }
+
+        .card-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .card:hover .card-name {
+            color: var(--text-hover-color);
+        }
+
+        .card-btn {
+            background-color: var(--btn-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px var(--btn-color);
+            filter: brightness(1.1);
+        }
+
+        /* Floating Actions */
         .whatsapp-float {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
+            bottom: 30px;
+            right: 30px;
             background-color: #25d366;
             color: white;
+            border-radius: 50%;
             width: 60px;
             height: 60px;
-            border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             font-size: 32px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 999;
-            cursor: pointer;
             text-decoration: none;
+            transition: all 0.3s;
         }
-
         .whatsapp-float:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 0 25px #25d366;
         }
 
         .scroll-top {
             position: fixed;
-            bottom: 25px;
-            left: 25px;
+            bottom: 100px;
+            right: 30px;
             background-color: var(--btn-color);
             color: white;
-            width: 45px;
-            height: 45px;
             border-radius: 50%;
+            width: 50px;
+            height: 50px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             font-size: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 998;
             cursor: pointer;
+            border: none;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease-in-out;
         }
 
-        .scroll-top.show {
+        .scroll-top.visible {
             opacity: 1;
             visibility: visible;
         }
 
-        /* Footer */
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            background-color: var(--text-hover-color);
+            box-shadow: 0 0 20px var(--text-hover-color);
+        }
+
+        /* Footer & Stats */
         footer {
             background-color: var(--banner-footer-color);
-            color: #ffffff;
-            padding: 40px 20px 20px;
-            margin-top: 50px;
+            color: white;
+            padding: 40px 5% 20px;
+            margin-top: 60px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
         }
 
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-        }
-
-        .footer-col h3 {
-            color: #ffb74d;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        .footer-col p, .footer-col ul {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #dddddd;
-            list-style: none;
-        }
-
-        .footer-col ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-col ul li a {
-            color: #dddddd;
-            text-decoration: none;
-        }
-
-        .footer-col ul li a:hover {
-            color: var(--hover-text-color);
-        }
-
-        .whatsapp-info {
-            color: #ffb74d;
-            font-weight: bold;
-            font-size: 18px;
-            display: block;
-            margin-top: 5px;
-        }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 30px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid #444;
+        .footer-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
-            font-size: 14px;
-            color: #aaaaaa;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
         }
 
-        .visitor-count {
+        .visitor-counter {
             background: rgba(255,255,255,0.1);
-            padding: 5px 12px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: bold;
         }
 
-        /* Admin Modal */
-        .modal {
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Admin Dashboard Modal Overlay */
+        .admin-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
+            backdrop-filter: blur(8px);
+            display: none;
             justify-content: center;
+            align-items: center;
             z-index: 2000;
-            opacity: 0; visibility: hidden;
-            transition: all 0.3s ease;
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
-        .modal.active {
-            opacity: 1; visibility: visible;
+        .admin-modal.active {
+            display: flex;
+            opacity: 1;
         }
 
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
+        .admin-box {
+            background: #ffffff;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             max-height: 85vh;
-            overflow-y: auto;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #333;
         }
 
-        .close-modal {
-            position: absolute;
-            top: 15px; left: 15px;
-            cursor: pointer;
-            font-size: 20px;
+        .admin-modal.active .admin-box {
+            transform: scale(1);
         }
-        html[dir="ltr"] .close-modal { right: 15px; left: auto; }
+
+        .admin-header {
+            background-color: var(--banner-footer-color);
+            color: #fff;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .admin-body {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: bold;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--btn-color);
+        }
+
+        .color-pickers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .color-item input[type="color"] {
+            height: 45px;
+            padding: 0;
+            border: none;
+            cursor: pointer;
             border-radius: 8px;
         }
 
-        .btn-submit {
-            background: var(--btn-color);
+        .admin-btn {
+            background-color: var(--btn-color);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
             width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-top: 10px;
         }
 
-        .admin-tabs {
+        .admin-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .tab-menu {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 25px;
         }
 
         .tab-btn {
-            background: #eee;
+            flex: 1;
+            padding: 12px;
+            background: none;
             border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
+            font-weight: bold;
             cursor: pointer;
+            color: #666;
+            border-bottom: 3px solid transparent;
         }
 
         .tab-btn.active {
-            background: var(--btn-color);
-            color: white;
+            color: var(--btn-color);
+            border-bottom-color: var(--btn-color);
         }
 
-        .tab-panel {
+        .panel-tab {
             display: none;
         }
 
-        .tab-panel.active {
+        .panel-tab.active {
             display: block;
         }
+
+        .manage-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .delete-icon-btn {
+            background: none;
+            border: none;
+            color: #e53935;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* Direction Specific Alignment Overrides */
+        html[dir="ltr"] body { text-align: left; }
+        html[dir="rtl"] body { text-align: right; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="logo-section">
-            <h1 id="site-title">عرب ماليزيا</h1>
+    <!-- Header Navigation Section -->
+    <header id="mainHeader">
+        <div class="logo">
+            <i class="fa-solid fa-mosque"></i>
+            <span id="siteTitle">عرب ماليزيا</span>
         </div>
-        <div class="nav-controls">
-            <button class="icon-btn" id="lang-toggle" title="Change Language"><i class="fa-solid fa-language"></i></button>
-            <button class="icon-btn" id="admin-toggle" title="Admin Panel"><i class="fa-solid fa-gear"></i></button>
+        <div class="nav-tools">
+            <button class="nav-icon-btn" id="langToggleBtn" title="تغيير اللغة / Change Language">
+                <i class="fa-solid fa-language"></i>
+            </button>
+            <button class="nav-icon-btn" id="adminToggleBtn" title="لوحة التحكم / Admin Control">
+                <i class="fa-solid fa-user-gear"></i>
+            </button>
         </div>
     </header>
 
-    <!-- Ad Banner -->
-    <div class="ad-banner" id="ad-banner">
-        <div class="ad-slide active">
-            <h2>إعلانات عرب ماليزيا</h2>
-            <p>أفضل المطاعم والخدمات والمحلات التجارية في كوالالمبور</p>
+    <!-- Main Advertisement & Promo Gallery Slider -->
+    <div class="promo-banner" id="promoSlider">
+        <div class="slide-container" id="slideContainer">
+            <!-- Dynamic Advertisement Slides will load here -->
         </div>
-        <div class="ad-slide">
-            <h2>Luxury Cars Rental</h2>
-            <p>أفضل مكاتب تأجير السيارات بأقل الأسعار</p>
-        </div>
+        <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-left"></i></button>
     </div>
 
-    <!-- Main Dynamic Content Container -->
-    <div id="sections-container"></div>
+    <!-- Main Website Structural Sections Container -->
+    <main id="sectionsWrapper">
+        <!-- Structural Sections & Cards loaded completely dynamically via local storage -->
+    </main>
 
-    <!-- Floating Actions -->
-    <a href="https://wa.me/60123456789" class="whatsapp-float" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-    <div class="scroll-top" id="scroll-top">
-        <i class="fa-solid fa-arrow-up"></i>
-    </div>
-
-    <!-- Footer -->
+    <!-- Interactive Beautiful Footer -->
     <footer>
-        <div class="footer-container">
-            <div class="footer-col">
-                <h3 id="footer-about-title">حول عرب ماليزيا</h3>
-                <p id="footer-about-desc">المنصة الأولى والأضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.</p>
+        <div class="footer-content">
+            <div class="logo">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span id="footerLogoText">دليلك الكامل في ماليزيا</span>
             </div>
-            <div class="footer-col">
-                <h3 id="footer-links-title">روابط سريعة</h3>
-                <ul>
-                    <li><a href="#" id="link-home">الرئيسية</a></li>
-                    <li><a href="#" onclick="openAdminModal()" id="link-admin">لوحة تحكم المسؤول</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h3 id="footer-contact-title">اتصل بنا</h3>
-                <p id="footer-contact-num">الرقم الماليزي المباشر:</p>
-                <span class="whatsapp-info">+60 12-345 6789</span>
-                <p style="margin-top: 10px;" id="footer-contact-loc">كوالالمبور، ماليزيا</p>
-            </div>
-            <div class="footer-col">
-                <h3 id="footer-management-title">الإدارة والاستفسارات</h3>
-                <p style="font-weight: bold; color: #ffb74d; margin-bottom: 5px;" id="footer-manager-name">إدارة شريف منصور</p>
-                <p id="footer-management-note">لأي استفسار في ماليزيا يرجى ترك رسالة.</p>
+            <div class="visitor-counter">
+                <i class="fa-solid fa-eye"></i> <span id="langCountLabel">عدد الزوار:</span> <span id="visitorCount">124,530</span>
             </div>
         </div>
         <div class="footer-bottom">
-            <div id="footer-copyright">&copy; 2026 Arab Malaysia. All Rights Reserved.</div>
-            <div class="visitor-count">
-                <i class="fa-solid fa-users"></i>
-                <span id="visitor-text">الزوار:</span>
-                <span id="visitor-num">1,488</span>
-            </div>
+            &copy; 2026 <span id="footerCopyright">عرب ماليزيا - جميع الحقوق محفوظة</span>
         </div>
     </footer>
 
-    <!-- Admin Login / Control Modal -->
-    <div class="modal" id="admin-modal">
-        <div class="modal-content">
-            <i class="fa-solid fa-xmark close-modal" onclick="closeAdminModal()"></i>
-            
-            <!-- Login State -->
-            <div id="admin-login-box">
-                <h2 style="margin-bottom: 20px;" id="login-title">تسجيل الدخول للمسؤول</h2>
-                <div class="form-group">
-                    <label id="lbl-username">اسم المستخدم</label>
-                    <input type="text" id="admin-user">
-                </div>
-                <div class="form-group">
-                    <label id="lbl-password">كلمة المرور</label>
-                    <input type="password" id="admin-pass">
-                </div>
-                <button class="btn-submit" onclick="handleLogin()" id="btn-login">دخول</button>
+    <!-- Smart Floating Action Elements -->
+    <a href="https://wa.me/60123456789" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <button class="scroll-top" id="scrollTopBtn" title="الصعود للأعلى">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Fully Extended Admin Dashboard Dialog Screen -->
+    <div class="admin-modal" id="adminDialog">
+        <!-- Auth View Container -->
+        <div class="admin-box" id="authBox">
+            <div class="admin-header">
+                <span id="lblLoginTitle">تسجيل دخول المشرف</span>
+                <button class="admin-close" onclick="closeAdmin()">&times;</button>
             </div>
-
-            <!-- Management State -->
-            <div id="admin-dashboard-box" style="display:none;">
-                <h2 style="margin-bottom: 15px;" id="dash-title">لوحة التحكم</h2>
-                <div class="admin-tabs">
-                    <button class="tab-btn active" onclick="switchTab('sections-tab')" id="tab-sec">الأقسام والمربعات</button>
-                    <button class="tab-btn" onclick="switchTab('colors-tab')" id="tab-col">الألوان والتنسيق</button>
+            <div class="admin-body">
+                <div class="form-group">
+                    <label id="lblUser">اسم المستخدم</label>
+                    <input type="text" id="adminUser" placeholder="admin">
                 </div>
-
-                <!-- Sections Tab -->
-                <div id="sections-tab" class="tab-panel active">
-                    <h3 style="margin-bottom: 10px;" id="title-add-sec">إضافة قسم جديد</h3>
-                    <div class="form-group">
-                        <label id="lbl-sec-name">اسم القسم</label>
-                        <input type="text" id="new-section-name" placeholder="مثال: مكاتب السياحة">
-                    </div>
-                    <div class="form-group">
-                        <label id="lbl-folder-name">اسم مجلد الصور التابع له</label>
-                        <input type="text" id="new-section-folder" placeholder="مثال: travelphoto">
-                    </div>
-                    <button class="btn-submit" onclick="addNewSection()" style="margin-bottom: 20px;" id="btn-add-sec">حفظ القسم</button>
-
-                    <hr style="margin: 15px 0;">
-
-                    <h3 style="margin-bottom: 10px;" id="title-add-item">إضافة مربع (محل/مكتب) للقسم</h3>
-                    <div class="form-group">
-                        <label id="lbl-choose-sec">اختر القسم</label>
-                        <select id="target-section-select"></select>
-                    </div>
-                    <div class="form-group">
-                        <label id="lbl-item-name">الاسم</label>
-                        <input type="text" id="new-item-name" placeholder="مثال: شركة الفارس">
-                    </div>
-                    <div class="form-group">
-                        <label id="lbl-item-imgs">رابط الصور (منفصلة بفاصلة ,)</label>
-                        <input type="text" id="new-item-images" placeholder="https://url1.com, https://url2.com">
-                    </div>
-                    <button class="btn-submit" onclick="addNewItem()" id="btn-add-item">إضافة المربع</button>
+                <div class="form-group">
+                    <label id="lblPass">كلمة المرور</label>
+                    <input type="password" id="adminPass" placeholder="••••••••">
                 </div>
-
-                <!-- Colors Tab -->
-                <div id="colors-tab" class="tab-panel">
-                    <h3 style="margin-bottom: 15px;" id="title-colors">تخصيص الهوية البصرية</h3>
-                    <div class="form-group">
-                        <label id="c-bg">لون خلفية الموقع</label>
-                        <input type="color" id="color-bg" value="#f8f9fa">
-                    </div>
-                    <div class="form-group">
-                        <label id="c-text">لون النصوص</label>
-                        <input type="color" id="color-text" value="#333333">
-                    </div>
-                    <div class="form-group">
-                        <label id="c-hover">لون النصوص عند الحوم والتمرير</label>
-                        <input type="color" id="color-hover" value="#007bff">
-                    </div>
-                    <div class="form-group">
-                        <label id="c-btn">لون الأزرار وعناصر التحكم</label>
-                        <input type="color" id="color-btn" value="#008080">
-                    </div>
-                    <div class="form-group">
-                        <label id="c-footer">لون البانر والفوتر</label>
-                        <input type="color" id="color-footer" value="#222222">
-                    </div>
-                    <button class="btn-submit" onclick="applyColors()" style="margin-bottom:10px;" id="btn-apply-col">تطبيق الألوان</button>
-                    <button class="btn-submit" onclick="resetColors()" style="background:#888;" id="btn-reset-col">إعادة التعيين الافتراضي</button>
-                </div>
+                <button class="admin-btn" id="btnLogin" onclick="handleLogin()">دخول</button>
             </div>
+        </div>
 
+        <!-- Fully Managed Operations Dashboard System View Container -->
+        <div class="admin-box" id="dashboardBox" style="display:none;">
+            <div class="admin-header">
+                <span id="lblDashTitle">لوحة الإدارة الاحترافية</span>
+                <button class="admin-close" onclick="closeAdmin()">&times;</button>
+            </div>
+            <div class="tab-menu">
+                <button class="tab-btn active" id="tabColorsBtn" onclick="switchTab('colors')">الألوان والتنسيق</button>
+                <button class="tab-btn" id="tabSectionsBtn" onclick="switchTab('sections')">الأقسام والبطاقات</button>
+            </div>
+            <div class="admin-body">
+                
+                <!-- Tab View Component 1: Theme Personalization Engine Control Panel -->
+                <div class="panel-tab active" id="tabColors">
+                    <h3 id="lblThemeHeading" style="margin-bottom:15px;">تخصيص ألوان الهوية البصرية للموقع</h3>
+                    <div class="color-pickers-grid">
+                        <div class="color-item">
+                            <label id="clrBgLbl">خلفية الموقع</label>
+                            <input type="color" id="cfgBgColor" onchange="updateThemeLive()">
+                        </div>
+                        <div class="color-item">
+                            <label id="clrTextLbl">لون النصوص</label>
+                            <input type="color" id="cfgTextColor" onchange="updateThemeLive()">
+                        </div>
+                        <div class="color-item">
+                            <label id="clrBtnLbl">لون الأزرار</label>
+                            <input type="color" id="cfgBtnColor" onchange="updateThemeLive()">
+                        </div>
+                        <div class="color-item">
+                            <label id="clrHoverLbl">نصوص الحوم/اللمس</label>
+                            <input type="color" id="cfgHoverColor" onchange="updateThemeLive()">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label id="clrHeaderFooterLbl">لون البانر العلوي والفوتر</label>
+                        <input type="color" id="cfgHeaderFooterColor" style="height:45px; width:100%; border:none; cursor:pointer; border-radius:8px;" onchange="updateThemeLive()">
+                    </div>
+                    <button class="admin-btn" id="btnResetTheme" onclick="resetThemeDefault()" style="background:#757575;">إعادة الألوان الافتراضية</button>
+                </div>
+
+                <!-- Tab View Component 2: Structural Data Object Additions, Insertions & Removals -->
+                <div class="panel-tab" id="tabSections">
+                    <div style="background:#f5f5f5; padding:15px; border-radius:12px; margin-bottom:20px;">
+                        <h4 id="lblAddSecTitle" style="margin-bottom:10px;">إضافة قسم جديد للموقع</h4>
+                        <div class="form-group">
+                            <input type="text" id="newSecNameAr" placeholder="اسم القسم بالعربي (مثال: مكاتب السياحة)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="newSecNameEn" placeholder="اسم القسم بالإنجليزي (مثال: Tourism Offices)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="newSecFolder" placeholder="اسم مجلد الصور المستهدف (مثال: travelphoto)">
+                        </div>
+                        <button class="admin-btn" id="btnAddSec" onclick="addNewSectionItem()">إنشاء وحفظ القسم الجديد</button>
+                    </div>
+
+                    <div style="background:#f5f5f5; padding:15px; border-radius:12px;">
+                        <h4 id="lblAddCardTitle" style="margin-bottom:10px;">إضافة عنصر جديد لـ قسم</h4>
+                        <div class="form-group">
+                            <select id="targetSectionSelect"></select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="newCardNameAr" placeholder="اسم المحل / المكتب بالعربي">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="newCardNameEn" placeholder="اسم المحل / المكتب بالإنجليزي">
+                        </div>
+                        <div class="form-group">
+                            <label id="lblUrlsHelp" style="font-size:12px; color:#666;">روابط ألبوم الصور (افصل بين الروابط بفاصلة ,)</label>
+                            <input type="text" id="newCardImages" placeholder="https://url1.com, https://url2.com">
+                        </div>
+                        <button class="admin-btn" id="btnAddCard" onclick="addNewCardItem()">إضافة العنصر للمعرض</button>
+                    </div>
+
+                    <div style="margin-top:20px;">
+                        <h4 id="lblCurrentData" style="margin-bottom:10px;">إدارة وحذف الأقسام الحالية</h4>
+                        <div id="adminSectionsManagementList"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <!-- Core Program Logic -->
+    <!-- Embedded High Fidelity Script Controller System Core Engine -->
     <script>
-        // Language dictionary
-        const langData = {
-            ar: {
-                title: "عرب ماليزيا",
-                aboutTitle: "حول عرب ماليزيا",
-                aboutDesc: "المنصة الأولى والأضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.",
-                linksTitle: "روابط سريعة",
-                home: "الرئيسية",
-                adminTitle: "لوحة تحكم المسؤول",
-                contactTitle: "اتصل بنا",
-                contactNum: "الرقم الماليزي المباشر:",
-                contactLoc: "كوالالمبور، ماليزيا",
-                managementTitle: "الإدارة والاستفسارات",
-                managerName: "إدارة شريف منصور",
-                managementNote: "لأي استفسار في ماليزيا يرجى ترك رسالة.",
-                copyright: "&copy; 2026 Arab Malaysia. All Rights Reserved.",
-                visitors: "الزوار:",
-                loginTitle: "تسجيل الدخول للمسؤول",
-                lblUser: "اسم المستخدم",
-                lblPass: "كلمة المرور",
-                btnLogin: "دخول",
-                dashTitle: "لوحة التحكم",
-                tabSec: "الأقسام والمربعات",
-                tabCol: "الألوان والتنسيق",
-                addSec: "إضافة قسم جديد",
-                lblSecName: "اسم القسم",
-                lblFolderName: "اسم مجلد الصور التابع له",
-                btnSaveSec: "حفظ القسم",
-                addItem: "إضافة مربع (محل/مكتب) للقسم",
-                lblChooseSec: "اختر القسم",
-                lblItemName: "الاسم",
-                lblItemImgs: "رابط الصور (منفصلة بفاصلة ,)",
-                btnAddItem: "إضافة المربع",
-                titleColors: "تخصيص الهوية البصرية",
-                cBg: "لون خلفية الموقع",
-                cText: "لون النصوص",
-                cHover: "لون النصوص عند الحوم والتمرير",
-                cBtn: "لون الأزرار وعناصر التحكم",
-                cFooter: "لون البانر والفوتر",
-                btnApplyCol: "تطبيق الألوان",
-                btnResetCol: "إعادة التعيين الافتراضي"
-            },
-            en: {
-                title: "Arab Malaysia",
-                aboutTitle: "About Arab Malaysia",
-                aboutDesc: "The premier and largest platform serving and guiding the Arab community and visitors in Malaysia. We bring you the best choices with total ease.",
-                linksTitle: "Quick Links",
-                home: "Home",
-                adminTitle: "Admin Dashboard",
-                contactTitle: "Contact Us",
-                contactNum: "Direct Malaysian Number:",
-                contactLoc: "Kuala Lumpur, Malaysia",
-                managementTitle: "Management & Inquiries",
-                managerName: "Managed by Sherif Mansour",
-                managementNote: "For any inquiries in Malaysia, please leave a message.",
-                copyright: "&copy; 2026 Arab Malaysia. All Rights Reserved.",
-                visitors: "Visitors:",
-                loginTitle: "Admin Login",
-                lblUser: "Username",
-                lblPass: "Password",
-                btnLogin: "Login",
-                dashTitle: "Dashboard",
-                tabSec: "Sections & Blocks",
-                tabCol: "Colors & Styling",
-                addSec: "Add New Section",
-                lblSecName: "Section Name",
-                lblFolderName: "Associated Image Folder Name",
-                btnSaveSec: "Save Section",
-                addItem: "Add Block (Shop/Office) to Section",
-                lblChooseSec: "Select Section",
-                lblItemName: "Name",
-                lblItemImgs: "Image URLs (comma separated)",
-                btnAddItem: "Add Block",
-                titleColors: "Customize Visual Identity",
-                cBg: "Site Background Color",
-                cText: "Text Color",
-                cHover: "Text Hover Color",
-                cBtn: "Buttons & Control Color",
-                cFooter: "Banner & Footer Color",
-                btnApplyCol: "Apply Colors",
-                btnResetCol: "Reset to Default"
-            }
-        };
+        // Core Local Storage Data Object Schemas Setup
+        const defaultPromoSlides = [
+            { img: "https://images.unsplash.com/photo-1596422846543-75c6fc1f70ea?auto=format&fit=crop&w=1200&q=80", titleAr: "أجمل مطاعم كوالالمبور العربية", titleEn: "The Best Arabic Restaurants in Kuala Lumpur" },
+            { img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80", titleAr: "خدمات تأجير السيارات الفاخرة بأسعار منافسة", titleEn: "Luxury Car Rental Services at Competitive Prices" },
+            { img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", titleAr: "عروض الرحلات السياحية الشاملة في ماليزيا", titleEn: "Comprehensive Tour Package Offers in Malaysia" }
+        ];
 
-        let currentLang = 'ar';
-
-        // Default initial data structure
-        const defaultData = [
+        const defaultSectionsData = [
             {
-                id: "restaurants",
+                id: "sec_restaurants",
                 titleAr: "قسم المطاعم",
                 titleEn: "Restaurants Section",
                 folder: "restaurantphoto",
-                items: [
-                    { nameAr: "مطعم المائدة اليمانية", nameEn: "Al Maeda Yemeni Restaurant", images: ["https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500"] },
-                    { nameAr: "مطعم طربوش الشام", nameEn: "Tarboosh Al Sham Restaurant", images: ["https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500", "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500"] },
-                    { nameAr: "مطعم ومقهى الباشا", nameEn: "Al Pasha Restaurant & Cafe", images: ["https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500", "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=500"] }
+                cards: [
+                    { id: "c1", nameAr: "مطعم الطربوش الدمشقي", nameEn: "Tarboosh Damascus Restaurant", images: ["https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c2", nameAr: "مطعم ومطبخ حضرموت", nameEn: "Hadramout Restaurant & Kitchen", images: ["https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c3", nameAr: "مطعم مندي النور", nameEn: "Al Noor Mandi Restaurant", images: ["https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 }
                 ]
             },
             {
-                id: "cars",
+                id: "sec_cars",
                 titleAr: "قسم السيارات",
                 titleEn: "Car Rental Section",
                 folder: "carphoto",
-                items: [
-                    { nameAr: "مكتب صقر ماليزيا لتأجير السيارات", nameEn: "Falcon Malaysia Car Rental", images: ["https://images.unsplash.com/photo-1617788138017-80ad40651399?w=500", "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500"] },
-                    { nameAr: "شركة الفارس لخدمات النقل", nameEn: "Al Fares Transport Services", images: ["https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500", "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=500"] },
-                    { nameAr: "مكتب الراحة لرحلات كوالالمبور", nameEn: "Al Raha Tours & Car Rental", images: ["https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=500", "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500"] }
+                cards: [
+                    { id: "c4", nameAr: "مكتب شاهين لتأجير السيارات", nameEn: "Shaheen Car Rental Office", images: ["https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c5", nameAr: "الشركة العربية لخدمات النقل", nameEn: "Arabian Transport Services Co.", images: ["https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c6", nameAr: "مكتب الجزيرة للسيارات الفاخرة", nameEn: "Al Jazeera Luxury Car Rental", images: ["https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 }
                 ]
             }
         ];
 
-        let siteData = JSON.parse(localStorage.getItem('siteData')) || defaultData;
-        let siteColors = JSON.parse(localStorage.getItem('siteColors')) || null;
+        const defaultTheme = {
+            bg: "#f4f7f6",
+            text: "#333333",
+            btn: "#2196f3",
+            hover: "#00bcd4",
+            headerFooter: "#1a237e"
+        };
 
-        // Initialize App
+        // Initialize state fields
+        let currentLang = localStorage.getItem('siteLang') || 'ar';
+        let webSections = JSON.parse(localStorage.getItem('webSectionsData')) || defaultSectionsData;
+        let siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
+        let activePromoIdx = 0;
+        let isUserAdminLoggedIn = false;
+
+        // UI Text Copy Dictionary Objects
+        const uiLexicon = {
+            ar: {
+                siteTitle: "عرب ماليزيا",
+                footerLogoText: "دليلك الكامل في ماليزيا",
+                langCountLabel: "عدد الزوار:",
+                footerCopyright: "عرب ماليزيا - جميع الحقوق محفوظة",
+                lblLoginTitle: "تسجيل دخول المشرف",
+                lblUser: "اسم المستخدم",
+                lblPass: "كلمة المرور",
+                btnLogin: "دخول",
+                lblDashTitle: "لوحة الإدارة الاحترافية",
+                tabColorsBtn: "الألوان والتنسيق",
+                tabSectionsBtn: "الأقسام والبطاقات",
+                lblThemeHeading: "تخصيص ألوان الهوية البصرية للموقع",
+                clrBgLbl: "خلفية الموقع",
+                clrTextLbl: "لون النصوص",
+                clrBtnLbl: "لون الأزرار",
+                clrHoverLbl: "نصوص الحوم/اللمس",
+                clrHeaderFooterLbl: "لون البانر العلوي والفوتر",
+                btnResetTheme: "إعادة الألوان الافتراضية",
+                lblAddSecTitle: "إضافة قسم جديد للموقع",
+                lblAddCardTitle: "إضافة عنصر جديد لـ قسم",
+                lblUrlsHelp: "روابط ألبوم الصور (افصل بين الروابط بفاصلة ,)",
+                btnAddSec: "إنشاء وحفظ القسم الجديد",
+                btnAddCard: "إضافة العنصر للمعرض",
+                lblCurrentData: "إدارة وحذف الأقسام الحالية",
+                cardBtnText: "عرض التفاصيل والتواصل",
+                scrollTopTitle: "الصعود للأعلى"
+            },
+            en: {
+                siteTitle: "Arab Malaysia",
+                footerLogoText: "Your Complete Guide in Malaysia",
+                langCountLabel: "Visitor Counter:",
+                footerCopyright: "Arab Malaysia - All Rights Reserved &copy; 2026",
+                lblLoginTitle: "Admin Security Login",
+                lblUser: "Username",
+                lblPass: "Password",
+                btnLogin: "Login",
+                lblDashTitle: "Professional Administration Dashboard",
+                tabColorsBtn: "Colors & Styling",
+                tabSectionsBtn: "Sections & Cards",
+                lblThemeHeading: "Personalize Core Visual Branding Colors",
+                clrBgLbl: "Website Background",
+                clrTextLbl: "General Text Color",
+                clrBtnLbl: "Buttons & Action Items",
+                clrHoverLbl: "Text Hover & Touch Links",
+                clrHeaderFooterLbl: "Top Navigation Banner & Footer Color",
+                btnResetTheme: "Reset Theme Settings to Defaults",
+                lblAddSecTitle: "Create a Brand New Structural Section",
+                lblAddCardTitle: "Append Card Object Item Entry",
+                lblUrlsHelp: "Gallery Image URLs Array (Separate each link with a comma ,)",
+                btnAddSec: "Initialize & Build Section Template",
+                btnAddCard: "Commit Card Entry Data Object",
+                lblCurrentData: "Active System Datastores Removals Console",
+                cardBtnText: "View Details & Connect",
+                scrollTopTitle: "Scroll To Top"
+            }
+        };
+
+        // Startup Bootloader Logic
         window.addEventListener('DOMContentLoaded', () => {
-            renderDynamicContent();
-            setupVisitorCount();
-            setupSlider();
-            setupScrollTop();
-            if (siteColors) applyStoredColors(siteColors);
+            applyLanguageSettings(currentLang);
+            applyThemeStyles(siteTheme);
+            renderPromoBanners();
+            renderDynamicSections();
+            initScrollTracking();
+            handleMockVisitorMetrics();
         });
 
-        // Visitor simulation
-        function setupVisitorCount() {
-            let count = parseInt(localStorage.getItem('vCount')) || 1488;
-            count += Math.floor(Math.random() * 3) + 1; // simulation increment
-            localStorage.setItem('vCount', count);
-            document.getElementById('visitor-num').innerText = count.toLocaleString();
-        }
+        // Language Translation Handler Engine UI Modifier
+        function applyLanguageSettings(lang) {
+            currentLang = lang;
+            localStorage.setItem('siteLang', lang);
 
-        // Top Banner auto slider
-        function setupSlider() {
-            let currentSlide = 0;
-            const slides = document.querySelectorAll('.ad-slide');
-            setInterval(() => {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
-            }, 4000);
-        }
+            const docHtml = document.documentElement;
+            docHtml.lang = lang;
+            docHtml.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-        // Scroll to top display logic
-        function setupScrollTop() {
-            const btn = document.getElementById('scroll-top');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    btn.classList.add('show');
+            // Loop and modify text elements
+            const entries = uiLexicon[lang];
+            for (let id in entries) {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = entries[id];
+            }
+
+            // Update individual layout directional arrow templates inside slider element properties
+            const prevArrow = document.querySelector('.arrow-prev i');
+            const nextArrow = document.querySelector('.arrow-next i');
+            if (prevArrow && nextArrow) {
+                if (lang === 'ar') {
+                    prevArrow.className = 'fa-solid fa-chevron-right';
+                    nextArrow.className = 'fa-solid fa-chevron-left';
                 } else {
-                    btn.classList.remove('show');
+                    prevArrow.className = 'fa-solid fa-chevron-left';
+                    nextArrow.className = 'fa-solid fa-chevron-right';
+                }
+            }
+
+            renderPromoBanners();
+            renderDynamicSections();
+        }
+
+        // Language Toggle Event Hook Listener
+        document.getElementById('langToggleBtn').addEventListener('click', () => {
+            applyLanguageSettings(currentLang === 'ar' ? 'en' : 'ar');
+        });
+
+        // Theme Visual Brand Stylings Injector System
+        function applyThemeStyles(theme) {
+            const root = document.documentElement.style;
+            root.setProperty('--bg-color', theme.bg);
+            root.setProperty('--text-color', theme.text);
+            root.setProperty('--btn-color', theme.btn);
+            root.setProperty('--text-hover-color', theme.hover);
+            root.setProperty('--banner-footer-color', theme.headerFooter);
+
+            // Seed Control Values inside Admin Form fields natively
+            document.getElementById('cfgBgColor').value = theme.bg;
+            document.getElementById('cfgTextColor').value = theme.text;
+            document.getElementById('cfgBtnColor').value = theme.btn;
+            document.getElementById('cfgHoverColor').value = theme.hover;
+            document.getElementById('cfgHeaderFooterColor').value = theme.headerFooter;
+        }
+
+        // Realtime Local Color Picker Live Update Callback Hooks
+        function updateThemeLive() {
+            const liveTheme = {
+                bg: document.getElementById('cfgBgColor').value,
+                text: document.getElementById('cfgTextColor').value,
+                btn: document.getElementById('cfgBtnColor').value,
+                hover: document.getElementById('cfgHoverColor').value,
+                headerFooter: document.getElementById('cfgHeaderFooterColor').value
+            };
+            siteTheme = liveTheme;
+            localStorage.setItem('siteThemeColors', JSON.stringify(liveTheme));
+            applyThemeStyles(liveTheme);
+        }
+
+        function resetThemeDefault() {
+            siteTheme = { ...defaultTheme };
+            localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
+            applyThemeStyles(siteTheme);
+        }
+
+        // Promo Banner Advertisement Slider Processor Layout Rendering Function
+        function renderPromoBanners() {
+            const container = document.getElementById('slideContainer');
+            container.innerHTML = '';
+            defaultPromoSlides.forEach(slide => {
+                const title = currentLang === 'ar' ? slide.titleAr : slide.titleEn;
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide';
+                slideDiv.innerHTML = `
+                    <img src="${slide.img}" alt="Promo Banner Image">
+                    <div class="slide-caption">${title}</div>
+                `;
+                container.appendChild(slideDiv);
+            });
+            updateSliderPosition();
+        }
+
+        function moveSlide(dir) {
+            activePromoIdx += dir;
+            if (activePromoIdx >= defaultPromoSlides.length) activePromoIdx = 0;
+            if (activePromoIdx < 0) activePromoIdx = defaultPromoSlides.length - 1;
+            updateSliderPosition();
+        }
+
+        function updateSliderPosition() {
+            const container = document.getElementById('slideContainer');
+            const shiftFactor = currentLang === 'ar' ? activePromoIdx * 100 : -activePromoIdx * 100;
+            container.style.transform = `translateX(${shiftFactor}%)`;
+            container.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }
+
+        // Deep Content Renderer Module for Building UI Sections & Dynamic Object Cards Grid completely customisable
+        function renderDynamicSections() {
+            const mainWrapper = document.getElementById('sectionsWrapper');
+            mainWrapper.innerHTML = '';
+
+            webSections.forEach((section, sIdx) => {
+                const secTitle = currentLang === 'ar' ? section.titleAr : section.titleEn;
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'section-container';
+
+                const h2 = document.createElement('h2');
+                h2.className = 'section-title';
+                h2.textContent = secTitle;
+                sectionEl.appendChild(h2);
+
+                const grid = document.createElement('div');
+                grid.className = 'cards-grid';
+
+                section.cards.forEach((card, cIdx) => {
+                    const cardName = currentLang === 'ar' ? card.nameAr : card.nameEn;
+                    const activeImgUrl = card.images[card.currentImgIdx] || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80';
+                    
+                    const cardEl = document.createElement('div');
+                    cardEl.className = 'card';
+                    cardEl.innerHTML = `
+                        <div class="card-gallery">
+                            <img src="${activeImgUrl}" alt="${cardName}">
+                            <button class="slider-arrow arrow-prev" style="width:35px; height:35px; font-size:14px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', -1, event)"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="slider-arrow arrow-next" style="width:35px; height:35px; font-size:14px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', 1, event)"><i class="fa-solid fa-chevron-left"></i></button>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-name">${cardName}</div>
+                            <button class="card-btn">${uiLexicon[currentLang].cardBtnText}</button>
+                        </div>
+                    `;
+
+                    // Bind 3D Spatial Tilt Interactions Physics Formulas Live Mapping 
+                    cardEl.addEventListener('mousemove', (e) => handle3DTiltMotionEffect(e, cardEl));
+                    cardEl.addEventListener('mouseleave', () => reset3DCardPerspectiveStyles(cardEl));
+
+                    grid.appendChild(cardEl);
+                });
+
+                sectionEl.appendChild(grid);
+                mainWrapper.appendChild(sectionEl);
+            });
+
+            populateAdminSectionConsoleDropdowns();
+        }
+
+        // Live Nested Array Mutation Engine to Swap Local Card Carousel Images Indexes Array Objects Online
+        function cycleCardGalleryImage(secId, cardId, movementDirection, mouseClickEvt) {
+            mouseClickEvt.stopPropagation();
+            const targetSection = webSections.find(s => s.id === secId);
+            if (targetSection) {
+                const targetCard = targetSection.cards.find(c => c.id === cardId);
+                if (targetCard && targetCard.images.length > 0) {
+                    targetCard.currentImgIdx += movementDirection;
+                    if (targetCard.currentImgIdx >= targetCard.images.length) targetCard.currentImgIdx = 0;
+                    if (targetCard.currentImgIdx < 0) targetCard.currentImgIdx = targetCard.images.length - 1;
+                    
+                    localStorage.setItem('webSectionsData', JSON.stringify(webSections));
+                    renderDynamicSections();
+                }
+            }
+        }
+
+        // Math Formulation Equations to Produce Authentic Interactive Responsive 3D Spatial Grid Tilting Mechanics
+        function handle3DTiltMotionEffect(mouseEvt, targetCardElement) {
+            const boundingDimensions = targetCardElement.getBoundingClientRect();
+            const relativeCursorX = mouseEvt.clientX - boundingDimensions.left;
+            const relativeCursorY = mouseEvt.clientY - boundingDimensions.top;
+            
+            const middlePointX = boundingDimensions.width / 2;
+            const middlePointY = boundingDimensions.height / 2;
+            
+            // Map calculated rotational angle degree multipliers cleanly
+            const computedRotateX = ((middlePointY - relativeCursorY) / middlePointY) * 6; 
+            const computedRotateY = ((relativeCursorX - middlePointX) / middlePointX) * 6;
+
+            targetCardElement.style.transform = `perspective(1000px) translateY(-10px) rotateX(${computedRotateX}deg) rotateY(${computedRotateY}deg)`;
+        }
+
+        function reset3DCardPerspectiveStyles(targetCardElement) {
+            targetCardElement.style.transform = `perspective(1000px) translateY(0) rotateX(0deg) rotateY(0deg)`;
+        }
+
+        // Sticky Navigation Tracking and Back To Top Action Interface Smooth Systems
+        function initScrollTracking() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
                 }
             });
-            btn.addEventListener('click', () => {
+
+            scrollTopBtn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
 
-        // Rendering main content grid
-        function renderDynamicContent() {
-            const container = document.getElementById('sections-container');
-            container.innerHTML = '';
-
-            const selectEl = document.getElementById('target-section-select');
-            selectEl.innerHTML = '';
-
-            siteData.forEach((sec, secIndex) => {
-                // Populate Admin Select Dropdown
-                let opt = document.createElement('option');
-                opt.value = sec.id;
-                opt.innerText = currentLang === 'ar' ? sec.titleAr : sec.titleEn;
-                selectEl.appendChild(opt);
-
-                // Create Page Elements
-                let sectionBlock = document.createElement('section');
-                sectionBlock.className = 'site-section';
-
-                let title = document.createElement('h2');
-                title.className = 'section-title';
-                title.innerText = currentLang === 'ar' ? sec.titleAr : sec.titleEn;
-                sectionBlock.appendChild(title);
-
-                let grid = document.createElement('div');
-                grid.className = 'grid-container';
-
-                sec.items.forEach((item, itemIndex) => {
-                    let card = document.createElement('div');
-                    card.className = 'card';
-
-                    // 3D Tilt interactive effect
-                    card.addEventListener('mousemove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left - (rect.width/2);
-                        const y = e.clientY - rect.top - (rect.height/2);
-                        card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) scale3d(1.02, 1.02, 1.02)`;
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                    });
-
-                    let cardContent = document.createElement('div');
-                    cardContent.className = 'card-content';
-
-                    let cardTitle = document.createElement('h3');
-                    cardTitle.className = 'card-title';
-                    cardTitle.innerText = currentLang === 'ar' ? item.nameAr : item.nameEn;
-
-                    // Gallery implementation
-                    let gallContainer = document.createElement('div');
-                    gallContainer.className = 'gallery-container';
-
-                    let activeImgIndex = 0;
-                    const imgEls = [];
-
-                    item.images.forEach((imgUrl, imgIdx) => {
-                        let img = document.createElement('img');
-                        img.src = imgUrl;
-                        img.className = `gallery-img ${imgIdx === 0 ? 'active' : ''}`;
-                        img.alt = "Image";
-                        gallContainer.appendChild(img);
-                        imgEls.push(img);
-                    });
-
-                    if (item.images.length > 1) {
-                        let prevBtn = document.createElement('button');
-                        prevBtn.className = 'gallery-btn gallery-prev';
-                        prevBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
-                        prevBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            imgEls[activeImgIndex].classList.remove('active');
-                            activeImgIndex = (activeImgIndex + 1) % imgEls.length;
-                            imgEls[activeImgIndex].classList.add('active');
-                        };
-
-                        let nextBtn = document.createElement('button');
-                        nextBtn.className = 'gallery-btn gallery-next';
-                        nextBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
-                        nextBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            imgEls[activeImgIndex].classList.remove('active');
-                            activeImgIndex = (activeImgIndex - 1 + imgEls.length) % imgEls.length;
-                            imgEls[activeImgIndex].classList.add('active');
-                        };
-
-                        gallContainer.appendChild(prevBtn);
-                        gallContainer.appendChild(nextBtn);
-                    }
-
-                    cardContent.appendChild(cardTitle);
-                    cardContent.appendChild(gallContainer);
-                    card.appendChild(cardContent);
-                    grid.appendChild(card);
-                });
-
-                sectionBlock.appendChild(grid);
-                container.appendChild(sectionBlock);
-            });
+        // Incremental Multipliers for Mock Visitor Matrix Analytics Logs 
+        function handleMockVisitorMetrics() {
+            let activeVisitsCount = parseInt(localStorage.getItem('visitorTotalCountData')) || 124530;
+            activeVisitsCount += Math.floor(Math.random() * 4) + 1;
+            localStorage.setItem('visitorTotalCountData', activeVisitsCount);
+            document.getElementById('visitorCount').textContent = activeVisitsCount.toLocaleString();
         }
 
-        // Language toggle setup
-        document.getElementById('lang-toggle').addEventListener('click', () => {
-            currentLang = currentLang === 'ar' ? 'en' : 'ar';
-            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-            document.documentElement.lang = currentLang;
-            
-            // Translate static nodes
-            const trans = langData[currentLang];
-            document.getElementById('site-title').innerText = trans.title;
-            document.getElementById('footer-about-title').innerText = trans.aboutTitle;
-            document.getElementById('footer-about-desc').innerText = trans.aboutDesc;
-            document.getElementById('footer-links-title').innerText = trans.linksTitle;
-            document.getElementById('link-home').innerText = trans.home;
-            document.getElementById('link-admin').innerText = trans.adminTitle;
-            document.getElementById('footer-contact-title').innerText = trans.contactTitle;
-            document.getElementById('footer-contact-num').innerText = trans.contactNum;
-            document.getElementById('footer-contact-loc').innerText = trans.contactLoc;
-            document.getElementById('footer-management-title').innerText = trans.managementTitle;
-            document.getElementById('footer-manager-name').innerText = trans.managerName;
-            document.getElementById('footer-management-note').innerText = trans.managementNote;
-            document.getElementById('footer-copyright').innerHTML = trans.copyright;
-            document.getElementById('visitor-text').innerText = trans.visitors;
-
-            // Admin panel translations
-            document.getElementById('login-title').innerText = trans.loginTitle;
-            document.getElementById('lbl-username').innerText = trans.lblUser;
-            document.getElementById('lbl-password').innerText = trans.lblPass;
-            document.getElementById('btn-login').innerText = trans.btnLogin;
-            document.getElementById('dash-title').innerText = trans.dashTitle;
-            document.getElementById('tab-sec').innerText = trans.tabSec;
-            document.getElementById('tab-col').innerText = trans.tabCol;
-            document.getElementById('title-add-sec').innerText = trans.addSec;
-            document.getElementById('lbl-sec-name').innerText = trans.lblSecName;
-            document.getElementById('lbl-folder-name').innerText = trans.lblFolderName;
-            document.getElementById('btn-add-sec').innerText = trans.btnSaveSec;
-            document.getElementById('title-add-item').innerText = trans.addItem;
-            document.getElementById('lbl-choose-sec').innerText = trans.lblChooseSec;
-            document.getElementById('lbl-item-name').innerText = trans.lblItemName;
-            document.getElementById('lbl-item-imgs').innerText = trans.lblItemImgs;
-            document.getElementById('btn-add-item').innerText = trans.btnAddItem;
-            document.getElementById('title-colors').innerText = trans.titleColors;
-            document.getElementById('c-bg').innerText = trans.cBg;
-            document.getElementById('c-text').innerText = trans.cText;
-            document.getElementById('c-hover').innerText = trans.cHover;
-            document.getElementById('c-btn').innerText = trans.cBtn;
-            document.getElementById('c-footer').innerText = trans.cFooter;
-            document.getElementById('btn-apply-col').innerText = trans.btnApplyCol;
-            document.getElementById('btn-reset-col').innerText = trans.btnResetCol;
-
-            renderDynamicContent();
+        // Admin Security View toggles, Validation logic blocks, Actions and Routines Console
+        document.getElementById('adminToggleBtn').addEventListener('click', () => {
+            const dialog = document.getElementById('adminDialog');
+            dialog.classList.add('active');
+            if (isUserAdminLoggedIn) {
+                document.getElementById('authBox').style.display = 'none';
+                document.getElementById('dashboardBox').style.display = 'flex';
+                buildAdminManagementListViewConsole();
+            } else {
+                document.getElementById('authBox').style.display = 'flex';
+                document.getElementById('dashboardBox').style.display = 'none';
+            }
         });
 
-        // Admin Management Modals
-        document.getElementById('admin-toggle').addEventListener('click', openAdminModal);
-
-        function openAdminModal() {
-            document.getElementById('admin-modal').classList.add('active');
-        }
-
-        function closeAdminModal() {
-            document.getElementById('admin-modal').classList.remove('active');
+        function closeAdmin() {
+            document.getElementById('adminDialog').classList.remove('active');
         }
 
         function handleLogin() {
-            const user = document.getElementById('admin-user').value;
-            const pass = document.getElementById('admin-pass').value;
+            const userIn = document.getElementById('adminUser').value;
+            const passIn = document.getElementById('adminPass').value;
 
-            if (user === 'admin' && pass === 'admin123') {
-                document.getElementById('admin-login-box').style.display = 'none';
-                document.getElementById('admin-dashboard-box').style.display = 'block';
+            if (userIn === 'admin' && passIn === 'admin123') {
+                isUserAdminLoggedIn = true;
+                document.getElementById('authBox').style.display = 'none';
+                document.getElementById('dashboardBox').style.display = 'flex';
+                buildAdminManagementListViewConsole();
             } else {
-                alert(currentLang === 'ar' ? 'خطأ في اسم المستخدم أو كلمة المرور' : 'Invalid credentials');
+                alert(currentLang === 'ar' ? 'خطأ في اسم المستخدم أو كلمة المرور!' : 'Invalid administration credentials details!');
             }
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        function switchTab(targetTabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
 
-        // Dashboard logic: Create structures
-        function addNewSection() {
-            const name = document.getElementById('new-section-name').value.trim();
-            const folder = document.getElementById('new-section-folder').value.trim();
-
-            if (!name || !folder) return alert('Please enter all details');
-
-            const id = 'sec_' + Date.now();
-            siteData.push({
-                id: id,
-                titleAr: "قسم " + name,
-                titleEn: name + " Section",
-                folder: folder,
-                items: []
-            });
-
-            localStorage.setItem('siteData', JSON.stringify(siteData));
-            renderDynamicContent();
-            
-            document.getElementById('new-section-name').value = '';
-            document.getElementById('new-section-folder').value = '';
-            alert(currentLang === 'ar' ? 'تمت إضافة القسم بنجاح' : 'Section added successfully');
-        }
-
-        function addNewItem() {
-            const targetId = document.getElementById('target-section-select').value;
-            const name = document.getElementById('new-item-name').value.trim();
-            const imgsInput = document.getElementById('new-item-images').value.trim();
-
-            if (!name || !imgsInput) return alert('Please fill in fields');
-
-            const imagesArr = imgsInput.split(',').map(url => url.trim()).filter(url => url.length > 0);
-
-            const section = siteData.find(s => s.id === targetId);
-            if (section) {
-                section.items.push({
-                    nameAr: name,
-                    nameEn: name,
-                    images: imagesArr
-                });
-                localStorage.setItem('siteData', JSON.stringify(siteData));
-                renderDynamicContent();
-
-                document.getElementById('new-item-name').value = '';
-                document.getElementById('new-item-images').value = '';
-                alert(currentLang === 'ar' ? 'تم إضافة المربع بنجاح' : 'Block added successfully');
+            if (targetTabId === 'colors') {
+                document.getElementById('tabColorsBtn').classList.add('active');
+                document.getElementById('tabColors').classList.add('active');
+            } else {
+                document.getElementById('tabSectionsBtn').classList.add('active');
+                document.getElementById('tabSections').classList.add('active');
             }
         }
 
-        // Color Management Logic
-        function applyColors() {
-            const bg = document.getElementById('color-bg').value;
-            const text = document.getElementById('color-text').value;
-            const hover = document.getElementById('color-hover').value;
-            const btn = document.getElementById('color-btn').value;
-            const footer = document.getElementById('color-footer').value;
+        // Programmatic Logic Additions for New Structural Section Template Models
+        function addNewSectionItem() {
+            const titleAr = document.getElementById('newSecNameAr').value.trim();
+            const titleEn = document.getElementById('newSecNameEn').value.trim();
+            const folder = document.getElementById('newSecFolder').value.trim();
 
-            const colors = { bg, text, hover, btn, footer };
-            localStorage.setItem('siteColors', JSON.stringify(colors));
-            applyStoredColors(colors);
-            alert(currentLang === 'ar' ? 'تم تطبيق الألوان بنجاح' : 'Colors applied successfully');
-        }
+            if (!titleAr || !titleEn || !folder) {
+                alert(currentLang === 'ar' ? 'الرجاء ملء جميع خانات انشاء القسم الجديد!' : 'Please populate all custom structural fields!');
+                return;
+            }
 
-        function applyStoredColors(c) {
-            document.documentElement.style.setProperty('--bg-color', c.bg);
-            document.documentElement.style.setProperty('--text-color', c.text);
-            document.documentElement.style.setProperty('--hover-text-color', c.hover);
-            document.documentElement.style.setProperty('--btn-color', c.btn);
-            document.documentElement.style.setProperty('--banner-footer-color', c.footer);
+            const randomizedSecId = 'sec_' + Date.now();
+            const newlyFormedSectionObject = {
+                id: randomizedSecId,
+                titleAr: titleAr,
+                titleEn: titleEn,
+                folder: folder,
+                cards: []
+            };
 
-            // Set picker inputs
-            document.getElementById('color-bg').value = c.bg;
-            document.getElementById('color-text').value = c.text;
-            document.getElementById('color-hover').value = c.hover;
-            document.getElementById('color-btn').value = c.btn;
-            document.getElementById('color-footer').value = c.footer;
-        }
-
-        function resetColors() {
-            localStorage.removeItem('siteColors');
-            document.documentElement.style.removeProperty('--bg-color');
-            document.documentElement.style.removeProperty('--text-color');
-            document.documentElement.style.removeProperty('--hover-text-color');
-            document.documentElement.style.removeProperty('--btn-color');
-            document.documentElement.style.removeProperty('--banner-footer-color');
+            webSections.push(newlyFormedSectionObject);
+            commitAndSyncSystemDatastores();
             
-            document.getElementById('color-bg').value = '#f8f9fa';
-            document.getElementById('color-text').value = '#333333';
-            document.getElementById('color-hover').value = '#007bff';
-            document.getElementById('color-btn').value = '#008080';
-            document.getElementById('color-footer').value = '#222222';
-            alert(currentLang === 'ar' ? 'تمت إعادة الألوان الافتراضية' : 'Reset to default colors complete');
+            // Clear input forms cleanly
+            document.getElementById('newSecNameAr').value = '';
+            document.getElementById('newSecNameEn').value = '';
+            document.getElementById('newSecFolder').value = '';
+            alert(currentLang === 'ar' ? 'تم إنشاء القسم ومجلد الصور ' + folder + ' بنجاح!' : 'Successfully established section template and asset schema catalog folders!');
+        }
+
+        // Dropdown Builders for Selecting Admin Targets cleanly
+        function populateAdminSectionConsoleDropdowns() {
+            const dropdown = document.getElementById('targetSectionSelect');
+            if(!dropdown) return;
+            dropdown.innerHTML = '';
+            webSections.forEach(s => {
+                const option = document.createElement('option');
+                option.value = s.id;
+                option.textContent = currentLang === 'ar' ? s.titleAr : s.titleEn;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Programmatic Injections for Individual Object Cards Inside Specific Selected Section Buckets
+        function addNewCardItem() {
+            const targetSecId = document.getElementById('targetSectionSelect').value;
+            const nameAr = document.getElementById('newCardNameAr').value.trim();
+            const nameEn = document.getElementById('newCardNameEn').value.trim();
+            const rawImages = document.getElementById('newCardImages').value.trim();
+
+            if (!nameAr || !nameEn) {
+                alert(currentLang === 'ar' ? 'الرجاء إدخال الأسماء المطلوبة للعنصر!' : 'Please define name parameters correctly!');
+                return;
+            }
+
+            // Convert raw visual string paths to formatted structural string lists
+            let imageLinksArray = rawImages ? rawImages.split(',').map(url => url.trim()).filter(url => url.length > 0) : [];
+            if(imageLinksArray.length === 0) {
+                imageLinksArray.push("https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80");
+            }
+
+            const targetSection = webSections.find(s => s.id === targetSecId);
+            if (targetSection) {
+                targetSection.cards.push({
+                    id: 'card_' + Date.now(),
+                    nameAr: nameAr,
+                    nameEn: nameEn,
+                    images: imageLinksArray,
+                    currentImgIdx: 0
+                });
+                commitAndSyncSystemDatastores();
+                
+                document.getElementById('newCardNameAr').value = '';
+                document.getElementById('newCardNameEn').value = '';
+                document.getElementById('newCardImages').value = '';
+                alert(currentLang === 'ar' ? 'تم إضافة العنصر الجديد لمعرض الألبوم بنجاح!' : 'Card element created and successfully appended!');
+            }
+        }
+
+        // Structural UI Component Builders for Managing Current Sections Collections Data Array Nodes
+        function buildAdminManagementListViewConsole() {
+            const container = document.getElementById('adminSectionsManagementList');
+            container.innerHTML = '';
+
+            webSections.forEach(s => {
+                const labelName = currentLang === 'ar' ? s.titleAr : s.titleEn;
+                const divRow = document.createElement('div');
+                divRow.className = 'manage-list-item';
+                divRow.innerHTML = `
+                    <span><strong>${labelName}</strong> (${s.cards.length} عناصر / Items) [مجلد: ${s.folder}]</span>
+                    <button class="delete-icon-btn" onclick="deleteTargetSectionDataNode('${s.id}')" title="حذف القسم بالكامل"><i class="fa-solid fa-trash-can"></i></button>
+                `;
+                container.appendChild(divRow);
+            });
+        }
+
+        function deleteTargetSectionDataNode(secId) {
+            if (confirm(currentLang === 'ar' ? 'هل أنت متأكد تماماً من رغبتك في مسح هذا القسم بكافة ألبومات الصور بداخله؟' : 'Are you permanently sure you want to completely erase this entire systemic section data array?')) {
+                webSections = webSections.filter(s => s.id !== secId);
+                commitAndSyncSystemDatastores();
+            }
+        }
+
+        function commitAndSyncSystemDatastores() {
+            localStorage.setItem('webSectionsData', JSON.stringify(webSections));
+            renderDynamicSections();
+            buildAdminManagementListViewConsole();
         }
     </script>
 </body>
