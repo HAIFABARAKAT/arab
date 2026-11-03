@@ -610,6 +610,63 @@
             transform: scale(1.1);
         }
 
+        .manage-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .edit-icon-btn, .image-action-btn {
+            background: none;
+            border: none;
+            color: #2196f3;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+        .edit-icon-btn:hover, .image-action-btn:hover {
+            color: #1565c0;
+            transform: scale(1.1);
+        }
+        .image-manage-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid #edf2f7;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+        .image-manage-item img {
+            width: 58px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .image-manage-item span {
+            flex: 1;
+            min-width: 0;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+        .upload-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+        }
+        .manage-help {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+            margin: 6px 0 10px;
+        }
+
         html[dir="ltr"] body { text-align: left; }
         html[dir="rtl"] body { text-align: right; }
     </style>
@@ -700,12 +757,12 @@
             </div>
             <div class="admin-body">
                 <div class="form-group">
-                    <label id="lblUser">اسم المستخدم</label>
-                    <input type="text" id="adminUser" placeholder="admin">
+                    <label id="lblUser">البريد الإلكتروني للمدير</label>
+                    <input type="email" id="adminUser" placeholder="admin@example.com" autocomplete="username">
                 </div>
                 <div class="form-group">
                     <label id="lblPass">كلمة المرور</label>
-                    <input type="password" id="adminPass" placeholder="••••••••">
+                    <input type="password" id="adminPass" placeholder="••••••••" autocomplete="current-password">
                 </div>
                 <button class="admin-btn" id="btnLogin" onclick="handleLogin()">دخول</button>
             </div>
@@ -715,7 +772,7 @@
         <div class="admin-box" id="dashboardBox" style="display:none;">
             <div class="admin-header">
                 <span id="lblDashTitle">لوحة الإدارة الاحترافية</span>
-                <button class="admin-close" onclick="closeAdmin()">&times;</button>
+                <div style="display:flex;align-items:center;gap:8px;"><button class="admin-btn" style="width:auto;padding:7px 12px;margin:0;background:#757575;" onclick="handleLogout()">تسجيل الخروج</button><button class="admin-close" onclick="closeAdmin()">&times;</button></div>
             </div>
             <div class="tab-menu">
                 <button class="tab-btn active" id="tabColorsBtn" onclick="switchTab('colors')">الألوان والتنسيق</button>
@@ -784,6 +841,11 @@
                             <label id="lblUrlsHelp" style="font-size:12px; color:#666;">روابط ألبوم الصور (افصل بين الروابط بفاصلة ,)</label>
                             <input type="text" id="newCardImages" placeholder="https://url1.com, https://url2.com">
                         </div>
+                        <div class="form-group">
+                            <label for="newCardImageFiles">أو ارفع الصور من جهازك (يمكن اختيار أكثر من صورة)</label>
+                            <input class="upload-input" type="file" id="newCardImageFiles" accept="image/*" multiple>
+                            <p class="manage-help">سيتم ضغط الصور ثم رفعها إلى التخزين السحابي لتظهر لجميع الزوار.</p>
+                        </div>
                         <button class="admin-btn" id="btnAddCard" onclick="addNewCardItem()">إضافة العنصر للمعرض</button>
                     </div>
 
@@ -795,6 +857,7 @@
                             <select id="filterSectionSelect" onchange="buildCardsManagementListViewConsole()"></select>
                         </div>
                         <div id="adminCardsManagementList" style="margin-top:10px; max-height:220px; overflow-y:auto;"></div>
+                        <div id="adminImagesManagement" style="margin-top:15px;"></div>
                     </div>
 
                     <!-- Existing Block: Sections Erasure Datastores console panel list -->
@@ -808,8 +871,17 @@
         </div>
     </div>
 
+    <!-- Supabase client for shared cloud storage and administrator authentication -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- Script Controllers Core Logic Engine -->
     <script>
+        const SUPABASE_URL = "https://utvofvsqpmgvhjstryob.supabase.co";
+        const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1BhlCU1UpKVrQAjR8jo5Zg_7vot0ZRh";
+        const SUPABASE_BUCKET = "Image";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+        let cloudContentReady = false;
+        let cloudContentExists = false;
         const defaultPromoSlides = [
             { img: "https://images.unsplash.com/photo-1596422846543-75c6fc1f70ea?auto=format&fit=crop&w=1200&q=80", titleAr: "أجمل مطاعم كوالالمبور العربية", titleEn: "The Best Arabic Restaurants in Kuala Lumpur" },
             { img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80", titleAr: "خدمات تأجير السيارات الفاخرة بأسعار منافسة", titleEn: "Luxury Car Rental Services at Competitive Prices" },
@@ -862,7 +934,7 @@
                 langCountLabel: "عدد الزوار:",
                 footerCopyright: "عرب ماليزيا - جميع الحقوق محفوظة",
                 lblLoginTitle: "تسجيل دخول المشرف",
-                lblUser: "اسم المستخدم",
+                lblUser: "البريد الإلكتروني للمدير",
                 lblPass: "كلمة المرور",
                 btnLogin: "دخول",
                 lblDashTitle: "لوحة الإدارة الاحترافية",
@@ -900,7 +972,7 @@
                 langCountLabel: "Visitor Counter:",
                 footerCopyright: "Arab Malaysia - All Rights Reserved &copy; 2026",
                 lblLoginTitle: "Admin Security Login",
-                lblUser: "Username",
+                lblUser: "Administrator email",
                 lblPass: "Password",
                 btnLogin: "Login",
                 lblDashTitle: "Professional Administration Dashboard",
@@ -935,7 +1007,15 @@
             }
         };
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await loadCloudContent();
+                const { data: sessionData } = await supabaseClient.auth.getSession();
+                isUserAdminLoggedIn = !!sessionData.session;
+            } catch (error) {
+                console.error('Supabase initialization:', error);
+                alert('تعذر الاتصال بالخدمة السحابية. سيعرض الموقع البيانات المحلية مؤقتاً.');
+            }
             applyLanguageSettings(currentLang);
             applyThemeStyles(siteTheme);
             renderPromoBanners();
@@ -1005,12 +1085,14 @@
             siteTheme = liveTheme;
             localStorage.setItem('siteThemeColors', JSON.stringify(liveTheme));
             applyThemeStyles(liveTheme);
+            if (isUserAdminLoggedIn) commitAndSyncSystemDatastores();
         }
 
         function resetThemeDefault() {
             siteTheme = { ...defaultTheme };
             localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
             applyThemeStyles(siteTheme);
+            if (isUserAdminLoggedIn) commitAndSyncSystemDatastores();
         }
 
         function renderPromoBanners() {
@@ -1175,17 +1257,106 @@
             document.getElementById('adminDialog').classList.remove('active');
         }
 
-        function handleLogin() {
-            const userIn = document.getElementById('adminUser').value;
+        async function handleLogin() {
+            const userIn = document.getElementById('adminUser').value.trim();
             const passIn = document.getElementById('adminPass').value;
-            if (userIn === 'admin' && passIn === 'admin123') {
-                isUserAdminLoggedIn = true;
+            if (!userIn || !passIn) {
+                alert('أدخل البريد الإلكتروني وكلمة المرور.');
+                return;
+            }
+            const btn = document.getElementById('btnLogin');
+            btn.disabled = true;
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email: userIn, password: passIn });
+                if (error) throw error;
+                isUserAdminLoggedIn = !!data.user;
+                await loadCloudContent();
+                if (!cloudContentExists) {
+                    await migrateLegacyDataUrlImages();
+                    await commitAndSyncSystemDatastores();
+                }
                 document.getElementById('authBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'flex';
+                applyThemeStyles(siteTheme);
+                renderDynamicSections();
                 buildAdminManagementListViewConsole();
                 buildCardsManagementListViewConsole();
+                alert('تم تسجيل الدخول بنجاح.');
+            } catch (error) {
+                console.error(error);
+                alert('تعذر تسجيل الدخول: تحقق من البريد الإلكتروني وكلمة المرور ومن إعداد حساب المدير في Supabase.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function handleLogout() {
+            const { error } = await supabaseClient.auth.signOut();
+            if (error) { alert('تعذر تسجيل الخروج: ' + error.message); return; }
+            isUserAdminLoggedIn = false;
+            document.getElementById('dashboardBox').style.display = 'none';
+            document.getElementById('authBox').style.display = 'flex';
+            document.getElementById('adminPass').value = '';
+            closeAdmin();
+        }
+
+        async function loadCloudContent() {
+            const { data, error } = await supabaseClient.from('site_content').select('content').eq('id', 1).maybeSingle();
+            if (error) throw error;
+            cloudContentExists = !!data;
+            if (data && data.content) {
+                if (Array.isArray(data.content.sections)) webSections = data.content.sections;
+                if (data.content.theme) siteTheme = data.content.theme;
+                localStorage.setItem('webSectionsData', JSON.stringify(webSections));
+                localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
             } else {
-                alert(currentLang === 'ar' ? 'خطأ في اسم المستخدم أو كلمة المرور!' : 'Invalid admin credentials!');
+                webSections = JSON.parse(localStorage.getItem('webSectionsData')) || defaultSectionsData;
+                siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
+            }
+            cloudContentReady = true;
+        }
+
+        async function uploadBlobToCloud(blob, secId, cardId) {
+            if (!isUserAdminLoggedIn) throw new Error('يجب تسجيل دخول المدير أولاً.');
+            const objectPath = `${secId}/${cardId}/${Date.now()}-${Math.random().toString(36).slice(2, 9)}.jpg`;
+            const { error } = await supabaseClient.storage.from(SUPABASE_BUCKET).upload(objectPath, blob, {
+                contentType: 'image/jpeg', cacheControl: '3600', upsert: false
+            });
+            if (error) throw error;
+            const { data } = supabaseClient.storage.from(SUPABASE_BUCKET).getPublicUrl(objectPath);
+            return data.publicUrl;
+        }
+
+        async function uploadImageToCloud(file, secId, cardId) {
+            const dataUrl = await compressUploadedImage(file);
+            const blob = await (await fetch(dataUrl)).blob();
+            return uploadBlobToCloud(blob, secId, cardId);
+        }
+
+        async function migrateLegacyDataUrlImages() {
+            if (cloudContentExists) return;
+            for (const sec of webSections) {
+                for (const card of (sec.cards || [])) {
+                    for (let i = 0; i < (card.images || []).length; i++) {
+                        const oldValue = card.images[i];
+                        if (typeof oldValue === 'string' && oldValue.startsWith('data:image/')) {
+                            const blob = await (await fetch(oldValue)).blob();
+                            card.images[i] = await uploadBlobToCloud(blob, sec.id, card.id);
+                        }
+                    }
+                }
+            }
+        }
+
+        async function deleteCloudImageIfOwned(imageUrl) {
+            if (!imageUrl || !isUserAdminLoggedIn) return;
+            const marker = `/storage/v1/object/public/${SUPABASE_BUCKET}/`;
+            const pos = imageUrl.indexOf(marker);
+            if (pos < 0) return;
+            const objectPath = decodeURIComponent(imageUrl.slice(pos + marker.length));
+            if (objectPath) {
+                const { error } = await supabaseClient.storage.from(SUPABASE_BUCKET).remove([objectPath]);
+                if (error) console.warn('Could not remove old cloud image:', error.message);
             }
         }
 
@@ -1254,7 +1425,7 @@
             if(currentFilterVal) filterDropdown.value = currentFilterVal;
         }
 
-        function addNewCardItem() {
+        async function addNewCardItem() {
             const targetSecId = document.getElementById('targetSectionSelect').value;
             const nameAr = document.getElementById('newCardNameAr').value.trim();
             const nameEn = document.getElementById('newCardNameEn').value.trim();
@@ -1266,6 +1437,17 @@
             }
 
             let imageLinksArray = rawImages ? rawImages.split(',').map(url => url.trim()).filter(url => url.length > 0) : [];
+            const selectedFiles = document.getElementById('newCardImageFiles').files;
+            const newCardId = 'card_' + Date.now();
+            try {
+                if (selectedFiles && selectedFiles.length) {
+                    const uploadedImages = await Promise.all(Array.from(selectedFiles).map(file => uploadImageToCloud(file, targetSecId, newCardId)));
+                    imageLinksArray = imageLinksArray.concat(uploadedImages);
+                }
+            } catch (err) {
+                alert(err.message || 'تعذر رفع الصور.');
+                return;
+            }
             if(imageLinksArray.length === 0) {
                 imageLinksArray.push("https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80");
             }
@@ -1273,17 +1455,18 @@
             const targetSection = webSections.find(s => s.id === targetSecId);
             if (targetSection) {
                 targetSection.cards.push({
-                    id: 'card_' + Date.now(),
+                    id: newCardId,
                     nameAr: nameAr,
                     nameEn: nameEn,
                     images: imageLinksArray,
                     currentImgIdx: 0
                 });
-                commitAndSyncSystemDatastores();
+                await commitAndSyncSystemDatastores();
                 
                 document.getElementById('newCardNameAr').value = '';
                 document.getElementById('newCardNameEn').value = '';
                 document.getElementById('newCardImages').value = '';
+                document.getElementById('newCardImageFiles').value = '';
                 alert(currentLang === 'ar' ? 'تم إضافة العنصر الجديد بنجاح!' : 'Card element created and successfully appended!');
             }
         }
@@ -1297,7 +1480,10 @@
                 divRow.className = 'manage-list-item';
                 divRow.innerHTML = `
                     <span><strong>${labelName}</strong> (${s.cards.length} عناصر)</span>
-                    <button class="delete-icon-btn" onclick="deleteTargetSectionDataNode('${s.id}')" title="حذف القسم"><i class="fa-solid fa-trash-can"></i></button>
+                    <div class="manage-actions">
+                        <button class="edit-icon-btn" onclick="editTargetSectionDataNode('${s.id}')" title="تعديل القسم"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="delete-icon-btn" onclick="deleteTargetSectionDataNode('${s.id}')" title="حذف القسم"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                 `;
                 container.appendChild(divRow);
             });
@@ -1322,13 +1508,175 @@
                     divRow.className = 'manage-list-item';
                     divRow.innerHTML = `
                         <span>${cName}</span>
-                        <button class="delete-icon-btn" onclick="deleteTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="حذف هذا العنصر"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="manage-actions">
+                            <button class="edit-icon-btn" onclick="editTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="تعديل العنصر"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="delete-icon-btn" onclick="deleteTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="حذف هذا العنصر"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
                     `;
                     container.appendChild(divRow);
                 });
             } else {
                 container.innerHTML = `<p style="font-size:13px; color:#666; text-align:center; padding:10px;">هذا القسم فارغ حالياً، لا توجد عناصر لحذفها.</p>`;
             }
+            buildImagesManagementListView();
+        }
+
+        function buildImagesManagementListView() {
+            const host = document.getElementById('adminImagesManagement');
+            if (!host) return;
+            const secId = document.getElementById('filterSectionSelect').value;
+            const sec = webSections.find(s => s.id === secId);
+            if (!sec || !sec.cards.length) { host.innerHTML = ''; return; }
+            const selectedCardId = host.dataset.cardId || sec.cards[0].id;
+            const card = sec.cards.find(c => c.id === selectedCardId) || sec.cards[0];
+            host.dataset.cardId = card.id;
+            host.innerHTML = `
+                <hr style="border:0;border-top:1px solid #e2e8f0;margin:12px 0;">
+                <h4 style="margin-bottom:10px;color:var(--btn-color);">إدارة صور العنصر</h4>
+                <div class="form-group">
+                    <label>اختر العنصر لإدارة صوره:</label>
+                    <select id="imageManageCardSelect">
+                        ${sec.cards.map(c => `<option value="${c.id}" ${c.id === card.id ? 'selected' : ''}>${escapeAdminText(currentLang === 'ar' ? c.nameAr : c.nameEn)}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>إضافة صور جديدة من الجهاز:</label>
+                    <input class="upload-input" type="file" accept="image/*" multiple onchange="addImagesToCard('${sec.id}', '${card.id}', this.files)">
+                </div>
+                <div>${(card.images || []).map((src, index) => `
+                    <div class="image-manage-item">
+                        <img src="${src}" alt="صورة ${index + 1}">
+                        <span>الصورة ${index + 1}</span>
+                        <div class="manage-actions">
+                            <label class="image-action-btn" title="تعديل الصورة">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <input type="file" accept="image/*" hidden onchange="replaceCardImage('${sec.id}', '${card.id}', ${index}, this.files[0])">
+                            </label>
+                            <button class="delete-icon-btn" title="حذف الصورة" onclick="deleteCardImage('${sec.id}', '${card.id}', ${index})"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>`).join('')}</div>
+            `;
+            document.getElementById('imageManageCardSelect').addEventListener('change', e => {
+                host.dataset.cardId = e.target.value;
+                buildImagesManagementListView();
+            });
+        }
+
+        function escapeAdminText(value) {
+            return String(value || '').replace(/[&<>"']/g, ch => ({
+                '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+            }[ch]));
+        }
+
+        function compressUploadedImage(file) {
+            return new Promise((resolve, reject) => {
+                if (!file || !file.type.startsWith('image/')) return reject(new Error('يرجى اختيار ملف صورة صالح.'));
+                const reader = new FileReader();
+                reader.onerror = () => reject(new Error('تعذر قراءة الصورة.'));
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onerror = () => reject(new Error('تعذر فتح الصورة.'));
+                    img.onload = () => {
+                        const maxSide = 1200;
+                        const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.max(1, Math.round(img.width * scale));
+                        canvas.height = Math.max(1, Math.round(img.height * scale));
+                        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.76));
+                    };
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function addImagesToCard(secId, cardId, files) {
+            if (!files || !files.length) return;
+            const sec = webSections.find(s => s.id === secId);
+            const card = sec && sec.cards.find(c => c.id === cardId);
+            if (!card) return;
+            try {
+                const uploaded = await Promise.all(Array.from(files).map(file => uploadImageToCloud(file, secId, cardId)));
+                card.images = (card.images || []).concat(uploaded);
+                await commitAndSyncSystemDatastores();
+                const host = document.getElementById('adminImagesManagement');
+                if (host) host.dataset.cardId = cardId;
+                buildImagesManagementListView();
+                alert('تمت إضافة الصور بنجاح.');
+            } catch (err) { alert(err.message || 'حدث خطأ أثناء رفع الصور.'); }
+        }
+
+        async function replaceCardImage(secId, cardId, index, file) {
+            if (!file) return;
+            const sec = webSections.find(s => s.id === secId);
+            const card = sec && sec.cards.find(c => c.id === cardId);
+            if (!card || !card.images[index]) return;
+            try {
+                const oldImage = card.images[index];
+                card.images[index] = await uploadImageToCloud(file, secId, cardId);
+                await commitAndSyncSystemDatastores();
+                await deleteCloudImageIfOwned(oldImage);
+                const host = document.getElementById('adminImagesManagement');
+                if (host) host.dataset.cardId = cardId;
+                buildImagesManagementListView();
+                alert('تم تعديل الصورة بنجاح.');
+            } catch (err) { alert(err.message || 'تعذر تعديل الصورة.'); }
+        }
+
+        async function deleteCardImage(secId, cardId, index) {
+            const sec = webSections.find(s => s.id === secId);
+            const card = sec && sec.cards.find(c => c.id === cardId);
+            if (!card || !confirm('هل تريد حذف هذه الصورة؟')) return;
+            const removedImage = card.images[index];
+            card.images.splice(index, 1);
+            card.currentImgIdx = card.images.length
+                ? Math.min(card.currentImgIdx || 0, card.images.length - 1)
+                : 0;
+            await commitAndSyncSystemDatastores();
+            await deleteCloudImageIfOwned(removedImage);
+            const host = document.getElementById('adminImagesManagement');
+            if (host) host.dataset.cardId = cardId;
+            buildImagesManagementListView();
+        }
+
+        function editTargetSectionDataNode(secId) {
+            const sec = webSections.find(s => s.id === secId);
+            if (!sec) return;
+            const titleAr = prompt('اسم القسم بالعربي:', sec.titleAr);
+            if (titleAr === null) return;
+            const titleEn = prompt('اسم القسم بالإنجليزي:', sec.titleEn);
+            if (titleEn === null) return;
+            const folder = prompt('اسم مجلد الصور:', sec.folder || '');
+            if (folder === null) return;
+            if (!titleAr.trim() || !titleEn.trim() || !folder.trim()) {
+                alert('يرجى عدم ترك أي خانة فارغة.');
+                return;
+            }
+            sec.titleAr = titleAr.trim();
+            sec.titleEn = titleEn.trim();
+            sec.folder = folder.trim();
+            commitAndSyncSystemDatastores();
+        }
+
+        function editTargetCardDataNode(secId, cardId) {
+            const sec = webSections.find(s => s.id === secId);
+            const card = sec && sec.cards.find(c => c.id === cardId);
+            if (!card) return;
+            const nameAr = prompt('اسم العنصر بالعربي:', card.nameAr);
+            if (nameAr === null) return;
+            const nameEn = prompt('اسم العنصر بالإنجليزي:', card.nameEn);
+            if (nameEn === null) return;
+            if (!nameAr.trim() || !nameEn.trim()) {
+                alert('يرجى إدخال الاسم بالعربي والإنجليزي.');
+                return;
+            }
+            card.nameAr = nameAr.trim();
+            card.nameEn = nameEn.trim();
+            commitAndSyncSystemDatastores();
+            const host = document.getElementById('adminImagesManagement');
+            if (host) host.dataset.cardId = cardId;
+            buildImagesManagementListView();
         }
 
         function deleteTargetCardDataNode(secId, cardId) {
@@ -1348,12 +1696,25 @@
             }
         }
 
-        function commitAndSyncSystemDatastores() {
+        async function commitAndSyncSystemDatastores() {
             localStorage.setItem('webSectionsData', JSON.stringify(webSections));
+            localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
             renderDynamicSections();
             buildAdminManagementListViewConsole();
             buildCardsManagementListViewConsole();
             populateAdminSectionConsoleDropdowns();
+            if (!isUserAdminLoggedIn) return;
+            const { error } = await supabaseClient.from('site_content').upsert({
+                id: 1,
+                content: { sections: webSections, theme: siteTheme },
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'id' });
+            if (error) {
+                console.error('Cloud save failed:', error);
+                alert('تم تحديث العرض محلياً، لكن تعذر الحفظ في السحابة: ' + error.message);
+                return;
+            }
+            cloudContentExists = true;
         }
     </script>
 </body>
