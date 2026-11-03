@@ -1287,12 +1287,7 @@
                             const liveCard = liveSection && liveSection.cards.find(item => item.id === card.id);
                             if (!liveCard || !liveCard.images || liveCard.images.length < 2 || !galleryImg.isConnected) return;
                             liveCard.currentImgIdx = ((liveCard.currentImgIdx || 0) + 1) % liveCard.images.length;
-                            galleryImg.style.opacity = '0';
-							setTimeout(() => {
-								if (!galleryImg.isConnected) return;
-								galleryImg.src = liveCard.images[liveCard.currentImgIdx];
-								galleryImg.style.opacity = '1';
-							}, 750);
+                            galleryImg.src = liveCard.images[liveCard.currentImgIdx];
                             localStorage.setItem('webSectionsData', JSON.stringify(webSections));
                         }, SLIDER_INTERVAL_MS);
                         cardGalleryIntervals.push(timer);
