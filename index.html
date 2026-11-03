@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -940,6 +940,8 @@
         let activePromoIdx = 0;
         let isUserAdminLoggedIn = false;
         let autoSliderIntervalId = null;
+        let cardGalleryIntervals = [];
+        const SLIDER_INTERVAL_MS = 8000;
 
         const uiLexicon = {
             ar: {
@@ -1226,10 +1228,12 @@
         function startAutoSliderCycle() {
             autoSliderIntervalId = setInterval(() => {
                 moveSlide(1, false);
-            }, 4000);
+            }, SLIDER_INTERVAL_MS);
         }
 
         function renderDynamicSections() {
+            cardGalleryIntervals.forEach(timer => clearInterval(timer));
+            cardGalleryIntervals = [];
             const mainWrapper = document.getElementById('sectionsWrapper');
             mainWrapper.innerHTML = '';
 
@@ -1248,15 +1252,23 @@
 
                 section.cards.forEach((card) => {
                     const cardName = currentLang === 'ar' ? card.nameAr : card.nameEn;
+                    card.images = Array.isArray(card.images) ? card.images : [];
+                    card.currentImgIdx = Number.isInteger(card.currentImgIdx) ? card.currentImgIdx : 0;
+                    if (card.images.length) card.currentImgIdx = ((card.currentImgIdx % card.images.length) + card.images.length) % card.images.length;
                     const activeImgUrl = card.images[card.currentImgIdx] || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80';
+                    const prevIcon = currentLang === 'ar' ? 'fa-chevron-right' : 'fa-chevron-left';
+                    const nextIcon = currentLang === 'ar' ? 'fa-chevron-left' : 'fa-chevron-right';
+                    const galleryControls = card.images.length > 1 ? `
+                            <button class="slider-arrow arrow-prev" style="width:32px; height:32px; font-size:12px;" aria-label="Previous image" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', -1, event)"><i class="fa-solid ${prevIcon}"></i></button>
+                            <button class="slider-arrow arrow-next" style="width:32px; height:32px; font-size:12px;" aria-label="Next image" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', 1, event)"><i class="fa-solid ${nextIcon}"></i></button>
+                        ` : ''; 
                     
                     const cardEl = document.createElement('div');
                     cardEl.className = 'card';
                     cardEl.innerHTML = `
                         <div class="card-gallery">
                             <img src="${activeImgUrl}" alt="${cardName}">
-                            <button class="slider-arrow arrow-prev" style="width:32px; height:32px; font-size:12px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', -1, event)"><i class="fa-solid fa-chevron-right"></i></button>
-                            <button class="slider-arrow arrow-next" style="width:32px; height:32px; font-size:12px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', 1, event)"><i class="fa-solid fa-chevron-left"></i></button>
+                            ${galleryControls}
                         </div>
                         <div class="card-info">
                             <div class="card-name">${cardName}</div>
@@ -1268,6 +1280,18 @@
                     cardEl.addEventListener('mouseleave', () => reset3DCardPerspectiveStyles(cardEl));
 
                     grid.appendChild(cardEl);
+                    if (card.images.length > 1) {
+                        const galleryImg = cardEl.querySelector('.card-gallery img');
+                        const timer = setInterval(() => {
+                            const liveSection = webSections.find(item => item.id === section.id);
+                            const liveCard = liveSection && liveSection.cards.find(item => item.id === card.id);
+                            if (!liveCard || !liveCard.images || liveCard.images.length < 2 || !galleryImg.isConnected) return;
+                            liveCard.currentImgIdx = ((liveCard.currentImgIdx || 0) + 1) % liveCard.images.length;
+                            galleryImg.src = liveCard.images[liveCard.currentImgIdx];
+                            localStorage.setItem('webSectionsData', JSON.stringify(webSections));
+                        }, SLIDER_INTERVAL_MS);
+                        cardGalleryIntervals.push(timer);
+                    }
                 });
 
                 sectionEl.appendChild(grid);
