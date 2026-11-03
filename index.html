@@ -27,18 +27,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Responsive Layout Constraints */
-        header, .promo-banner, main, footer {
             width: 100%;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         /* Custom Smart Scrollbar */
@@ -57,7 +46,7 @@
             background: var(--text-hover-color);
         }
 
-        /* Header Navigation */
+        /* Header Navigation - Fixed Center and Alignment */
         header {
             background-color: var(--banner-footer-color);
             padding: 15px 5%;
@@ -68,12 +57,12 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            border-radius: 0 0 15px 15px;
+            width: 100%;
         }
 
         .logo {
             color: #fff;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -83,18 +72,19 @@
 
         .nav-tools {
             display: flex;
-            gap: 20px;
+            gap: 12px;
+            align-items: center;
         }
 
         .nav-icon-btn {
             background: none;
             border: none;
             color: #fff;
-            font-size: 22px;
+            font-size: 18px;
             cursor: pointer;
             position: relative;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -104,21 +94,40 @@
         }
 
         .nav-icon-btn:hover {
-            transform: scale(1.15) rotate(15deg);
+            transform: scale(1.1) rotate(10deg);
             background-color: var(--btn-color);
             color: #fff;
-            box-shadow: 0 0 15px var(--btn-color);
+            box-shadow: 0 0 12px var(--btn-color);
         }
 
-        /* Main Promo Banner Slider */
+        /* Main Promo Banner Slider - Enhanced Centering */
         .promo-banner {
-            margin: 30px auto;
-            height: 380px;
+            max-width: 90%;
+            margin: 25px auto;
+            height: 320px;
             position: relative;
             overflow: hidden;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            width: 92%;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 4%;
+            }
+            .logo { font-size: 18px; }
+            .promo-banner {
+                height: 240px;
+                max-width: 92%;
+                margin: 15px auto;
+            }
+            .slide-caption {
+                font-size: 16px !important;
+                padding: 20px 15px 15px !important;
+            }
+            .section-title {
+                font-size: 22px !important;
+            }
         }
 
         .slide-container {
@@ -142,11 +151,11 @@
         .slide-caption {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
             color: #fff;
             padding: 30px 20px 20px;
             text-align: center;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
         }
 
@@ -157,11 +166,11 @@
             background: rgba(0,0,0,0.5);
             color: #fff;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,25 +184,21 @@
             box-shadow: 0 0 10px var(--btn-color);
         }
 
-        .arrow-prev { right: 20px; }
-        .arrow-next { left: 20px; }
+        .arrow-prev { right: 15px; }
+        .arrow-next { left: 15px; }
 
-        html[dir="ltr"] .arrow-prev { left: 20px; right: auto; }
-        html[dir="ltr"] .arrow-next { right: 20px; left: auto; }
+        html[dir="ltr"] .arrow-prev { left: 15px; right: auto; }
+        html[dir="ltr"] .arrow-next { right: 15px; left: auto; }
 
-        /* Sections and 3D Cards Grid */
-        main {
-            width: 92%;
-            margin: 0 auto;
-        }
-
+        /* Sections Centering & Balanced Alignment */
         .section-container {
+            max-width: 90%;
             margin: 40px auto;
-            text-align: center;
+            text-align: inherit;
         }
 
         .section-title {
-            font-size: 28px;
+            font-size: 26px;
             margin-bottom: 25px;
             position: relative;
             display: inline-block;
@@ -203,107 +208,134 @@
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 20%; width: 60%; height: 4px;
+            bottom: 0; width: 60%; height: 4px;
             background: var(--btn-color);
             border-radius: 2px;
         }
 
-		.cards-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-			gap: 30px;
-		}
-		
-		/* تم إزالة التمدد الطولي المرن وخصائص الـ Flex المعطلة وإعادة الأبعاد الدائرية */
-		.card {
-			background-color: var(--card-bg);
-			border-radius: 20px;
-			overflow: hidden;
-			box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-			transition: transform 0.3s, box-shadow 0.3s;
-			position: relative;
-			display: block; /* يمنع التمدد العمودي القسري */
-		}
-		
-		.card:hover {
-			transform: translateY(-10px);
-			box-shadow: 0 20px 35px rgba(0,0,0,0.15);
-		}
-		
-		.card-gallery {
-			height: 220px;
-			position: relative;
-			overflow: hidden;
-		}
-		
-		.card-gallery img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			transition: transform 0.5s;
-		}
-		
-		.card-info {
-			padding: 20px;
-			text-align: center;
-		}
-		
-		.card-name {
-			font-size: 20px;
-			font-weight: bold;
-			margin-bottom: 10px;
-			color: var(--text-color);
-		}
+        html[dir="rtl"] .section-title::after { right: 0; left: auto; }
+        html[dir="ltr"] .section-title::after { left: 0; right: auto; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 25px;
+            justify-content: center;
+        }
+
+        /* Interactive Element Layouts */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+            transition: transform 0.5s cubic-bezier(0.1, 0.8, 0.3, 1), box-shadow 0.5s;
+            position: relative;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: perspective(1000px) translateY(-8px) rotateX(1deg) rotateY(1deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+
+        .card-gallery {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .card:hover .card-gallery img {
+            transform: scale(1.04);
+        }
+
+        .card-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            transition: color 0.3s;
+        }
+
+        .card:hover .card-name {
+            color: var(--text-hover-color);
+        }
 
         .card-btn {
             background-color: var(--btn-color);
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            transition: all 0.3s;
         }
 
-        /* Floating Actions */
+        .card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px var(--btn-color);
+            filter: brightness(1.1);
+        }
+
+        /* Floating Widgets */
         .whatsapp-float {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 25px;
+            right: 25px;
             background-color: #25d366;
             color: white;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 32px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             z-index: 999;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 20px #25d366;
         }
 
         .scroll-top {
             position: fixed;
-            bottom: 100px;
-            right: 30px;
+            bottom: 95px;
+            right: 25px;
             background-color: var(--btn-color);
             color: white;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 998;
             cursor: pointer;
             border: none;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.4s;
+            transition: all 0.4s ease-in-out;
         }
 
         .scroll-top.visible {
@@ -311,78 +343,95 @@
             visibility: visible;
         }
 
-        /* Footer Grid Design */
+        /* Fully Grid Responsive Footer Layout */
         footer {
             background-color: var(--banner-footer-color);
             color: white;
             padding: 40px 5% 20px;
-            margin-top: 60px;
+            margin-top: 50px;
             width: 100%;
-            border-radius: 15px 15px 0 0;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .footer-col h3 {
             font-size: 18px;
             margin-bottom: 15px;
             position: relative;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
         }
 
         .footer-col h3::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; width: 40px; height: 3px;
+            bottom: 0; width: 40px; height: 3px;
             background: var(--btn-color);
         }
-        html[dir="rtl"] .footer-col h3::after { right: 0; left: auto; }
+        html[dir="rtl"] .footer-col h3::after { right: 0; }
+        html[dir="ltr"] .footer-col h3::after { left: 0; }
 
-        .footer-col p, .footer-col ul {
+        .footer-col p {
             font-size: 14px;
-            line-height: 1.8;
-            color: #e0e0e0;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .footer-links {
             list-style: none;
         }
 
-        .footer-col ul li {
-            margin-bottom: 8px;
+        .footer-links li {
+            margin-bottom: 10px;
         }
 
-        .footer-col ul li a {
-            color: #e0e0e0;
+        .footer-links li a {
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
-        }
-
-        .footer-col ul li a:hover {
-            color: var(--text-hover-color);
-        }
-
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            padding-top: 20px;
             font-size: 14px;
-            color: rgba(255,255,255,0.7);
+            transition: color 0.3s, padding 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-links li a:hover {
+            color: var(--text-hover-color);
+            padding-inline-start: 5px;
+        }
+
+        .contact-info li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
         }
 
         .visitor-counter {
             background: rgba(255,255,255,0.1);
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 14px;
         }
 
-        /* Admin Dashboard Modal Overlay */
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Admin Screen Styles */
         .admin-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -392,30 +441,39 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
         .admin-modal.active {
             display: flex;
+            opacity: 1;
         }
 
         .admin-box {
             background: #ffffff;
-            width: 95%;
+            width: 92%;
             max-width: 650px;
             border-radius: 20px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             overflow: hidden;
-            max-height: 90vh;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
             color: #333;
         }
 
+        .admin-modal.active .admin-box {
+            transform: scale(1);
+        }
+
         .admin-header {
             background-color: var(--banner-footer-color);
             color: #fff;
-            padding: 20px;
-            font-size: 20px;
+            padding: 18px;
+            font-size: 18px;
             font-weight: bold;
             display: flex;
             justify-content: space-between;
@@ -450,7 +508,7 @@
         .form-group input, .form-group select {
             width: 100%;
             padding: 10px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
             font-size: 15px;
             outline: none;
@@ -458,6 +516,22 @@
 
         .form-group input:focus {
             border-color: var(--btn-color);
+        }
+
+        .color-pickers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .color-item input[type="color"] {
+            height: 40px;
+            padding: 0;
+            border: none;
+            cursor: pointer;
         }
 
         .admin-btn {
@@ -470,12 +544,12 @@
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .tab-menu {
             display: flex;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid #edf2f7;
         }
 
         .tab-btn {
@@ -485,7 +559,7 @@
             border: none;
             font-weight: bold;
             cursor: pointer;
-            color: #666;
+            color: #718096;
             border-bottom: 3px solid transparent;
         }
 
@@ -502,37 +576,42 @@
             display: block;
         }
 
+        .manage-list-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
         .manage-list-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #f9f9f9;
-            padding: 12px;
+            background: #ffffff;
+            padding: 10px 14px;
             border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #eee;
+            margin-bottom: 8px;
+            border: 1px solid #edf2f7;
+            font-size: 14px;
         }
 
-        .action-icon-group {
-            display: flex;
-            gap: 12px;
-        }
-
-        .action-icon-btn {
+        .delete-icon-btn {
             background: none;
             border: none;
+            color: #ef4444;
             cursor: pointer;
             font-size: 16px;
+            padding: 4px;
         }
 
-        .edit-btn { color: #ff9800; }
-        .delete-btn { color: #e53935; }
-
-        @media (max-width: 600px) {
-            .promo-banner { height: 240px; }
-            .slide-caption { font-size: 16px; padding: 15px; }
-            .section-title { font-size: 22px; }
+        .delete-icon-btn:hover {
+            color: #dc2626;
+            transform: scale(1.1);
         }
+
+        html[dir="ltr"] body { text-align: left; }
+        html[dir="rtl"] body { text-align: right; }
     </style>
 </head>
 <body>
@@ -553,57 +632,67 @@
         </div>
     </header>
 
-    <!-- Main Advertisement Slider -->
+    <!-- Main Banner Slider -->
     <div class="promo-banner" id="promoSlider">
         <div class="slide-container" id="slideContainer"></div>
         <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-right"></i></button>
         <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-left"></i></button>
     </div>
 
-    <!-- Main Dynamic Content -->
+    <!-- Dynamic Section Elements Layout -->
     <main id="sectionsWrapper"></main>
 
-    <!-- Enhanced Grid Footer -->
+    <!-- Highly Extended Structured Footer Panel Grid -->
     <footer>
         <div class="footer-grid">
+            <!-- Col 1: About Info -->
             <div class="footer-col">
-                <h3 id="fCol1Title">حول عرب ماليزيا</h3>
-                <p id="fCol1Text">المنصة الأولى والأضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.</p>
+                <h3 id="fTitleAbout">حول عرب ماليزيا</h3>
+                <p id="fDescAbout">المنصة الأولى والأضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.</p>
+                <div class="visitor-counter">
+                    <i class="fa-solid fa-eye"></i> 
+                    <span id="langCountLabel">عدد الزوار:</span> 
+                    <span id="visitorCount">124,530</span>
+                </div>
             </div>
+            
+            <!-- Col 2: Quick Navigation -->
             <div class="footer-col">
-                <h3 id="fCol2Title">روابط سريعة</h3>
-                <ul>
-                    <li><a href="#" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;" id="fLinkHome">الرئيسية</a></li>
-                    <li><a href="#" onclick="openAdminDashboardViaLink(); return false;" id="fLinkAdmin">لوحة تحكم المسؤول</a></li>
+                <h3 id="fTitleLinks">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a onclick="window.scrollTo({top:0, behavior:'smooth'})" id="linkHome">الرئيسية</a></li>
+                    <li><a onclick="openAdminPanelDirectly()" id="linkAdmin">لوحة تحكم المسؤول</a></li>
+                    <li><a href="https://wa.me/60123456789" target="_blank" id="linkContact">اتصل بنا</a></li>
                 </ul>
             </div>
+
+            <!-- Col 3: Management and direct communications details -->
             <div class="footer-col">
-                <h3 id="fCol3Title">الإدارة والاستفسارات</h3>
-                <p id="fCol3Manager">إدارة شريف منصور</p>
-                <p id="fCol3Phone"><i class="fa-solid fa-phone"></i> +60 12-345 6789</p>
-                <p id="fCol3Location"><i class="fa-solid fa-location-dot"></i> كوالالمبور، ماليزيا</p>
-                <p id="fCol3Help" style="margin-top: 10px; font-style: italic; color: #b0bec5;">لأي استفسار في ماليزيا يرجى ترك رسالة.</p>
+                <h3 id="fTitleContact">الإدارة والاستفسارات</h3>
+                <p style="font-weight: bold; margin-bottom: 8px;" id="fManagerName">إدارة شريف منصور</p>
+                <p style="margin-bottom: 12px; font-size: 13px;" id="fInstructions">لأي استفسار في ماليزيا يرجى ترك رسالة.</p>
+                <ul class="footer-links contact-info" style="pointer-events: none;">
+                    <li><i class="fa-solid fa-phone" style="color: var(--text-hover-color);"></i> <span style="direction: ltr; unicode-bidi: embed;">+60 12-345 6789</span></li>
+                    <li><i class="fa-solid fa-location-dot" style="color: var(--text-hover-color);"></i> <span id="fLocationText">كوالالمبور، ماليزيا</span></li>
+                </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="visitor-counter">
-                <i class="fa-solid fa-eye"></i> <span id="langCountLabel">عدد الزوار:</span> <span id="visitorCount">124,530</span>
-            </div>
-            <div id="footerCopyright">&copy; 2026 عرب ماليزيا - جميع الحقوق محفوظة</div>
+            &copy; 2026 <span id="footerCopyright">عرب ماليزيا - جميع الحقوق محفوظة</span>
         </div>
     </footer>
 
-    <!-- Floating Actions -->
-    <a href="https://wa.me/60123456789" class="whatsapp-float" target="_blank">
+    <!-- Widgets -->
+    <a href="https://wa.me/60123456789" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
-    <button class="scroll-top" id="scrollTopBtn">
+    <button class="scroll-top" id="scrollTopBtn" title="الصعود للأعلى">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
-    <!-- Admin Dashboard Modal -->
+    <!-- Admin Panel Control View Overlay -->
     <div class="admin-modal" id="adminDialog">
-        <!-- Auth View Box -->
+        <!-- Auth Screen Box -->
         <div class="admin-box" id="authBox">
             <div class="admin-header">
                 <span id="lblLoginTitle">تسجيل دخول المشرف</span>
@@ -622,10 +711,10 @@
             </div>
         </div>
 
-        <!-- Fully Managed Admin System Box -->
+        <!-- System Operations Dashboard -->
         <div class="admin-box" id="dashboardBox" style="display:none;">
             <div class="admin-header">
-                <span id="lblDashTitle">لوحة الإدارة والتحكم</span>
+                <span id="lblDashTitle">لوحة الإدارة الاحترافية</span>
                 <button class="admin-close" onclick="closeAdmin()">&times;</button>
             </div>
             <div class="tab-menu">
@@ -634,53 +723,84 @@
             </div>
             <div class="admin-body">
                 
-                <!-- Tab 1: Styling Engine -->
+                <!-- Tab View Component 1: Theme Personalization Engine Control Panel -->
                 <div class="panel-tab active" id="tabColors">
-                    <h3 id="lblThemeHeading" style="margin-bottom:15px;">تخصيص ألوان الموقع</h3>
-                    <div class="form-group"><label>خلفية الموقع</label><input type="color" id="cfgBgColor" onchange="updateThemeLive()"></div>
-                    <div class="form-group"><label>لون النصوص</label><input type="color" id="cfgTextColor" onchange="updateThemeLive()"></div>
-                    <div class="form-group"><label>لون الأزرار</label><input type="color" id="cfgBtnColor" onchange="updateThemeLive()"></div>
-                    <div class="form-group"><label>لون الهيدر والفوتر</label><input type="color" id="cfgHeaderFooterColor" onchange="updateThemeLive()"></div>
-                    <button class="admin-btn" onclick="resetThemeDefault()" style="background:#757575;">إعادة الألوان الافتراضية</button>
+                    <h3 id="lblThemeHeading" style="margin-bottom:15px;">تخصيص ألوان الهوية البصرية للموقع</h3>
+                    <div class="color-pickers-grid">
+                        <div class="color-item">
+                            <label id="clrBgLbl">خلفية الموقع</label>
+                            <input type="color" id="cfgBgColor" onchange="updateThemeLive()">
+                        </div>
+                        <div class="color-item">
+                            <label id="clrTextLbl">لون النصوص</label>
+                            <input type="color" id="cfgTextColor" onchange="updateThemeLive()">
+                        </div>
+                        <div class="color-item">
+                            <label id="clrBtnLbl">لون الأزرار</label>
+                            <input type="color" id="cfgBtnColor" onchange="updateThemeLive()">
+                        </div>
+                        <div class="color-item">
+                            <label id="clrHoverLbl">نصوص الحوم/اللمس</label>
+                            <input type="color" id="cfgHoverColor" onchange="updateThemeLive()">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label id="clrHeaderFooterLbl">لون البانر العلوي والفوتر</label>
+                        <input type="color" id="cfgHeaderFooterColor" style="height:45px; width:100%; border:none; cursor:pointer; border-radius:8px;" onchange="updateThemeLive()">
+                    </div>
+                    <button class="admin-btn" id="btnResetTheme" onclick="resetThemeDefault()" style="background:#757575;">إعادة الألوان الافتراضية</button>
                 </div>
 
-                <!-- Tab 2: Section & Card Management with Edit/Delete Systems -->
+                <!-- Tab View Component 2: Structural Objects management and data modifications system -->
                 <div class="panel-tab" id="tabSections">
-                    <!-- Section Upsert Form -->
-                    <div style="background:#f5f5f5; padding:15px; border-radius:12px; margin-bottom:20px;">
-                        <h4 id="lblAddSecTitle" style="margin-bottom:10px;">إضافة / تعديل قسم</h4>
-                        <input type="hidden" id="editingSectionId" value="">
-                        <div class="form-group"><input type="text" id="newSecNameAr" placeholder="اسم القسم بالعربي"></div>
-                        <div class="form-group"><input type="text" id="newSecNameEn" placeholder="اسم القسم بالإنجليزي"></div>
-                        <div class="form-group"><input type="text" id="newSecFolder" placeholder="اسم مجلد الصور"></div>
-                        <button class="admin-btn" id="btnAddSec" onclick="saveSectionItem()">حفظ القسم</button>
-                        <button class="admin-btn" id="btnCancelSecEdit" onclick="cancelSectionEdit()" style="background:#757575; display:none; margin-top:5px;">إلغاء التعديل</button>
-                    </div>
-
-                    <!-- Card Upsert Form -->
-                    <div style="background:#f5f5f5; padding:15px; border-radius:12px; margin-bottom:20px;">
-                        <h4 id="lblAddCardTitle" style="margin-bottom:10px;">إضافة / تعديل عنصر داخل قسم</h4>
-                        <input type="hidden" id="editingCardId" value="">
-                        <div class="form-group"><select id="targetSectionSelect"></select></div>
-                        <div class="form-group"><input type="text" id="newCardNameAr" placeholder="اسم المحل / المكتب بالعربي"></div>
-                        <div class="form-group"><input type="text" id="newCardNameEn" placeholder="اسم المحل / المكتب بالإنجليزي"></div>
-                        <div class="form-group"><input type="text" id="newCardImages" placeholder="روابط الصور (افصل بينها بفاصلة ,)"></div>
-                        <button class="admin-btn" id="btnAddCard" onclick="saveCardItem()">حفظ العنصر</button>
-                        <button class="admin-btn" id="btnCancelCardEdit" onclick="cancelCardEdit()" style="background:#757575; display:none; margin-top:5px;">إلغاء التعديل</button>
-                    </div>
-
-                    <!-- Interactive Realtime Item Management Tree View -->
-                    <div>
-                        <h4 style="margin-bottom:10px;" id="lblManageSectionsTitle">إدارة الأقسام الحالية</h4>
-                        <div id="adminSectionsManagementList"></div>
-                    </div>
-
-                    <div style="margin-top:20px;">
-                        <h4 style="margin-bottom:10px;" id="lblManageItemsTitle">إدارة العناصر الحالية للقسم المختار</h4>
+                    <!-- Insertion Block for Sections -->
+                    <div style="background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:20px; border:1px solid #e2e8f0;">
+                        <h4 id="lblAddSecTitle" style="margin-bottom:10px;">إضافة قسم جديد للموقع</h4>
                         <div class="form-group">
-                            <select id="filterSectionSelect" onchange="buildItemsManagementView()"></select>
+                            <input type="text" id="newSecNameAr" placeholder="اسم القسم بالعربي (مثال: مكاتب السياحة)">
                         </div>
-                        <div id="adminItemsManagementList"></div>
+                        <div class="form-group">
+                            <input type="text" id="newSecNameEn" placeholder="اسم القسم بالإنجليزي (مثال: Tourism Offices)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="newSecFolder" placeholder="اسم مجلد الصور المستهدف (مثال: travelphoto)">
+                        </div>
+                        <button class="admin-btn" id="btnAddSec" onclick="addNewSectionItem()">إنشاء وحفظ القسم الجديد</button>
+                    </div>
+
+                    <!-- Insertion Block for Cards Elements -->
+                    <div style="background:#f8fafc; padding:15px; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:20px;">
+                        <h4 id="lblAddCardTitle" style="margin-bottom:10px;">إضافة عنصر جديد لـ قسم</h4>
+                        <div class="form-group">
+                            <select id="targetSectionSelect"></select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="newCardNameAr" placeholder="اسم المحل / المكتب بالعربي">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="newCardNameEn" placeholder="اسم المحل / المكتب بالإنجليزي">
+                        </div>
+                        <div class="form-group">
+                            <label id="lblUrlsHelp" style="font-size:12px; color:#666;">روابط ألبوم الصور (افصل بين الروابط بفاصلة ,)</label>
+                            <input type="text" id="newCardImages" placeholder="https://url1.com, https://url2.com">
+                        </div>
+                        <button class="admin-btn" id="btnAddCard" onclick="addNewCardItem()">إضافة العنصر للمعرض</button>
+                    </div>
+
+                    <!-- Enhanced Component: Management List for Deleting Cards/Items inside sections -->
+                    <div class="manage-list-box">
+                        <h4 id="lblManageCardsTitle" style="margin-bottom:10px; color: var(--btn-color);">إدارة وحذف العناصر الحالية</h4>
+                        <div class="form-group">
+                            <label id="lblSelectSecFilter">اختر القسم لاستعراض وعزل عناصره:</label>
+                            <select id="filterSectionSelect" onchange="buildCardsManagementListViewConsole()"></select>
+                        </div>
+                        <div id="adminCardsManagementList" style="margin-top:10px; max-height:220px; overflow-y:auto;"></div>
+                    </div>
+
+                    <!-- Existing Block: Sections Erasure Datastores console panel list -->
+                    <div class="manage-list-box" style="margin-top:20px;">
+                        <h4 id="lblCurrentData" style="margin-bottom:10px;">إدارة وحذف الأقسام الكاملة</h4>
+                        <div id="adminSectionsManagementList"></div>
                     </div>
                 </div>
 
@@ -688,7 +808,7 @@
         </div>
     </div>
 
-    <!-- Core Interactive Logic Script Engine -->
+    <!-- Script Controllers Core Logic Engine -->
     <script>
         const defaultPromoSlides = [
             { img: "https://images.unsplash.com/photo-1596422846543-75c6fc1f70ea?auto=format&fit=crop&w=1200&q=80", titleAr: "أجمل مطاعم كوالالمبور العربية", titleEn: "The Best Arabic Restaurants in Kuala Lumpur" },
@@ -698,49 +818,120 @@
 
         const defaultSectionsData = [
             {
-                id: "sec_restaurants", titleAr: "قسم المطاعم", titleEn: "Restaurants Section", folder: "restaurantphoto",
+                id: "sec_restaurants",
+                titleAr: "قسم المطاعم",
+                titleEn: "Restaurants Section",
+                folder: "restaurantphoto",
                 cards: [
-                    { id: "c1", nameAr: "مطعم الطربوش الدمشقي", nameEn: "Tarboosh Damascus Restaurant", images: ["https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
-                    { id: "c2", nameAr: "مطعم ومطبخ حضرموت", nameEn: "Hadramout Restaurant & Kitchen", images: ["https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 }
+                    { id: "c1", nameAr: "مطعم الطربوش الدمشقي", nameEn: "Tarboosh Damascus Restaurant", images: ["https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c2", nameAr: "مطعم ومطبخ حضرموت", nameEn: "Hadramout Restaurant & Kitchen", images: ["https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c3", nameAr: "مطعم مندي النور", nameEn: "Al Noor Mandi Restaurant", images: ["https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 }
                 ]
             },
             {
-                id: "sec_cars", titleAr: "قسم السيارات", titleEn: "Car Rental Section", folder: "carphoto",
+                id: "sec_cars",
+                titleAr: "قسم السيارات",
+                titleEn: "Car Rental Section",
+                folder: "carphoto",
                 cards: [
-                    { id: "c4", nameAr: "مكتب شاهين لتأجير السيارات", nameEn: "Shaheen Car Rental Office", images: ["https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 }
+                    { id: "c4", nameAr: "مكتب شاهين لتأجير السيارات", nameEn: "Shaheen Car Rental Office", images: ["https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c5", nameAr: "الشركة العربية لخدمات النقل", nameEn: "Arabian Transport Services Co.", images: ["https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 },
+                    { id: "c6", nameAr: "مكتب الجزيرة للسيارات الفاخرة", nameEn: "Al Jazeera Luxury Car Rental", images: ["https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=500&q=80"], currentImgIdx: 0 }
                 ]
             }
         ];
 
-        const defaultTheme = { bg: "#f4f7f6", text: "#333333", btn: "#2196f3", hover: "#00bcd4", headerFooter: "#1a237e" };
+        const defaultTheme = {
+            bg: "#f4f7f6",
+            text: "#333333",
+            btn: "#2196f3",
+            hover: "#00bcd4",
+            headerFooter: "#1a237e"
+        };
 
         let currentLang = localStorage.getItem('siteLang') || 'ar';
         let webSections = JSON.parse(localStorage.getItem('webSectionsData')) || defaultSectionsData;
         let siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
         let activePromoIdx = 0;
         let isUserAdminLoggedIn = false;
-        let sliderInterval;
+        let autoSliderIntervalId = null;
 
         const uiLexicon = {
             ar: {
-                siteTitle: "عرب ماليزيا", langCountLabel: "عدد الزوار:", cardBtnText: "عرض التفاصيل والتواصل",
-                lblLoginTitle: "تسجيل دخول المشرف", lblUser: "اسم المستخدم", lblPass: "كلمة المرور", btnLogin: "دخول",
-                lblDashTitle: "لوحة الإدارة والتحكم", tabColorsBtn: "الألوان والتنسيق", tabSectionsBtn: "الأقسام والبطاقات",
-                lblThemeHeading: "تخصيص ألوان الموقع", lblAddSecTitle: "إضافة / تعديل قسم", lblAddCardTitle: "إضافة / تعديل عنصر داخل قسم",
-                fCol1Title: "حول عرب ماليزيا", fCol1Text: "المنصة الأولى والأضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.",
-                fCol2Title: "روابط سريعة", fLinkHome: "الرئيسية", fLinkAdmin: "لوحة تحكم المسؤول",
-                fCol3Title: "الإدارة والاستفسارات", fCol3Manager: "إدارة شريف منصور", fCol3Help: "لأي استفسار في ماليزيا يرجى ترك رسالة.",
-                lblManageSectionsTitle: "إدارة الأقسام الحالية", lblManageItemsTitle: "إدارة العناصر الحالية للقسم المختار"
+                siteTitle: "عرب ماليزيا",
+                langCountLabel: "عدد الزوار:",
+                footerCopyright: "عرب ماليزيا - جميع الحقوق محفوظة",
+                lblLoginTitle: "تسجيل دخول المشرف",
+                lblUser: "اسم المستخدم",
+                lblPass: "كلمة المرور",
+                btnLogin: "دخول",
+                lblDashTitle: "لوحة الإدارة الاحترافية",
+                tabColorsBtn: "الألوان والتنسيق",
+                tabSectionsBtn: "الأقسام والبطاقات",
+                lblThemeHeading: "تخصيص ألوان الهوية البصرية للموقع",
+                clrBgLbl: "خلفية الموقع",
+                clrTextLbl: "لون النصوص",
+                clrBtnLbl: "لون الأزرار",
+                clrHoverLbl: "نصوص الحوم/اللمس",
+                clrHeaderFooterLbl: "لون البانر العلوي والفوتر",
+                btnResetTheme: "إعادة الألوان الافتراضية",
+                lblAddSecTitle: "إضافة قسم جديد للموقع",
+                lblAddCardTitle: "إضافة عنصر جديد لـ قسم",
+                lblUrlsHelp: "روابط ألبوم الصور (افصل بين الروابط بفاصلة ,)",
+                btnAddSec: "إنشاء وحفظ القسم الجديد",
+                btnAddCard: "إضافة العنصر للمعرض",
+                lblCurrentData: "إدارة وحذف الأقسام الكاملة",
+                lblManageCardsTitle: "إدارة وحذف العناصر الحالية",
+                lblSelectSecFilter: "اختر القسم لاستعراض وعزل عناصره:",
+                cardBtnText: "عرض التفاصيل والتواصل",
+                fTitleAbout: "حول عرب ماليزيا",
+                fDescAbout: "المنصة الأولى والأضخم لخدمة وتوجيه الجالية العربية والزوار في ماليزيا. نوفر لكم أفضل الخيارات بكل سهولة.",
+                fTitleLinks: "روابط سريعة",
+                linkHome: "الرئيسية",
+                linkAdmin: "لوحة تحكم المسؤول",
+                linkContact: "اتصل بنا",
+                fTitleContact: "الإدارة والاستفسارات",
+                fManagerName: "إدارة شريف منصور",
+                fInstructions: "لأي استفسار في ماليزيا يرجى ترك رسالة.",
+                fLocationText: "كوالالمبور، ماليزيا"
             },
             en: {
-                siteTitle: "Arab Malaysia", langCountLabel: "Visitor Counter:", cardBtnText: "View Details & Connect",
-                lblLoginTitle: "Admin Security Login", lblUser: "Username", lblPass: "Password", btnLogin: "Login",
-                lblDashTitle: "Dashboard Panel", tabColorsBtn: "Colors & Styling", tabSectionsBtn: "Sections & Items",
-                lblThemeHeading: "Personalize Branding Colors", lblAddSecTitle: "Add / Edit Section", lblAddCardTitle: "Add / Edit Card Item",
-                fCol1Title: "About Arab Malaysia", fCol1Text: "The first and largest platform serving and guiding the Arabic community and visitors in Malaysia.",
-                fCol2Title: "Quick Links", fLinkHome: "Home", fLinkAdmin: "Admin Control Dashboard",
-                fCol3Title: "Management & Inquiries", fCol3Manager: "Sharif Mansour Management", fCol3Help: "For any inquiries in Malaysia, please leave a message.",
-                lblManageSectionsTitle: "Manage Active Layout Sections", lblManageItemsTitle: "Manage Active Grid Items"
+                siteTitle: "Arab Malaysia",
+                langCountLabel: "Visitor Counter:",
+                footerCopyright: "Arab Malaysia - All Rights Reserved &copy; 2026",
+                lblLoginTitle: "Admin Security Login",
+                lblUser: "Username",
+                lblPass: "Password",
+                btnLogin: "Login",
+                lblDashTitle: "Professional Administration Dashboard",
+                tabColorsBtn: "Colors & Styling",
+                tabSectionsBtn: "Sections & Cards",
+                lblThemeHeading: "Personalize Core Visual Branding Colors",
+                clrBgLbl: "Website Background",
+                clrTextLbl: "General Text Color",
+                clrBtnLbl: "Buttons & Action Items",
+                clrHoverLbl: "Text Hover & Touch Links",
+                clrHeaderFooterLbl: "Top Navigation Banner & Footer Color",
+                btnResetTheme: "Reset Theme Settings to Defaults",
+                lblAddSecTitle: "Create a Brand New Structural Section",
+                lblAddCardTitle: "Append Card Object Item Entry",
+                lblUrlsHelp: "Gallery Image URLs Array (Separate each link with a comma ,)",
+                btnAddSec: "Initialize & Build Section Template",
+                btnAddCard: "Commit Card Entry Data Object",
+                lblCurrentData: "Delete Sections Console",
+                lblManageCardsTitle: "Manage & Delete Current Items",
+                lblSelectSecFilter: "Select section to filter individual items:",
+                cardBtnText: "View Details & Connect",
+                fTitleAbout: "About Arab Malaysia",
+                fDescAbout: "The first and largest platform serving and guiding the Arabic community and tourists in Malaysia.",
+                fTitleLinks: "Quick Links",
+                linkHome: "Home",
+                linkAdmin: "Admin Control Panel",
+                linkContact: "Contact Us",
+                fTitleContact: "Management & Queries",
+                fManagerName: "Management of Sherif Mansour",
+                fInstructions: "For any inquiries within Malaysia, please leave a message.",
+                fLocationText: "Kuala Lumpur, Malaysia"
             }
         };
 
@@ -748,23 +939,38 @@
             applyLanguageSettings(currentLang);
             applyThemeStyles(siteTheme);
             renderPromoBanners();
-            startAutoSlider();
             renderDynamicSections();
             initScrollTracking();
             handleMockVisitorMetrics();
+            startAutoSliderCycle();
         });
 
         function applyLanguageSettings(lang) {
             currentLang = lang;
             localStorage.setItem('siteLang', lang);
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            const docHtml = document.documentElement;
+            docHtml.lang = lang;
+            docHtml.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
             const entries = uiLexicon[lang];
             for (let id in entries) {
                 const el = document.getElementById(id);
                 if (el) el.innerHTML = entries[id];
             }
+
+            const prevArrow = document.querySelector('.arrow-prev i');
+            const nextArrow = document.querySelector('.arrow-next i');
+            if (prevArrow && nextArrow) {
+                if (lang === 'ar') {
+                    prevArrow.className = 'fa-solid fa-chevron-right';
+                    nextArrow.className = 'fa-solid fa-chevron-left';
+                } else {
+                    prevArrow.className = 'fa-solid fa-chevron-left';
+                    nextArrow.className = 'fa-solid fa-chevron-right';
+                }
+            }
+
             renderPromoBanners();
             renderDynamicSections();
         }
@@ -784,19 +990,21 @@
             document.getElementById('cfgBgColor').value = theme.bg;
             document.getElementById('cfgTextColor').value = theme.text;
             document.getElementById('cfgBtnColor').value = theme.btn;
+            document.getElementById('cfgHoverColor').value = theme.hover;
             document.getElementById('cfgHeaderFooterColor').value = theme.headerFooter;
         }
 
         function updateThemeLive() {
-            siteTheme = {
+            const liveTheme = {
                 bg: document.getElementById('cfgBgColor').value,
                 text: document.getElementById('cfgTextColor').value,
                 btn: document.getElementById('cfgBtnColor').value,
-                hover: siteTheme.hover,
+                hover: document.getElementById('cfgHoverColor').value,
                 headerFooter: document.getElementById('cfgHeaderFooterColor').value
             };
-            localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
-            applyThemeStyles(siteTheme);
+            siteTheme = liveTheme;
+            localStorage.setItem('siteThemeColors', JSON.stringify(liveTheme));
+            applyThemeStyles(liveTheme);
         }
 
         function resetThemeDefault() {
@@ -812,18 +1020,20 @@
                 const title = currentLang === 'ar' ? slide.titleAr : slide.titleEn;
                 const slideDiv = document.createElement('div');
                 slideDiv.className = 'slide';
-                slideDiv.innerHTML = `<img src="${slide.img}" alt="Banner"><div class="slide-caption">${title}</div>`;
+                slideDiv.innerHTML = `
+                    <img src="${slide.img}" alt="Promo Banner Image">
+                    <div class="slide-caption">${title}</div>
+                `;
                 container.appendChild(slideDiv);
             });
             updateSliderPosition();
         }
 
-        function startAutoSlider() {
-            clearInterval(sliderInterval);
-            sliderInterval = setInterval(() => { moveSlide(1); }, 4000);
-        }
-
-        function moveSlide(dir) {
+        function moveSlide(dir, isManual = true) {
+            if (isManual) {
+                clearInterval(autoSliderIntervalId);
+                startAutoSliderCycle();
+            }
             activePromoIdx += dir;
             if (activePromoIdx >= defaultPromoSlides.length) activePromoIdx = 0;
             if (activePromoIdx < 0) activePromoIdx = defaultPromoSlides.length - 1;
@@ -837,104 +1047,153 @@
             container.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         }
 
-		function renderDynamicSections() {
-			const mainWrapper = document.getElementById('sectionsWrapper');
-			mainWrapper.innerHTML = '';
-		
-			webSections.forEach((section) => {
-				const secTitle = currentLang === 'ar' ? section.titleAr : section.titleEn;
-				const sectionEl = document.createElement('section');
-				sectionEl.className = 'section-container';
-		
-				const h2 = document.createElement('h2');
-				h2.className = 'section-title';
-				h2.textContent = secTitle;
-				sectionEl.appendChild(h2);
-		
-				const grid = document.createElement('div');
-				grid.className = 'cards-grid';
-		
-				section.cards.forEach((card) => {
-					const cardName = currentLang === 'ar' ? card.nameAr : card.nameEn;
-					const activeImgUrl = card.images[card.currentImgIdx] || 'https://unsplash.com';
-		
-					const cardEl = document.createElement('div');
-					cardEl.className = 'card';
-					cardEl.innerHTML = `
-						<div class="card-gallery">
-							<img src="${activeImgUrl}" alt="${cardName}">
-							<button class="slider-arrow arrow-prev" style="width:35px; height:35px; font-size:14px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', -1, event)"><i class="fa-solid fa-chevron-right"></i></button>
-							<button class="slider-arrow arrow-next" style="width:35px; height:35px; font-size:14px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', 1, event)"><i class="fa-solid fa-chevron-left"></i></button>
-						</div>
-						<div class="card-info">
-							<div class="card-name">${cardName}</div>
-							<button class="card-btn">${uiLexicon[currentLang].cardBtnText}</button>
-						</div>
-					`;
-					grid.appendChild(cardEl);
-				});
-		
-				sectionEl.appendChild(grid);
-				mainWrapper.appendChild(sectionEl);
-			});
-		
-			populateAdminSectionConsoleDropdowns();
-		}
+        function startAutoSliderCycle() {
+            autoSliderIntervalId = setInterval(() => {
+                moveSlide(1, false);
+            }, 4000);
+        }
+
+        function renderDynamicSections() {
+            const mainWrapper = document.getElementById('sectionsWrapper');
+            mainWrapper.innerHTML = '';
+
+            webSections.forEach((section) => {
+                const secTitle = currentLang === 'ar' ? section.titleAr : section.titleEn;
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'section-container';
+
+                const h2 = document.createElement('h2');
+                h2.className = 'section-title';
+                h2.textContent = secTitle;
+                sectionEl.appendChild(h2);
+
+                const grid = document.createElement('div');
+                grid.className = 'cards-grid';
+
+                section.cards.forEach((card) => {
+                    const cardName = currentLang === 'ar' ? card.nameAr : card.nameEn;
+                    const activeImgUrl = card.images[card.currentImgIdx] || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80';
+                    
+                    const cardEl = document.createElement('div');
+                    cardEl.className = 'card';
+                    cardEl.innerHTML = `
+                        <div class="card-gallery">
+                            <img src="${activeImgUrl}" alt="${cardName}">
+                            <button class="slider-arrow arrow-prev" style="width:32px; height:32px; font-size:12px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', -1, event)"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="slider-arrow arrow-next" style="width:32px; height:32px; font-size:12px;" onclick="cycleCardGalleryImage('${section.id}', '${card.id}', 1, event)"><i class="fa-solid fa-chevron-left"></i></button>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-name">${cardName}</div>
+                            <button class="card-btn" onclick="window.open('https://wa.me/60123456789', '_blank')">${uiLexicon[currentLang].cardBtnText}</button>
+                        </div>
+                    `;
+
+                    cardEl.addEventListener('mousemove', (e) => handle3DTiltMotionEffect(e, cardEl));
+                    cardEl.addEventListener('mouseleave', () => reset3DCardPerspectiveStyles(cardEl));
+
+                    grid.appendChild(cardEl);
+                });
+
+                sectionEl.appendChild(grid);
+                mainWrapper.appendChild(sectionEl);
+            });
+
+            populateAdminSectionConsoleDropdowns();
+        }
+
+        function cycleCardGalleryImage(secId, cardId, movementDirection, mouseClickEvt) {
+            mouseClickEvt.stopPropagation();
+            const targetSection = webSections.find(s => s.id === secId);
+            if (targetSection) {
+                const targetCard = targetSection.cards.find(c => c.id === cardId);
+                if (targetCard && targetCard.images.length > 0) {
+                    targetCard.currentImgIdx += movementDirection;
+                    if (targetCard.currentImgIdx >= targetCard.images.length) targetCard.currentImgIdx = 0;
+                    if (targetCard.currentImgIdx < 0) targetCard.currentImgIdx = targetCard.images.length - 1;
+                    
+                    localStorage.setItem('webSectionsData', JSON.stringify(webSections));
+                    renderDynamicSections();
+                }
+            }
+        }
+
+        function handle3DTiltMotionEffect(mouseEvt, targetCardElement) {
+            const boundingDimensions = targetCardElement.getBoundingClientRect();
+            const relativeCursorX = mouseEvt.clientX - boundingDimensions.left;
+            const relativeCursorY = mouseEvt.clientY - boundingDimensions.top;
+            const middlePointX = boundingDimensions.width / 2;
+            const middlePointY = boundingDimensions.height / 2;
+            const computedRotateX = ((middlePointY - relativeCursorY) / middlePointY) * 4; 
+            const computedRotateY = ((relativeCursorX - middlePointX) / middlePointX) * 4;
+            targetCardElement.style.transform = `perspective(1000px) translateY(-6px) rotateX(${computedRotateX}deg) rotateY(${computedRotateY}deg)`;
+        }
+
+        function reset3DCardPerspectiveStyles(targetCardElement) {
+            targetCardElement.style.transform = `perspective(1000px) translateY(0) rotateX(0deg) rotateY(0deg)`;
+        }
 
         function initScrollTracking() {
             const scrollTopBtn = document.getElementById('scrollTopBtn');
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) scrollTopBtn.classList.add('visible');
-                else scrollTopBtn.classList.remove('visible');
+                if (window.scrollY > 400) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
             });
-            scrollTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
         }
 
         function handleMockVisitorMetrics() {
-            let count = parseInt(localStorage.getItem('visitorTotalCountData')) || 124530;
-            count += Math.floor(Math.random() * 3) + 1;
-            localStorage.setItem('visitorTotalCountData', count);
-            document.getElementById('visitorCount').textContent = count.toLocaleString();
+            let activeVisitsCount = parseInt(localStorage.getItem('visitorTotalCountData')) || 124530;
+            activeVisitsCount += Math.floor(Math.random() * 3) + 1;
+            localStorage.setItem('visitorTotalCountData', activeVisitsCount);
+            document.getElementById('visitorCount').textContent = activeVisitsCount.toLocaleString();
         }
 
-        document.getElementById('adminToggleBtn').addEventListener('click', () => { openAdminDashboardView(); });
+        function openAdminPanelDirectly() {
+            document.getElementById('adminToggleBtn').click();
+        }
 
-        function openAdminDashboardViaLink() { openAdminDashboardView(); }
-
-        function openAdminDashboardView() {
+        document.getElementById('adminToggleBtn').addEventListener('click', () => {
             const dialog = document.getElementById('adminDialog');
             dialog.classList.add('active');
             if (isUserAdminLoggedIn) {
                 document.getElementById('authBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'flex';
-                buildSectionsManagementView();
-                buildItemsManagementView();
+                buildAdminManagementListViewConsole();
+                buildCardsManagementListViewConsole();
             } else {
                 document.getElementById('authBox').style.display = 'flex';
                 document.getElementById('dashboardBox').style.display = 'none';
             }
+        });
+
+        function closeAdmin() {
+            document.getElementById('adminDialog').classList.remove('active');
         }
 
-        function closeAdmin() { document.getElementById('adminDialog').classList.remove('active'); }
-
         function handleLogin() {
-            const user = document.getElementById('adminUser').value;
-            const pass = document.getElementById('adminPass').value;
-            if (user === 'admin' && pass === 'admin123') {
+            const userIn = document.getElementById('adminUser').value;
+            const passIn = document.getElementById('adminPass').value;
+            if (userIn === 'admin' && passIn === 'admin123') {
                 isUserAdminLoggedIn = true;
                 document.getElementById('authBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'flex';
-                buildSectionsManagementView();
-                buildItemsManagementView();
+                buildAdminManagementListViewConsole();
+                buildCardsManagementListViewConsole();
             } else {
-                alert('خطأ في البيانات!');
+                alert(currentLang === 'ar' ? 'خطأ في اسم المستخدم أو كلمة المرور!' : 'Invalid admin credentials!');
             }
         }
 
-        function switchTab(tab) {
+        function switchTab(targetTabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-            if (tab === 'colors') {
+
+            if (targetTabId === 'colors') {
                 document.getElementById('tabColorsBtn').classList.add('active');
                 document.getElementById('tabColors').classList.add('active');
             } else {
@@ -943,203 +1202,158 @@
             }
         }
 
-        function populateAdminDropdowns() {
-            const targetSel = document.getElementById('targetSectionSelect');
-            const filterSel = document.getElementById('filterSectionSelect');
-            if(!targetSel || !filterSel) return;
-            
-            const previousFilterVal = filterSel.value;
-
-            targetSel.innerHTML = '';
-            filterSel.innerHTML = '';
-
-            webSections.forEach(s => {
-                const title = currentLang === 'ar' ? s.titleAr : s.titleEn;
-                
-                const opt1 = document.createElement('option');
-                opt1.value = s.id; opt1.textContent = title;
-                targetSel.appendChild(opt1);
-
-                const opt2 = document.createElement('option');
-                opt2.value = s.id; opt2.textContent = title;
-                filterSel.appendChild(opt2);
-            });
-
-            if (previousFilterVal && webSections.some(s => s.id === previousFilterVal)) {
-                filterSel.value = previousFilterVal;
-            }
-        }
-
-        // Section Upsert Programmatic Engine
-        function saveSectionItem() {
-            const id = document.getElementById('editingSectionId').value;
+        function addNewSectionItem() {
             const titleAr = document.getElementById('newSecNameAr').value.trim();
             const titleEn = document.getElementById('newSecNameEn').value.trim();
             const folder = document.getElementById('newSecFolder').value.trim();
 
-            if (!titleAr || !titleEn || !folder) return alert('برجاء ملء الحقول');
-
-            if (id) {
-                // Update Existing Node
-                const sec = webSections.find(s => s.id === id);
-                if (sec) { sec.titleAr = titleAr; sec.titleEn = titleEn; sec.folder = folder; }
-            } else {
-                // Create New Node
-                webSections.push({ id: 'sec_' + Date.now(), titleAr: titleAr, titleEn: titleEn, folder: folder, cards: [] });
-            }
-            commitAndSync();
-            cancelSectionEdit();
-        }
-
-        function editSectionNode(id) {
-            const sec = webSections.find(s => s.id === id);
-            if (!sec) return;
-            document.getElementById('editingSectionId').value = sec.id;
-            document.getElementById('newSecNameAr').value = sec.titleAr;
-            document.getElementById('newSecNameEn').value = sec.titleEn;
-            document.getElementById('newSecFolder').value = sec.folder;
-            document.getElementById('btnCancelSecEdit').style.display = 'block';
-            document.getElementById('lblAddSecTitle').textContent = 'تعديل بيانات القسم الحالي';
-        }
-
-        function cancelSectionEdit() {
-            document.getElementById('editingSectionId').value = '';
-            document.getElementById('newSecNameAr').value = '';
-            document.getElementById('newSecNameEn').value = '';
-            document.getElementById('newSecFolder').value = '';
-            document.getElementById('btnCancelSecEdit').style.display = 'none';
-            document.getElementById('lblAddSecTitle').textContent = 'إضافة / تعديل قسم';
-        }
-
-        function deleteSectionNode(id) {
-            if (confirm('حذف القسم بالكامل؟')) {
-                webSections = webSections.filter(s => s.id !== id);
-                commitAndSync();
-            }
-        }
-
-        // Card / Element Upsert Programmatic Engine
-        function saveCardItem() {
-            const cardId = document.getElementById('editingCardId').value;
-            const targetSecId = document.getElementById('targetSectionSelect').value;
-            const nameAr = document.getElementById('newCardNameAr').value.trim();
-            const nameEn = document.getElementById('newCardNameEn').value.trim();
-            const rawImgs = document.getElementById('newCardImages').value.trim();
-
-            if (!nameAr || !nameEn) return alert('الرجاء كتابة الأسماء');
-
-            let imgsArr = rawImgs ? rawImgs.split(',').map(u => u.trim()).filter(u => u.length > 0) : [];
-            if(imgsArr.length === 0) imgsArr.push("https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80");
-
-            if (cardId) {
-                // Update mode
-                // Remove from old section first to prevent duplicate or cross-section bugs
-                let foundCard = null;
-                webSections.forEach(s => {
-                    const idx = s.cards.findIndex(c => c.id === cardId);
-                    if (idx !== -1) { foundCard = s.cards.splice(idx, 1)[0]; }
-                });
-                if (foundCard) {
-                    foundCard.nameAr = nameAr; foundCard.nameEn = nameEn; foundCard.images = imgsArr;
-                    const destSec = webSections.find(s => s.id === targetSecId);
-                    if (destSec) destSec.cards.push(foundCard);
-                }
-            } else {
-                // Creation Mode
-                const destSec = webSections.find(s => s.id === targetSecId);
-                if (destSec) {
-                    destSec.cards.push({ id: 'card_' + Date.now(), nameAr: nameAr, nameEn: nameEn, images: imgsArr, currentImgIdx: 0 });
-                }
-            }
-            commitAndSync();
-            cancelCardEdit();
-        }
-
-        function editCardNode(id) {
-            let card = null; let secId = '';
-            webSections.forEach(s => {
-                const c = s.cards.find(item => item.id === id);
-                if (c) { card = c; secId = s.id; }
-            });
-            if (!card) return;
-
-            document.getElementById('editingCardId').value = card.id;
-            document.getElementById('targetSectionSelect').value = secId;
-            document.getElementById('newCardNameAr').value = card.nameAr;
-            document.getElementById('newCardNameEn').value = card.nameEn;
-            document.getElementById('newCardImages').value = card.images.join(', ');
-            document.getElementById('btnCancelCardEdit').style.display = 'block';
-            document.getElementById('lblAddCardTitle').textContent = 'تعديل بيانات العنصر الحالي';
-        }
-
-        function cancelCardEdit() {
-            document.getElementById('editingCardId').value = '';
-            document.getElementById('newCardNameAr').value = '';
-            document.getElementById('newCardNameEn').value = '';
-            document.getElementById('newCardImages').value = '';
-            document.getElementById('btnCancelCardEdit').style.display = 'none';
-            document.getElementById('lblAddCardTitle').textContent = 'إضافة / تعديل عنصر داخل قسم';
-        }
-
-        function deleteCardNode(id) {
-            if (confirm('حذف هذا العنصر نهائياً؟')) {
-                webSections.forEach(s => { s.cards = s.cards.filter(c => c.id !== id); });
-                commitAndSync();
-            }
-        }
-
-        // View Construction Builders
-        function buildSectionsManagementView() {
-            const container = document.getElementById('adminSectionsManagementList');
-            if(!container) return;
-            container.innerHTML = '';
-            webSections.forEach(s => {
-                const name = currentLang === 'ar' ? s.titleAr : s.titleEn;
-                const div = document.createElement('div');
-                div.className = 'manage-list-item';
-                div.innerHTML = `
-                    <span><strong>${name}</strong> (${s.cards.length} عناصر)</span>
-                    <div class="action-icon-group">
-                        <button class="action-icon-btn edit-btn" onclick="editSectionNode('${s.id}')" title="تعديل"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="action-icon-btn delete-btn" onclick="deleteSectionNode('${s.id}')" title="حذف"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function buildItemsManagementView() {
-            const container = document.getElementById('adminItemsManagementList');
-            const filterSecId = document.getElementById('filterSectionSelect').value;
-            if(!container || !filterSecId) return;
-            container.innerHTML = '';
-            
-            const sec = webSections.find(s => s.id === filterSecId);
-            if (!sec || sec.cards.length === 0) {
-                container.innerHTML = '<p style="font-size:13px; color:#999; text-align:center; padding:10px;">لا يوجد عناصر في هذا القسم</p>';
+            if (!titleAr || !titleEn || !folder) {
+                alert(currentLang === 'ar' ? 'الرجاء ملء جميع خانات انشاء القسم الجديد!' : 'Please populate all fields!');
                 return;
             }
 
-            sec.cards.forEach(c => {
-                const name = currentLang === 'ar' ? c.nameAr : c.nameEn;
-                const div = document.createElement('div');
-                div.className = 'manage-list-item';
-                div.innerHTML = `
-                    <span>${name}</span>
-                    <div class="action-icon-group">
-                        <button class="action-icon-btn edit-btn" onclick="editCardNode('${c.id}')" title="تعديل"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="action-icon-btn delete-btn" onclick="deleteCardNode('${c.id}')" title="حذف"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
+            webSections.push({
+                id: 'sec_' + Date.now(),
+                titleAr: titleAr,
+                titleEn: titleEn,
+                folder: folder,
+                cards: []
+            });
+            commitAndSyncSystemDatastores();
+            
+            document.getElementById('newSecNameAr').value = '';
+            document.getElementById('newSecNameEn').value = '';
+            document.getElementById('newSecFolder').value = '';
+            alert(currentLang === 'ar' ? 'تم إنشاء القسم بنجاح!' : 'Successfully established section template!');
+        }
+
+        function populateAdminSectionConsoleDropdowns() {
+            const dropdown = document.getElementById('targetSectionSelect');
+            const filterDropdown = document.getElementById('filterSectionSelect');
+            if(!dropdown || !filterDropdown) return;
+            
+            const currentTargetVal = dropdown.value;
+            const currentFilterVal = filterDropdown.value;
+
+            dropdown.innerHTML = '';
+            filterDropdown.innerHTML = '';
+
+            webSections.forEach(s => {
+                const name = currentLang === 'ar' ? s.titleAr : s.titleEn;
+                
+                const opt1 = document.createElement('option');
+                opt1.value = s.id; opt1.textContent = name;
+                dropdown.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = s.id; opt2.textContent = name;
+                filterDropdown.appendChild(opt2);
+            });
+
+            if(currentTargetVal) dropdown.value = currentTargetVal;
+            if(currentFilterVal) filterDropdown.value = currentFilterVal;
+        }
+
+        function addNewCardItem() {
+            const targetSecId = document.getElementById('targetSectionSelect').value;
+            const nameAr = document.getElementById('newCardNameAr').value.trim();
+            const nameEn = document.getElementById('newCardNameEn').value.trim();
+            const rawImages = document.getElementById('newCardImages').value.trim();
+
+            if (!nameAr || !nameEn) {
+                alert(currentLang === 'ar' ? 'الرجاء إدخال الأسماء المطلوبة للعنصر!' : 'Please define name parameters correctly!');
+                return;
+            }
+
+            let imageLinksArray = rawImages ? rawImages.split(',').map(url => url.trim()).filter(url => url.length > 0) : [];
+            if(imageLinksArray.length === 0) {
+                imageLinksArray.push("https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80");
+            }
+
+            const targetSection = webSections.find(s => s.id === targetSecId);
+            if (targetSection) {
+                targetSection.cards.push({
+                    id: 'card_' + Date.now(),
+                    nameAr: nameAr,
+                    nameEn: nameEn,
+                    images: imageLinksArray,
+                    currentImgIdx: 0
+                });
+                commitAndSyncSystemDatastores();
+                
+                document.getElementById('newCardNameAr').value = '';
+                document.getElementById('newCardNameEn').value = '';
+                document.getElementById('newCardImages').value = '';
+                alert(currentLang === 'ar' ? 'تم إضافة العنصر الجديد بنجاح!' : 'Card element created and successfully appended!');
+            }
+        }
+
+        function buildAdminManagementListViewConsole() {
+            const container = document.getElementById('adminSectionsManagementList');
+            container.innerHTML = '';
+            webSections.forEach(s => {
+                const labelName = currentLang === 'ar' ? s.titleAr : s.titleEn;
+                const divRow = document.createElement('div');
+                divRow.className = 'manage-list-item';
+                divRow.innerHTML = `
+                    <span><strong>${labelName}</strong> (${s.cards.length} عناصر)</span>
+                    <button class="delete-icon-btn" onclick="deleteTargetSectionDataNode('${s.id}')" title="حذف القسم"><i class="fa-solid fa-trash-can"></i></button>
                 `;
-                container.appendChild(div);
+                container.appendChild(divRow);
             });
         }
 
-        function commitAndSync() {
+        /* Feature Added: Build individual card/item list for deletions inside sections */
+        function buildCardsManagementListViewConsole() {
+            const container = document.getElementById('adminCardsManagementList');
+            const filterSecId = document.getElementById('filterSectionSelect').value;
+            container.innerHTML = '';
+
+            if (!filterSecId) {
+                container.innerHTML = `<p style="font-size:13px; color:#666; text-align:center; padding:10px;">لا توجد أقسام متاحة لعرض عناصرها</p>`;
+                return;
+            }
+
+            const selectedSec = webSections.find(s => s.id === filterSecId);
+            if (selectedSec && selectedSec.cards.length > 0) {
+                selectedSec.cards.forEach(card => {
+                    const cName = currentLang === 'ar' ? card.nameAr : card.nameEn;
+                    const divRow = document.createElement('div');
+                    divRow.className = 'manage-list-item';
+                    divRow.innerHTML = `
+                        <span>${cName}</span>
+                        <button class="delete-icon-btn" onclick="deleteTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="حذف هذا العنصر"><i class="fa-solid fa-trash-can"></i></button>
+                    `;
+                    container.appendChild(divRow);
+                });
+            } else {
+                container.innerHTML = `<p style="font-size:13px; color:#666; text-align:center; padding:10px;">هذا القسم فارغ حالياً، لا توجد عناصر لحذفها.</p>`;
+            }
+        }
+
+        function deleteTargetCardDataNode(secId, cardId) {
+            if (confirm(currentLang === 'ar' ? 'هل أنت متأكد من رغبتك في حذف هذا العنصر نهائياً من المعرض؟' : 'Are you sure you want to permanently delete this item?')) {
+                const targetSec = webSections.find(s => s.id === secId);
+                if (targetSec) {
+                    targetSec.cards = targetSec.cards.filter(c => c.id !== cardId);
+                    commitAndSyncSystemDatastores();
+                }
+            }
+        }
+
+        function deleteTargetSectionDataNode(secId) {
+            if (confirm(currentLang === 'ar' ? 'هل أنت متأكد تماماً من رغبتك في مسح هذا القسم بكافة عناصره؟' : 'Are you permanently sure you want to delete this entire section?')) {
+                webSections = webSections.filter(s => s.id !== secId);
+                commitAndSyncSystemDatastores();
+            }
+        }
+
+        function commitAndSyncSystemDatastores() {
             localStorage.setItem('webSectionsData', JSON.stringify(webSections));
             renderDynamicSections();
-            buildSectionsManagementView();
-            buildItemsManagementView();
+            buildAdminManagementListViewConsole();
+            buildCardsManagementListViewConsole();
+            populateAdminSectionConsoleDropdowns();
         }
     </script>
 </body>
