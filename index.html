@@ -252,6 +252,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 1.5s;
+			transition: opacity 1.2s ease-in-out;
         }
 
         .card:hover .card-gallery img {
@@ -1287,7 +1288,20 @@
                             const liveCard = liveSection && liveSection.cards.find(item => item.id === card.id);
                             if (!liveCard || !liveCard.images || liveCard.images.length < 2 || !galleryImg.isConnected) return;
                             liveCard.currentImgIdx = ((liveCard.currentImgIdx || 0) + 1) % liveCard.images.length;
-                            galleryImg.src = liveCard.images[liveCard.currentImgIdx];
+                            const nextImage = new Image();
+
+							nextImage.onload = () => {
+								galleryImg.style.opacity = '0';
+							
+								setTimeout(() => {
+									if (!galleryImg.isConnected) return;
+							
+									galleryImg.src = nextImage.src;
+									galleryImg.style.opacity = '1';
+								}, 600);
+							};
+							
+							nextImage.src = liveCard.images[liveCard.currentImgIdx];
                             localStorage.setItem('webSectionsData', JSON.stringify(webSections));
                         }, SLIDER_INTERVAL_MS);
                         cardGalleryIntervals.push(timer);
