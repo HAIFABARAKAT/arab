@@ -1296,8 +1296,12 @@
 								setTimeout(() => {
 									if (!galleryImg.isConnected) return;
 							
+									galleryImg.style.opacity = '0';
 									galleryImg.src = nextImage.src;
-									galleryImg.style.opacity = '1';
+									
+									requestAnimationFrame(() => {
+										galleryImg.style.opacity = '1';
+									});
 								}, 600);
 							};
 							
