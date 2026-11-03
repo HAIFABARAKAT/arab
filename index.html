@@ -252,7 +252,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 1.5s;
-			transition: opacity 1.2s ease-in-out;
+			transition: opacity 2s ease-in-out;
         }
 
         .card:hover .card-gallery img {
@@ -1302,7 +1302,7 @@
 									requestAnimationFrame(() => {
 										galleryImg.style.opacity = '1';
 									});
-								}, 600);
+								}, 1000);
 							};
 							
 							nextImage.src = liveCard.images[liveCard.currentImgIdx];
