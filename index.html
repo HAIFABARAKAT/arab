@@ -781,7 +781,10 @@
 
         /* Premium RTL administration shell */
         .admin-modal.active:has(#dashboardBox[style*="flex"]){padding:0;align-items:stretch;justify-content:stretch}
-        .admin-dashboard-shell{width:100%;max-width:none;height:100%;max-height:100%;min-height:100vh;margin:0;border-radius:0;overflow:hidden;display:flex;flex-direction:row;transform:none!important;background:#f4f7fc;color:#17243a}
+        .admin-dashboard-shell{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important;min-height:100vh!important;margin:0!important;border-radius:0!important;overflow:hidden;display:flex!important;flex-direction:row!important;align-items:stretch!important;transform:none!important;background:#f4f7fc;color:#17243a}
+        .admin-dashboard-shell>.premium-admin-sidebar{flex:0 0 250px;min-height:0;overflow-y:auto}
+        .admin-dashboard-shell>.premium-admin-main{flex:1 1 0%;min-width:0;min-height:0;height:100%;overflow:hidden}
+        .admin-dashboard-shell>.premium-admin-main>.premium-admin-workspace{min-width:0;min-height:0;width:100%;box-sizing:border-box}
         .premium-admin-sidebar{width:250px;min-width:250px;background:#101d36;color:#eaf0ff;padding:24px 15px 18px;display:flex;flex-direction:column;gap:8px}
         .premium-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 25px;border-bottom:1px solid #293750;margin-bottom:13px}
         .premium-brand>span{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#4b83f5,#2454bb);display:grid;place-items:center;color:white;font-size:19px}
@@ -1677,6 +1680,9 @@
             const dash = document.getElementById('dashboardBox');
             if (!dash || dash.dataset.premiumBuilt === '1') return;
             dash.dataset.premiumBuilt = '1';
+            // Make the dashboard itself the horizontal flex shell; without this
+            // class the sidebar and workspace fall into a vertical stack.
+            dash.classList.add('admin-dashboard-shell');
             const header = dash.querySelector('.admin-header');
             const tabs = dash.querySelector('.tab-menu');
             const actions = dash.querySelector('.admin-workspace-actions');
@@ -1726,6 +1732,9 @@
             const dash = document.getElementById('dashboardBox');
             if (!dash || dash.dataset.premiumBuilt === '1') return;
             dash.dataset.premiumBuilt = '1';
+            // Make the dashboard itself the horizontal flex shell; without this
+            // class the sidebar and workspace fall into a vertical stack.
+            dash.classList.add('admin-dashboard-shell');
             const header = dash.querySelector('.admin-header');
             const tabs = dash.querySelector('.tab-menu');
             const actions = dash.querySelector('.admin-workspace-actions');
