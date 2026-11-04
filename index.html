@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -777,6 +777,78 @@
           .sports-news-actions{margin-top:16px;padding-top:0}
         }
 
+
+        /* Premium RTL administration shell */
+        .admin-modal.active:has(#dashboardBox[style*="flex"]){padding:0;align-items:stretch;justify-content:stretch}
+        .admin-dashboard-shell{width:100%;max-width:none;height:100%;max-height:100%;min-height:100vh;margin:0;border-radius:0;overflow:hidden;display:flex;flex-direction:row;transform:none!important;background:#f4f7fc;color:#17243a}
+        .premium-admin-sidebar{width:250px;min-width:250px;background:#101d36;color:#eaf0ff;padding:24px 15px 18px;display:flex;flex-direction:column;gap:8px}
+        .premium-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 25px;border-bottom:1px solid #293750;margin-bottom:13px}
+        .premium-brand>span{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#4b83f5,#2454bb);display:grid;place-items:center;color:white;font-size:19px}
+        .premium-brand b{display:block;color:white;font-size:16px}.premium-brand small{display:block;color:#9eacc7;font-size:10px;margin-top:4px}
+        .premium-nav-label{color:#8293b3;font-size:10px;padding:8px 12px}
+        .premium-overview,.premium-admin-sidebar .tab-btn{width:100%;display:flex;align-items:center;gap:12px;text-align:right;border:0;background:transparent;color:#bdc9df;padding:13px 14px;border-radius:10px;font-size:12px;font-weight:650;cursor:pointer;border-bottom:0}
+        .premium-overview i,.premium-admin-sidebar .tab-btn i{width:18px;text-align:center}
+        .premium-overview:hover,.premium-admin-sidebar .tab-btn:hover{background:#1d2d4b;color:#fff}
+        .premium-overview.active,.premium-admin-sidebar .tab-btn.active{background:linear-gradient(100deg,#2d61cf,#3979ed);color:#fff;box-shadow:0 7px 18px #0a142d55}
+        .premium-admin-sidebar .tab-menu{display:flex;flex-direction:column;border:0;gap:6px}
+        .premium-admin-sidebar .tab-btn{flex:unset}
+        .premium-sidebar-foot{margin-top:auto;border-top:1px solid #293750;padding:17px 10px 4px;color:#a9bad5;font-size:10px;display:flex;gap:9px;align-items:center}
+        .premium-sidebar-foot i{color:#4bd49b}
+        .premium-admin-sidebar .admin-btn{margin-top:10px;background:#263957;border-radius:9px;font-size:11px;width:100%!important;padding:11px!important;color:#eaf0ff}
+        .premium-admin-main{min-width:0;flex:1;display:flex;flex-direction:column;background:#f4f7fc}
+        .premium-admin-topbar{height:82px;min-height:82px;background:#fff;border-bottom:1px solid #e7edf5;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
+        .premium-admin-topbar small{font-size:9px;letter-spacing:1.4px;color:#8492aa;font-weight:800}
+        .premium-admin-topbar h2{font-size:20px;color:#17243a;margin-top:4px}
+        .premium-top-actions{display:flex;align-items:center;gap:10px}
+        .premium-online{font-size:10px;color:#61718a;background:#f2f6fc;padding:9px 12px;border-radius:30px}
+        .premium-online i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#21bd83;margin-left:5px}
+        .premium-top-actions button{width:38px;height:38px;border:1px solid #e7edf5;border-radius:10px;background:#fff;color:#52627c;cursor:pointer}
+        .premium-top-actions .admin-close{font-size:22px;color:#df5965}
+        .premium-admin-workspace{overflow:auto;flex:1;padding:15px 26px 30px}
+        .premium-admin-workspace .admin-workspace-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+        .premium-admin-workspace .admin-workspace-actions .admin-btn{width:auto;margin:0;padding:10px 13px;border-radius:9px;font-size:11px}
+        .premium-admin-workspace .admin-status{border-radius:9px;margin-bottom:17px}
+        .premium-admin-workspace .admin-body{padding:0;overflow:visible;max-height:none}
+        .premium-admin-workspace .panel-tab{display:none}.premium-admin-workspace .panel-tab.active{display:block}
+        .admin-welcome{background:linear-gradient(110deg,#142747,#244b88 70%,#3978dc);border-radius:16px;padding:25px 28px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+        .admin-welcome small{font-size:9px;letter-spacing:1.3px;color:#bad0fa}.admin-welcome h2{font-size:23px;margin:8px 0}.admin-welcome p{font-size:12px;color:#d1def4}
+        .admin-welcome>i{font-size:48px;color:#dce8ff;background:#ffffff1b;padding:20px;border-radius:20px}
+        .admin-stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:17px 0 25px}
+        .admin-stat-card{background:#fff;border:1px solid #e8edf5;border-radius:13px;padding:16px 18px;box-shadow:0 4px 15px #1b31500a}
+        .admin-stat-card span{font-size:11px;color:#687894}.admin-stat-card span i{color:#3974df;margin-left:6px}
+        .admin-stat-card strong{display:block;font-size:27px;color:#1c3154;margin:8px 0}.admin-stat-card small{font-size:10px;color:#91a0b5}
+        .admin-overview-heading{font-size:17px;color:#1b2a43;margin:0 0 12px}
+        .admin-quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+        .admin-quick-card{background:#fff;border:1px solid #e6edf6;border-radius:13px;padding:17px;text-align:right;display:flex;flex-direction:column;align-items:flex-start;gap:9px;cursor:pointer;color:#20324e}
+        .admin-quick-card:hover{border-color:#9db8ed;box-shadow:0 8px 22px #254b8512;transform:translateY(-2px)}
+        .admin-quick-card>i{width:36px;height:36px;border-radius:10px;background:#edf3ff;color:#326bd6;display:grid;place-items:center}
+        .admin-quick-card b{font-size:13px}.admin-quick-card small{font-size:10px;color:#8391a7}
+        .premium-admin-workspace .manage-list-box,.premium-admin-workspace .admin-form-card{background:#fff;border:1px solid #e6ebf3;border-radius:13px;padding:18px;margin-bottom:16px}
+        .premium-admin-workspace .form-group input:not([type=color]):not([type=checkbox]),.premium-admin-workspace .form-group select{border:1px solid #dfe6f0;border-radius:9px;padding:11px;background:#fbfcfe}
+        .premium-admin-workspace .admin-btn{border-radius:9px}
+        .premium-admin-workspace .color-pickers-grid{background:#fff;border:1px solid #e6ebf3;border-radius:13px;padding:18px}
+        .premium-admin-workspace .image-library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+        .premium-admin-workspace .image-library-card{background:#fff;border:1px solid #e6ebf3;border-radius:11px;padding:9px}
+        .premium-admin-workspace .image-library-card img{width:100%;height:110px;object-fit:cover;border-radius:7px}
+        .admin-dashboard-shell.admin-dark,.admin-dashboard-shell.admin-dark .premium-admin-main{background:#101827;color:#e5edf9}
+        .admin-dashboard-shell.admin-dark .premium-admin-topbar,.admin-dashboard-shell.admin-dark .admin-stat-card,.admin-dashboard-shell.admin-dark .admin-quick-card,.admin-dashboard-shell.admin-dark .manage-list-box,.admin-dashboard-shell.admin-dark .admin-form-card,.admin-dashboard-shell.admin-dark .color-pickers-grid{background:#1b2a40;border-color:#30415a;color:#e5edf9}
+        .admin-dashboard-shell.admin-dark .premium-admin-topbar h2,.admin-dashboard-shell.admin-dark .admin-stat-card strong,.admin-dashboard-shell.admin-dark .admin-quick-card{color:#e5edf9}
+        .admin-dashboard-shell.admin-dark .premium-top-actions button{background:#1b2a40;border-color:#40516a;color:#e5edf9}
+        .admin-dashboard-shell.admin-dark .admin-status{background:#1b304d;color:#c4d7f3;border-color:#304b70}
+        .admin-dashboard-shell.admin-dark .form-group input,.admin-dashboard-shell.admin-dark .form-group select{background:#132137;color:#e5edf9;border-color:#354760}
+        @media(max-width:760px){
+            .premium-admin-sidebar{width:66px;min-width:66px;padding:13px 6px}
+            .premium-brand{justify-content:center;padding:2px 0 18px}.premium-brand>div,.premium-nav-label,.premium-overview span,.premium-admin-sidebar .tab-btn span,.premium-sidebar-foot span{display:none}
+            .premium-overview,.premium-admin-sidebar .tab-btn{justify-content:center;padding:13px 4px}
+            .premium-overview i,.premium-admin-sidebar .tab-btn i{font-size:17px}
+            .premium-admin-topbar{height:68px;min-height:68px;padding:0 11px}.premium-admin-topbar h2{font-size:15px}
+            .premium-online{display:none}.premium-admin-workspace{padding:12px}
+            .premium-admin-workspace .admin-workspace-actions .admin-btn{font-size:9px;padding:8px}
+            .admin-welcome{padding:18px}.admin-welcome h2{font-size:17px}.admin-welcome>i{font-size:25px;padding:13px}
+            .admin-stats-grid{gap:6px}.admin-stat-card{padding:11px 8px}.admin-stat-card strong{font-size:21px}.admin-stat-card span,.admin-stat-card small{font-size:9px}
+            .admin-quick-grid{grid-template-columns:1fr}
+        }
+
     </style>
 </head>
 <body>
@@ -924,9 +996,9 @@
             </div>
             <div class="tab-menu">
                 <button class="tab-btn active" id="tabColorsBtn" onclick="switchTab('colors')">التصميم والألوان</button>
-                <button class="tab-btn" id="tabSectionsBtn" onclick="switchTab('sections')">الأقسام والبطاقات</button>
-                <button class="tab-btn" id="tabImagesBtn" onclick="switchTab('images')">مكتبة الصور</button>
-                <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settings')">الأخبار والرياضة والإعدادات</button>
+                <button class="tab-btn" id="tabSectionsBtn" onclick="switchTab('sections')"><i class="fa-solid fa-layer-group"></i><span>الأقسام والبطاقات</span></button>
+                <button class="tab-btn" id="tabImagesBtn" onclick="switchTab('images')"><i class="fa-regular fa-images"></i><span>مكتبة الصور</span></button>
+                <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><span>الأخبار والعملات والرياضة</span></button>
             </div>
             <div class="admin-workspace-actions">
                 <button class="admin-btn" type="button" onclick="previewWebsite()">معاينة الموقع</button>
@@ -936,7 +1008,21 @@
             </div>
             <div class="admin-status" id="adminDraftStatus">التعديلات تحفظ كمسودة على هذا الجهاز حتى تضغط «حفظ ونشر التغييرات».</div>
             <div class="admin-body">
-                
+                <div class="panel-tab active" id="tabOverview">
+                    <div class="admin-welcome"><div><small>ARAB MALAYSIA / ADMIN</small><h2>إدارة موقع عرب ماليزيا</h2><p>كل أدوات إدارة محتوى موقعك في مكان واحد.</p></div><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="admin-stats-grid">
+                        <div class="admin-stat-card"><span><i class="fa-solid fa-layer-group"></i> الأقسام</span><strong id="adminStatSections">—</strong><small>الأقسام الموجودة بالموقع</small></div>
+                        <div class="admin-stat-card"><span><i class="fa-regular fa-rectangle-list"></i> العناصر</span><strong id="adminStatCards">—</strong><small>البطاقات داخل الأقسام</small></div>
+                        <div class="admin-stat-card"><span><i class="fa-regular fa-images"></i> الصور</span><strong id="adminStatImages">—</strong><small>الصور والبنرات المسجلة</small></div>
+                    </div>
+                    <h3 class="admin-overview-heading">الوصول السريع</h3>
+                    <div class="admin-quick-grid">
+                        <button class="admin-quick-card" onclick="switchTab('sections')"><i class="fa-solid fa-layer-group"></i><b>إدارة الأقسام</b><small>إضافة وترتيب وتعديل المحتوى</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('images')"><i class="fa-regular fa-images"></i><b>مكتبة الصور</b><small>استعراض الصور وإدارة مصادرها</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><b>الأخبار والعملات والرياضة</b><small>التحكم في مكونات الصفحة</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('colors')"><i class="fa-solid fa-palette"></i><b>التصميم والألوان</b><small>تخصيص الهوية البصرية</small></button>
+                    </div>
+                </div>
                 <!-- Tab View Component 1: Theme Personalization Engine Control Panel -->
                 <div class="panel-tab active" id="tabColors">
                     <h3 id="lblThemeHeading" style="margin-bottom:15px;">تخصيص ألوان الهوية البصرية للموقع</h3>
@@ -1198,7 +1284,7 @@
                 linkAdmin: "Admin Control Panel",
                 linkContact: "Contact Us",
                 fTitleContact: "Management & Queries",
-                fManagerName: "Management of Sherif Mansour",
+                fManagerName: "Management of SHARIF MANSOUR",
                 fInstructions: "For any inquiries within Malaysia, please leave a message.",
                 fLocationText: "Kuala Lumpur, Malaysia"
             }
@@ -1567,6 +1653,94 @@
             document.getElementById('visitorCount').textContent = activeVisitsCount.toLocaleString();
         }
 
+        function buildPremiumAdminShell() {
+            const dash = document.getElementById('dashboardBox');
+            if (!dash || dash.dataset.premiumBuilt === '1') return;
+            dash.dataset.premiumBuilt = '1';
+            const header = dash.querySelector('.admin-header');
+            const tabs = dash.querySelector('.tab-menu');
+            const actions = dash.querySelector('.admin-workspace-actions');
+            const status = dash.querySelector('.admin-status');
+            const body = dash.querySelector('.admin-body');
+            const sidebar = document.createElement('aside');
+            sidebar.className = 'premium-admin-sidebar';
+            sidebar.innerHTML = `<div class="premium-brand"><span><i class="fa-solid fa-mosque"></i></span><div><b>عرب ماليزيا</b><small>مركز الإدارة</small></div></div><small class="premium-nav-label">القائمة الرئيسية</small><button class="premium-overview active" onclick="switchTab('overview')"><i class="fa-solid fa-grid-2"></i><span>نظرة عامة</span></button>`;
+            if (tabs) sidebar.appendChild(tabs);
+            sidebar.insertAdjacentHTML('beforeend', `<div class="premium-sidebar-foot"><i class="fa-solid fa-shield-halved"></i><span>وصول آمن للمسؤول</span></div>`);
+            const main = document.createElement('section');
+            main.className = 'premium-admin-main';
+            const topbar = document.createElement('div');
+            topbar.className = 'premium-admin-topbar';
+            topbar.innerHTML = `<div><small>ARAB MALAYSIA / ADMIN</small><h2 id="adminPageHeading">نظرة عامة</h2></div><div class="premium-top-actions"><span class="premium-online"><i></i> لوحة الإدارة</span><button type="button" onclick="toggleAdminDarkMode()" title="تبديل المظهر"><i id="adminThemeIcon" class="fa-solid fa-moon"></i></button></div>`;
+            if (header) {
+                const logout = header.querySelector('button[onclick="handleLogout()"]');
+                if (logout) sidebar.appendChild(logout);
+                const close = header.querySelector('.admin-close');
+                if (close) topbar.querySelector('.premium-top-actions').appendChild(close);
+                header.remove();
+            }
+            const workspace = document.createElement('div');
+            workspace.className = 'premium-admin-workspace';
+            if (actions) workspace.appendChild(actions);
+            if (status) workspace.appendChild(status);
+            if (body) workspace.appendChild(body);
+            main.append(topbar, workspace);
+            dash.innerHTML = '';
+            dash.append(sidebar, main);
+            const overviewBtn = sidebar.querySelector('.premium-overview');
+            overviewBtn.addEventListener('click', () => {
+                sidebar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                overviewBtn.classList.add('active');
+            });
+            tabs?.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sidebar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+            applyAdminAppearance();
+            switchTab('overview');
+        }
+
+        function buildPremiumAdminShell() {
+            const dash = document.getElementById('dashboardBox');
+            if (!dash || dash.dataset.premiumBuilt === '1') return;
+            dash.dataset.premiumBuilt = '1';
+            const header = dash.querySelector('.admin-header');
+            const tabs = dash.querySelector('.tab-menu');
+            const actions = dash.querySelector('.admin-workspace-actions');
+            const status = dash.querySelector('.admin-status');
+            const body = dash.querySelector('.admin-body');
+            const sidebar = document.createElement('aside');
+            sidebar.className = 'premium-admin-sidebar';
+            sidebar.innerHTML = `<div class="premium-brand"><span><i class="fa-solid fa-mosque"></i></span><div><b>عرب ماليزيا</b><small>مركز الإدارة</small></div></div><small class="premium-nav-label">القائمة الرئيسية</small><button class="premium-overview active" onclick="switchTab('overview')"><i class="fa-solid fa-grid-2"></i><span>نظرة عامة</span></button>`;
+            if (tabs) sidebar.appendChild(tabs);
+            sidebar.insertAdjacentHTML('beforeend', `<div class="premium-sidebar-foot"><i class="fa-solid fa-shield-halved"></i><span>وصول آمن للمسؤول</span></div>`);
+            const main = document.createElement('section');
+            main.className = 'premium-admin-main';
+            const topbar = document.createElement('div');
+            topbar.className = 'premium-admin-topbar';
+            topbar.innerHTML = `<div><small>ARAB MALAYSIA / ADMIN</small><h2 id="adminPageHeading">نظرة عامة</h2></div><div class="premium-top-actions"><span class="premium-online"><i></i> لوحة الإدارة</span><button type="button" onclick="toggleAdminDarkMode()" title="تبديل المظهر"><i id="adminThemeIcon" class="fa-solid fa-moon"></i></button></div>`;
+            if (header) {
+                const logout = header.querySelector('button[onclick="handleLogout()"]');
+                if (logout) sidebar.appendChild(logout);
+                const close = header.querySelector('.admin-close');
+                if (close) topbar.querySelector('.premium-top-actions').appendChild(close);
+                header.remove();
+            }
+            const workspace = document.createElement('div');
+            workspace.className = 'premium-admin-workspace';
+            [actions,status,body].forEach(el => { if (el) workspace.appendChild(el); });
+            main.append(topbar,workspace);
+            dash.innerHTML = '';
+            dash.append(sidebar,main);
+            tabs?.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+                sidebar.querySelectorAll('.premium-overview,.tab-btn').forEach(item => item.classList.remove('active'));
+                btn.classList.add('active');
+            }));
+            switchTab('overview');
+            applyAdminAppearance();
+        }
         function openAdminPanelDirectly() {
             document.getElementById('adminToggleBtn').click();
         }
@@ -1577,6 +1751,7 @@
             if (isUserAdminLoggedIn) {
                 document.getElementById('authBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'flex';
+                buildPremiumAdminShell();
                 buildAdminManagementListViewConsole();
                 buildCardsManagementListViewConsole();
                 buildPromoSlidesAdminList();
@@ -1611,6 +1786,9 @@
                 }
                 document.getElementById('authBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'flex';
+                buildPremiumAdminShell();
+                applyAdminAppearance();
+                buildPremiumAdminShell();
                 applyThemeStyles(siteTheme);
                 renderDynamicSections();
                 buildAdminManagementListViewConsole();
@@ -1703,11 +1881,56 @@
             }
         }
 
-        function switchTab(targetTabId) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+        function updateAdminOverviewStats() {
+            const sections = Array.isArray(webSections) ? webSections : [];
+            const cards = sections.reduce((n, sec) => n + ((sec.cards || []).length), 0);
+            const images = (promoSlides || []).length + sections.reduce((n, sec) => n + (sec.cards || []).reduce((m, card) => m + (card.images || []).length, 0), 0);
+            [['adminStatSections', sections.length], ['adminStatCards', cards], ['adminStatImages', images]].forEach(([id, value]) => {
+                const el = document.getElementById(id); if (el) el.textContent = value.toLocaleString('en-US');
+            });
+        }
+        function toggleAdminDarkMode() {
+            const box = document.getElementById('dashboardBox');
+            const enabled = !box.classList.contains('admin-dark');
+            box.classList.toggle('admin-dark', enabled);
+            localStorage.setItem('arabMalaysiaAdminDarkMode', enabled ? '1' : '0');
+            const icon = document.getElementById('adminThemeIcon');
+            if (icon) icon.className = enabled ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+        function applyAdminAppearance() {
+            const enabled = localStorage.getItem('arabMalaysiaAdminDarkMode') === '1';
+            const box = document.getElementById('dashboardBox');
+            if (box) box.classList.toggle('admin-dark', enabled);
+            const icon = document.getElementById('adminThemeIcon');
+            if (icon) icon.className = enabled ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
 
-            if (targetTabId === 'settings') {
+        function toggleAdminDarkMode() {
+            const box = document.getElementById('dashboardBox');
+            const enabled = !box.classList.contains('admin-dark');
+            box.classList.toggle('admin-dark', enabled);
+            localStorage.setItem('arabMalaysiaAdminDarkMode', enabled ? '1' : '0');
+            const icon = document.getElementById('adminThemeIcon');
+            if (icon) icon.className = enabled ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+        function applyAdminAppearance() {
+            const enabled = localStorage.getItem('arabMalaysiaAdminDarkMode') === '1';
+            const box = document.getElementById('dashboardBox');
+            if (box) box.classList.toggle('admin-dark', enabled);
+            const icon = document.getElementById('adminThemeIcon');
+            if (icon) icon.className = enabled ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+        function switchTab(targetTabId) {
+            document.querySelectorAll('.tab-btn, .premium-overview').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام والبطاقات', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة' };
+            const heading = document.getElementById('adminPageHeading');
+            if (heading) heading.textContent = headings[targetTabId] || 'لوحة التحكم';
+            if (targetTabId === 'overview') {
+                document.querySelector('.premium-overview')?.classList.add('active');
+                document.getElementById('tabOverview').classList.add('active');
+                updateAdminOverviewStats();
+            } else if (targetTabId === 'settings') {
                 document.getElementById('tabSettingsBtn').classList.add('active');
                 document.getElementById('tabSettings').classList.add('active');
                 applySiteSettings();
