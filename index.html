@@ -1992,7 +1992,8 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             listings: {label:'السوق العربي', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
             jobs: {label:'الوظائف', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
             properties: {label:'العقارات', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
-            community_posts: {label:'المجتمع', title:'title', detail:'city', status:'status', approved:'published', rejected:'rejected'}
+            community_posts: {label:'المجتمع', title:'title', detail:'city', status:'status', approved:'published', rejected:'rejected'},
+            members: {label:'إدارة الأعضاء'}
         };
         let activePlatformModule = 'businesses';
         function openPlatformModules() {
@@ -2020,6 +2021,10 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             const host = document.getElementById('platformModuleRows');
             const status = document.getElementById('platformModuleStatus');
             if (!host) return;
+            if (activePlatformModule === 'members') {
+                await refreshMembersPanel();
+                return;
+            }
             host.innerHTML = '<p>جارٍ تحميل البيانات...</p>';
             const {data,error} = await supabaseClient.from(activePlatformModule).select('*').order('created_at',{ascending:false}).limit(100);
             if (error) { host.innerHTML = `<p style="color:#b91c1c">تعذر التحميل: ${safeModuleText(error.message)}</p>`; return; }
@@ -2035,6 +2040,89 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 return `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap"><div style="min-width:180px;flex:1"><b>${title}</b><div style="color:#64748b;font-size:13px;margin-top:5px">${detail} · الحالة: ${state}</div><small style="color:#94a3b8">${id}</small></div><div style="display:flex;gap:7px;flex-wrap:wrap">${canApprove?`<button class="admin-btn" style="width:auto;background:#15803d" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','approve')">اعتماد ونشر</button><button class="admin-btn" style="width:auto;background:#b91c1c" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','reject')">رفض</button>`:''}<button class="admin-btn" style="width:auto;background:#64748b" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','delete')">حذف</button></div></article>`;
             }).join('');
         }
+
+        async function refreshMembersPanel() {
+            const host = document.getElementById('platformModuleRows');
+            const status = document.getElementById('platformModuleStatus');
+            if (!host) return;
+            host.innerHTML = '<p>جارٍ تحميل الأعضاء...</p>';
+            if (!isUserAdminLoggedIn) {
+                host.innerHTML = '<p style="color:#b91c1c">يلزم حساب إداري مصرح.</p>';
+                return;
+            }
+            const { data, error } = await supabaseClient
+                .from('profiles')
+                .select('id,email,display_name,phone,city,created_at')
+                .order('created_at', { ascending: false })
+                .limit(500);
+            if (error) {
+                host.innerHTML = `<p style="color:#b91c1c">تعذر تحميل الأعضاء: ${safeModuleText(error.message)}. تأكد من تشغيل ملف SQL الخاص بإدارة الأعضاء.</p>`;
+                return;
+            }
+            status.textContent = `إجمالي الأعضاء المسجلين: ${(data || []).length}`;
+            if (!data || !data.length) {
+                host.innerHTML = '<div style="padding:20px;background:#f8fafc;border-radius:12px">لا يوجد أعضاء مسجلون حتى الآن.</div>';
+                return;
+            }
+            host.innerHTML = data.map(member => {
+                const id = safeModuleText(member.id);
+                const name = safeModuleText(member.display_name || 'عضو جديد');
+                const email = safeModuleText(member.email || 'لا يوجد بريد مسجل');
+                const phone = safeModuleText(member.phone || 'لم يضف رقم هاتف');
+                const city = safeModuleText(member.city || '—');
+                const joined = member.created_at ? new Date(member.created_at).toLocaleDateString('ar') : '—';
+                return `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap">
+                    <div style="min-width:220px;flex:1">
+                      <b>${name}</b>
+                      <div style="color:#475569;font-size:13px;margin-top:5px">${email}</div>
+                      <div style="color:#64748b;font-size:13px;margin-top:4px">الهاتف: ${phone} · المدينة: ${city}</div>
+                      <small style="color:#94a3b8">تاريخ التسجيل: ${joined}</small>
+                    </div>
+                    <button class="admin-btn" style="width:auto;background:#0f766e" onclick="viewMemberAds('${id}')">عرض إعلانات العضو</button>
+                </article>`;
+            }).join('');
+        }
+
+        async function viewMemberAds(userId) {
+            const host = document.getElementById('platformModuleRows');
+            const status = document.getElementById('platformModuleStatus');
+            if (!host || !isUserAdminLoggedIn) return;
+            host.innerHTML = '<p>جارٍ تحميل محتوى العضو...</p>';
+            const specs = [
+                ['businesses','owner_id','name_ar','دليل الأعمال'],
+                ['listings','owner_id','title_ar','السوق العربي'],
+                ['jobs','owner_id','title_ar','الوظائف'],
+                ['properties','owner_id','title_ar','العقارات'],
+                ['community_posts','author_id','title','المجتمع']
+            ];
+            try {
+                const all = [];
+                for (const [table, ownerCol, titleCol, label] of specs) {
+                    const { data, error } = await supabaseClient.from(table)
+                        .select(`id,${titleCol},status,created_at`)
+                        .eq(ownerCol, userId)
+                        .order('created_at', { ascending: false })
+                        .limit(100);
+                    if (error) throw new Error(`${label}: ${error.message}`);
+                    (data || []).forEach(row => all.push({
+                        title: row[titleCol] || 'بدون عنوان',
+                        status: row.status || '—',
+                        created_at: row.created_at,
+                        label
+                    }));
+                }
+                all.sort((a,b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+                status.textContent = `عدد المحتويات المسجلة لهذا العضو: ${all.length}`;
+                host.innerHTML = `<button class="admin-btn" style="width:auto;background:#64748b;margin-bottom:10px" onclick="refreshMembersPanel()">العودة إلى قائمة الأعضاء</button>` +
+                    (all.length ? all.map(item => `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:13px">
+                      <b>${safeModuleText(item.title)}</b>
+                      <div style="color:#64748b;font-size:13px;margin-top:5px">${safeModuleText(item.label)} · الحالة: ${safeModuleText(item.status)} · ${item.created_at ? new Date(item.created_at).toLocaleDateString('ar') : '—'}</div>
+                    </article>`).join('') : '<div style="padding:20px;background:#f8fafc;border-radius:12px">لا توجد إعلانات أو منشورات لهذا العضو حتى الآن.</div>');
+            } catch (error) {
+                host.innerHTML = `<p style="color:#b91c1c">تعذر تحميل محتوى العضو: ${safeModuleText(error.message)}</p><button class="admin-btn" style="width:auto" onclick="refreshMembersPanel()">العودة إلى قائمة الأعضاء</button>`;
+            }
+        }
+
         async function moderatePlatformRecord(table,id,action) {
             if (!isUserAdminLoggedIn || !platformModuleConfig[table]) return alert('يلزم حساب إداري مصرح.');
             if (!confirm(action==='delete'?'هل تريد حذف هذا السجل نهائياً؟':'تأكيد تنفيذ قرار المراجعة؟')) return;
