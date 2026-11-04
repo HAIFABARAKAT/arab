@@ -854,6 +854,89 @@
         }
 
     </style>
+
+<style id="arab-malaysia-mobile-admin-fix">
+/* Mobile dashboard layout: keep the navigation rail narrow and the workspace visible */
+@media (max-width: 760px) {
+  body.admin-only .admin-dashboard-shell {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    direction: ltr !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow: hidden !important;
+  }
+  body.admin-only .admin-dashboard-shell > .premium-admin-sidebar {
+    flex: 0 0 68px !important;
+    width: 68px !important;
+    min-width: 68px !important;
+    max-width: 68px !important;
+    padding: 12px 6px !important;
+    overflow-x: hidden !important;
+    direction: rtl !important;
+  }
+  body.admin-only .admin-dashboard-shell > .premium-admin-main {
+    flex: 1 1 0% !important;
+    width: calc(100% - 68px) !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 68px) !important;
+    direction: rtl !important;
+  }
+  body.admin-only .premium-admin-sidebar .premium-brand {
+    justify-content: center !important;
+    padding: 2px 0 16px !important;
+  }
+  body.admin-only .premium-admin-sidebar .premium-brand > div,
+  body.admin-only .premium-admin-sidebar .premium-nav-label,
+  body.admin-only .premium-admin-sidebar .premium-overview span,
+  body.admin-only .premium-admin-sidebar .tab-btn span,
+  body.admin-only .premium-admin-sidebar .premium-sidebar-foot span {
+    display: none !important;
+  }
+  body.admin-only .premium-admin-sidebar .premium-overview,
+  body.admin-only .premium-admin-sidebar .tab-btn {
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 13px 2px !important;
+  }
+  body.admin-only .premium-admin-sidebar .premium-overview i,
+  body.admin-only .premium-admin-sidebar .tab-btn i {
+    margin: 0 !important;
+  }
+  body.admin-only .premium-admin-sidebar .admin-btn {
+    font-size: 0 !important;
+    padding: 10px 2px !important;
+  }
+  body.admin-only .premium-admin-sidebar .admin-btn::after {
+    content: "خروج";
+    font-size: 10px;
+  }
+  body.admin-only .premium-admin-topbar {
+    padding: 0 10px !important;
+    gap: 6px !important;
+  }
+  body.admin-only .premium-admin-workspace {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 10px 24px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.admin-only .admin-stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  body.admin-only .admin-quick-grid {
+    grid-template-columns: 1fr !important;
+  }
+  body.admin-only .premium-admin-workspace .admin-workspace-actions .admin-btn {
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
+  }
+}
+</style>
+
 </head>
 <body>
     <!-- Arab Malaysia 2.0: staging test notice. Remove this banner before production deployment. -->
