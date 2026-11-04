@@ -679,9 +679,9 @@
         .news-track{display:flex;align-items:center;gap:38px;width:max-content;white-space:nowrap;animation:newsTickerMove 65s linear infinite}
         .news-strip:hover .news-track{animation-play-state:paused}
         .news-track[dir="rtl"]{animation-name:newsTickerMoveRtl}
-        .news-item{border:0;background:transparent;color:var(--text-color);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:9px;max-width:520px;white-space:nowrap}
-        .news-item > span:first-child{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis}
-		.news-item:hover{color:var(--text-hover-color)}
+        .news-item{border:0;background:transparent;color:var(--text-color);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:9px;max-width:520px;white-space:nowrap;flex:0 0 auto}
+        .news-item:hover{color:var(--text-hover-color)}
+        .news-item>span:first-child{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis}
         .news-item:before{content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--btn-color)}
         .news-source-tag{font-size:11px;color:var(--btn-color);border:1px solid currentColor;border-radius:20px;padding:3px 8px}
         .news-loading{font-size:13px;color:#777}
@@ -700,6 +700,25 @@
         .news-read-more{display:inline-flex;align-items:center;justify-content:center;background:var(--btn-color);color:#fff;text-decoration:none;padding:11px 22px;border-radius:25px;font-weight:700;transition:filter .2s}.news-read-more:hover{filter:brightness(1.1)}
         @media(max-width:768px){.news-strip{max-width:92%;gap:8px;padding:0 8px;min-height:54px}.news-strip-label{padding:9px 10px;font-size:12px}.news-item{font-size:12px;max-width:290px}.news-track{gap:24px}.news-modal-content{padding:19px}.news-modal-content h2{font-size:19px}}
         @media(prefers-reduced-motion:reduce){.news-track{animation:none!important}.news-modal-card{animation:none}}
+
+
+        /* Currency ticker: isolated styles; placed directly below the news ticker */
+        .currency-strip{max-width:90%;margin:-14px auto 28px;min-height:48px;display:flex;align-items:center;gap:12px;background:var(--card-bg);border:1px solid rgba(33,150,243,.14);border-radius:12px;overflow:hidden;padding:0 13px;direction:inherit}
+        .currency-strip-label{flex:0 0 auto;display:flex;align-items:center;gap:8px;color:var(--text-color);font-size:12px;font-weight:700;white-space:nowrap}
+        .currency-strip-label i{color:var(--btn-color)}
+        .currency-track-window{flex:1;min-width:0;overflow:hidden}
+        .currency-track{display:flex;align-items:center;gap:30px;width:max-content;white-space:nowrap;animation:currencyTickerMove 58s linear infinite}
+        .currency-strip:hover .currency-track{animation-play-state:paused}
+        .currency-rate{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;color:var(--text-color);font-size:12px;font-weight:600;white-space:nowrap}
+        .currency-code{color:var(--btn-color);font-weight:800}
+        .currency-updated{flex:0 0 auto;color:var(--text-color);opacity:.65;font-size:10px;white-space:nowrap}
+        .currency-credit{font-size:9px;color:var(--text-color);opacity:.65;text-decoration:none;white-space:nowrap}
+        .currency-credit:hover{text-decoration:underline}
+        @keyframes currencyTickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        @keyframes currencyTickerMoveRtl{from{transform:translateX(0)}to{transform:translateX(50%)}}
+        .currency-track[dir="rtl"]{animation-name:currencyTickerMoveRtl}
+        @media(max-width:768px){.currency-strip{max-width:92%;margin:-14px auto 22px;min-height:44px;gap:8px;padding:0 9px}.currency-strip-label{font-size:11px}.currency-track{gap:22px}.currency-rate{font-size:11px}.currency-updated{display:none}.currency-credit{font-size:9px}}
+        @media(prefers-reduced-motion:reduce){.currency-track{animation:none!important}}
 
     </style>
 </head>
@@ -733,6 +752,14 @@
         <div class="news-strip-label"><i class="fa-solid fa-newspaper"></i><span id="newsLabel">آخر الأخبار</span></div>
         <div class="news-track-window"><div class="news-track" id="newsTrack"><span class="news-loading" id="newsLoading">جاري تحميل الأخبار...</span></div></div>
         <button class="news-refresh" id="newsRefreshBtn" type="button" aria-label="Refresh news" title="Refresh news"><i class="fa-solid fa-rotate"></i></button>
+    </section>
+
+    <!-- Currency ticker: directly below the news ticker -->
+    <section class="currency-strip" id="currencyStrip" aria-label="Currency exchange rates">
+        <div class="currency-strip-label"><i class="fa-solid fa-coins"></i><span id="currencyLabel">أسعار العملات مقابل الرنجت</span></div>
+        <div class="currency-track-window"><div class="currency-track" id="currencyTrack" dir="rtl"><span class="news-loading" id="currencyLoading">جاري تحميل أسعار الصرف...</span></div></div>
+        <span class="currency-updated" id="currencyUpdated"></span>
+        <a class="currency-credit" href="https://www.exchangerate-api.com/docs/free" target="_blank" rel="noopener noreferrer" id="currencyCredit">المصدر</a>
     </section>
     <div class="news-modal" id="newsModal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle" hidden>
         <div class="news-modal-backdrop" data-news-close="1"></div>
@@ -1121,6 +1148,7 @@
             renderPromoBanners();
             renderDynamicSections();
             if (typeof loadLatestNews === 'function') loadLatestNews();
+            if (typeof renderCurrencyTicker === 'function') renderCurrencyTicker();
         }
 
         document.getElementById('langToggleBtn').addEventListener('click', () => {
@@ -1980,6 +2008,103 @@
             track.style.animationDuration = `${Math.max(28, items.length * 9)}s`;
         }
 
+
+        /* ---------------- Currency ticker (MYR reference) ----------------
+           Open ExchangeRate-API endpoint; daily reference rates, cached until
+           the provider's next scheduled update. No other site data is changed.
+        */
+        const CURRENCY_API_URL = 'https://open.er-api.com/v6/latest/MYR';
+        const CURRENCY_CACHE_KEY = 'arabMalaysiaCurrencyRates_v1';
+        const CURRENCY_LIST = [
+            { code: 'USD', flag: '🇺🇸', ar: 'الدولار الأمريكي', en: 'US Dollar' },
+            { code: 'SAR', flag: '🇸🇦', ar: 'الريال السعودي', en: 'Saudi Riyal' },
+            { code: 'EGP', flag: '🇪🇬', ar: 'الجنيه المصري', en: 'Egyptian Pound' },
+            { code: 'AED', flag: '🇦🇪', ar: 'الدرهم الإماراتي', en: 'UAE Dirham' },
+            { code: 'KWD', flag: '🇰🇼', ar: 'الدينار الكويتي', en: 'Kuwaiti Dinar' },
+            { code: 'IDR', flag: '🇮🇩', ar: 'الروبية الإندونيسية', en: 'Indonesian Rupiah' },
+            { code: 'SGD', flag: '🇸🇬', ar: 'الدولار السنغافوري', en: 'Singapore Dollar' }
+        ];
+        let currencyRateData = null;
+        let currencyRateUpdatedAt = null;
+
+        function getCurrencyCache() {
+            try { return JSON.parse(localStorage.getItem(CURRENCY_CACHE_KEY) || 'null'); }
+            catch (_) { return null; }
+        }
+
+        function renderCurrencyTicker() {
+            const track = document.getElementById('currencyTrack');
+            const label = document.getElementById('currencyLabel');
+            const updated = document.getElementById('currencyUpdated');
+            const credit = document.getElementById('currencyCredit');
+            if (!track) return;
+            const isArabic = currentLang === 'ar';
+            if (label) label.textContent = isArabic ? 'أسعار العملات مقابل الرنجت' : 'Currency Rates vs MYR';
+            if (credit) credit.textContent = isArabic ? 'المصدر' : 'Source';
+            track.dir = isArabic ? 'rtl' : 'ltr';
+
+            if (!currencyRateData) {
+                track.innerHTML = `<span class="news-loading">${isArabic ? 'جاري تحميل أسعار الصرف...' : 'Loading exchange rates...'}</span>`;
+                if (updated) updated.textContent = '';
+                return;
+            }
+
+            const formatter = new Intl.NumberFormat(isArabic ? 'ar' : 'en', {
+                minimumFractionDigits: 4, maximumFractionDigits: 6
+            });
+            const entries = CURRENCY_LIST.filter(item => Number.isFinite(currencyRateData[item.code]) && currencyRateData[item.code] > 0);
+            const makeRate = item => {
+                const oneUnitInMyr = 1 / currencyRateData[item.code];
+                const name = isArabic ? item.ar : item.en;
+                return `<span class="currency-rate" title="${name}"><span>${item.flag}</span><span class="currency-code">${item.code}</span><span>1 ${item.code} = ${formatter.format(oneUnitInMyr)} MYR</span></span>`;
+            };
+            if (!entries.length) {
+                track.innerHTML = `<span class="news-loading">${isArabic ? 'أسعار الصرف غير متاحة حالياً.' : 'Exchange rates are currently unavailable.'}</span>`;
+                return;
+            }
+            const content = entries.map(makeRate).join('');
+            track.innerHTML = content + content;
+            track.style.animationDuration = '58s';
+            if (updated) {
+                const date = currencyRateUpdatedAt ? new Date(currencyRateUpdatedAt) : null;
+                updated.textContent = date
+                    ? (isArabic ? `آخر تحديث: ${date.toLocaleDateString('ar')}` : `Updated: ${date.toLocaleDateString('en')}`)
+                    : '';
+            }
+        }
+
+        async function loadCurrencyTicker() {
+            const cached = getCurrencyCache();
+            const now = Math.floor(Date.now() / 1000);
+            if (cached && cached.rates && cached.base_code === 'MYR') {
+                currencyRateData = cached.rates;
+                currencyRateUpdatedAt = cached.time_last_update_utc || null;
+                renderCurrencyTicker();
+                if (cached.time_next_update_unix && now < cached.time_next_update_unix) return;
+            } else {
+                renderCurrencyTicker();
+            }
+
+            try {
+                const response = await fetch(CURRENCY_API_URL, { cache: 'no-store' });
+                if (!response.ok) throw new Error(`Currency API HTTP ${response.status}`);
+                const payload = await response.json();
+                if (payload.result !== 'success' || payload.base_code !== 'MYR' || !payload.rates) {
+                    throw new Error('Invalid currency-rate response');
+                }
+                currencyRateData = payload.rates;
+                currencyRateUpdatedAt = payload.time_last_update_utc || null;
+                localStorage.setItem(CURRENCY_CACHE_KEY, JSON.stringify(payload));
+                renderCurrencyTicker();
+            } catch (error) {
+                console.warn('Currency ticker could not be refreshed:', error);
+                if (!currencyRateData) {
+                    const track = document.getElementById('currencyTrack');
+                    if (track) track.innerHTML = `<span class="news-loading">${currentLang === 'ar' ? 'تعذر تحميل أسعار الصرف حالياً.' : 'Exchange rates could not be loaded right now.'}</span>`;
+                }
+            }
+        }
+
         function openNewsModal(index) {
             const item = latestNewsItems[index];
             if (!item) return;
@@ -2032,6 +2157,7 @@
         document.querySelector('#newsModal .news-modal-backdrop').addEventListener('click', closeNewsModal);
         document.addEventListener('keydown', event => { if (event.key === 'Escape') closeNewsModal(); });
         loadLatestNews();
+        loadCurrencyTicker();
         setInterval(loadLatestNews, NEWS_REFRESH_INTERVAL);
 
     </script>
