@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -431,6 +431,24 @@
             font-size: 13px;
             color: rgba(255,255,255,0.6);
         }
+
+
+        /* Admin workspace enhancements */
+        .admin-workspace-actions{display:flex;gap:8px;flex-wrap:wrap;padding:12px 20px;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+        .admin-workspace-actions .admin-btn{width:auto;flex:1;min-width:125px;margin:0}
+        .admin-status{padding:8px 20px;font-size:12px;background:#fff7ed;color:#9a3412;border-bottom:1px solid #fed7aa}
+        .manage-list-item[draggable="true"]{cursor:grab}
+        .manage-list-item.dragging{opacity:.45}
+        .manage-list-item.drag-over{outline:2px dashed var(--btn-color);outline-offset:2px}
+        .image-library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:10px;margin-top:12px}
+        .image-library-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:8px;min-width:0}
+        .image-library-card img{width:100%;height:90px;object-fit:cover;border-radius:7px}
+        .image-library-card small{display:block;overflow-wrap:anywhere;margin:6px 0;color:#475569}
+        body.admin-only>header,body.admin-only>.promo-banner,body.admin-only>.news-strip,body.admin-only>.currency-strip,body.admin-only>.sports-news-section,body.admin-only>main,body.admin-only>footer,body.admin-only>.whatsapp-float,body.admin-only>.scroll-top{display:none!important}
+        body.admin-only .admin-modal{display:flex!important;opacity:1!important;position:relative;inset:auto;background:transparent;backdrop-filter:none;min-height:100vh;padding:18px}
+        body.admin-only .admin-box{width:min(1050px,100%);max-width:1050px;max-height:none;min-height:80vh;margin:auto}
+        body.admin-only #authBox{max-width:520px;min-height:0}
+        @media(max-width:600px){.admin-workspace-actions{padding:10px}.admin-workspace-actions .admin-btn{min-width:100%}}
 
         /* Admin Screen Styles */
         .admin-modal {
@@ -905,9 +923,18 @@
                 <div style="display:flex;align-items:center;gap:8px;"><button class="admin-btn" style="width:auto;padding:7px 12px;margin:0;background:#757575;" onclick="handleLogout()">تسجيل الخروج</button><button class="admin-close" onclick="closeAdmin()">&times;</button></div>
             </div>
             <div class="tab-menu">
-                <button class="tab-btn active" id="tabColorsBtn" onclick="switchTab('colors')">الألوان والتنسيق</button>
+                <button class="tab-btn active" id="tabColorsBtn" onclick="switchTab('colors')">التصميم والألوان</button>
                 <button class="tab-btn" id="tabSectionsBtn" onclick="switchTab('sections')">الأقسام والبطاقات</button>
+                <button class="tab-btn" id="tabImagesBtn" onclick="switchTab('images')">مكتبة الصور</button>
+                <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settings')">الأخبار والرياضة والإعدادات</button>
             </div>
+            <div class="admin-workspace-actions">
+                <button class="admin-btn" type="button" onclick="previewWebsite()">معاينة الموقع</button>
+                <button class="admin-btn" type="button" onclick="publishWebsiteChanges()">حفظ ونشر التغييرات</button>
+                <button class="admin-btn" type="button" style="background:#64748b" onclick="restoreLastPublished()">استعادة آخر نسخة منشورة</button>
+                <button class="admin-btn" type="button" style="background:#475569" onclick="openStandaloneAdmin()">فتح اللوحة في تبويب مستقل</button>
+            </div>
+            <div class="admin-status" id="adminDraftStatus">التعديلات تحفظ كمسودة على هذا الجهاز حتى تضغط «حفظ ونشر التغييرات».</div>
             <div class="admin-body">
                 
                 <!-- Tab View Component 1: Theme Personalization Engine Control Panel -->
@@ -1009,6 +1036,27 @@
                     </div>
                 </div>
 
+                <div class="panel-tab" id="tabSettings">
+                    <div class="manage-list-box">
+                        <h3 style="color:var(--btn-color);margin-bottom:10px;">إدارة مكونات الصفحة الرئيسية</h3>
+                        <p class="manage-help">يمكن إظهار أو إخفاء أشرطة الأخبار والعملات وبطاقة الأخبار الرياضية. التغييرات تحفظ كمسودة حتى النشر.</p>
+                        <div class="form-group"><label><input type="checkbox" id="settingNewsEnabled" onchange="updateSiteSettings()"> إظهار شريط آخر الأخبار</label></div>
+                        <div class="form-group"><label><input type="checkbox" id="settingCurrencyEnabled" onchange="updateSiteSettings()"> إظهار شريط أسعار العملات</label></div>
+                        <div class="form-group"><label><input type="checkbox" id="settingSportsEnabled" onchange="updateSiteSettings()"> إظهار بطاقة الأخبار الرياضية</label></div>
+                        <button class="admin-btn" type="button" onclick="loadLatestNews()">تحديث الأخبار الآن</button>
+                        <button class="admin-btn" type="button" onclick="loadCurrencyTicker()">تحديث أسعار العملات الآن</button>
+                        <button class="admin-btn" type="button" onclick="loadSportsNews()">تحديث الأخبار الرياضية الآن</button>
+                    </div>
+                </div>
+
+                <div class="panel-tab" id="tabImages">
+                    <div class="manage-list-box">
+                        <h3 style="color:var(--btn-color);margin-bottom:8px;">مكتبة صور الموقع</h3>
+                        <p class="manage-help">استعراض الصور المستخدمة في الأقسام والبطاقات. لإضافة الصور أو استبدالها أو حذفها، اختر القسم والعنصر من أدوات الإدارة أدناه.</p>
+                        <div id="adminImageLibrary" class="image-library-grid"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -1024,6 +1072,10 @@
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
         let cloudContentReady = false;
         let cloudContentExists = false;
+        let lastPublishedSnapshot = null;
+        let isDraggingSectionId = null;
+        const defaultSiteSettings = { newsEnabled: true, currencyEnabled: true, sportsEnabled: true };
+        let siteSettings = JSON.parse(localStorage.getItem('arabMalaysiaSiteSettings') || 'null') || { ...defaultSiteSettings };
         const defaultPromoSlides = [
             { img: "https://images.unsplash.com/photo-1596422846543-75c6fc1f70ea?auto=format&fit=crop&w=1200&q=80", titleAr: "أجمل مطاعم كوالالمبور العربية", titleEn: "The Best Arabic Restaurants in Kuala Lumpur" },
             { img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80", titleAr: "خدمات تأجير السيارات الفاخرة بأسعار منافسة", titleEn: "Luxury Car Rental Services at Competitive Prices" },
@@ -1146,7 +1198,7 @@
                 linkAdmin: "Admin Control Panel",
                 linkContact: "Contact Us",
                 fTitleContact: "Management & Queries",
-                fManagerName: "Management of Sharif Mansour",
+                fManagerName: "Management of Sherif Mansour",
                 fInstructions: "For any inquiries within Malaysia, please leave a message.",
                 fLocationText: "Kuala Lumpur, Malaysia"
             }
@@ -1154,7 +1206,14 @@
 
         window.addEventListener('DOMContentLoaded', async () => {
             try {
-                await loadCloudContent();
+                if (location.hash === '#preview') {
+                    webSections = JSON.parse(localStorage.getItem('webSectionsData')) || defaultSectionsData;
+                    siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
+                    promoSlides = JSON.parse(localStorage.getItem('promoSlidesData')) || promoSlides;
+                    siteSettings = { ...defaultSiteSettings, ...(JSON.parse(localStorage.getItem('arabMalaysiaSiteSettings') || 'null') || {}) };
+                } else {
+                    await loadCloudContent();
+                }
                 const { data: sessionData } = await supabaseClient.auth.getSession();
                 isUserAdminLoggedIn = !!sessionData.session;
             } catch (error) {
@@ -1163,6 +1222,11 @@
             }
             applyLanguageSettings(currentLang);
             applyThemeStyles(siteTheme);
+            applySiteSettings();
+            if (location.hash === '#admin') {
+                document.body.classList.add('admin-only');
+                document.getElementById('adminDialog').classList.add('active');
+            }
             renderPromoBanners();
             renderDynamicSections();
             initScrollTracking();
@@ -1516,6 +1580,7 @@
                 buildAdminManagementListViewConsole();
                 buildCardsManagementListViewConsole();
                 buildPromoSlidesAdminList();
+                buildAdminImageLibrary();
             } else {
                 document.getElementById('authBox').style.display = 'flex';
                 document.getElementById('dashboardBox').style.display = 'none';
@@ -1542,7 +1607,7 @@
                 await loadCloudContent();
                 if (!cloudContentExists) {
                     await migrateLegacyDataUrlImages();
-                    await commitAndSyncSystemDatastores();
+                    await commitAndSyncSystemDatastores(true);
                 }
                 document.getElementById('authBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'flex';
@@ -1551,6 +1616,7 @@
                 buildAdminManagementListViewConsole();
                 buildCardsManagementListViewConsole();
                 buildPromoSlidesAdminList();
+                buildAdminImageLibrary();
                 alert('تم تسجيل الدخول بنجاح.');
             } catch (error) {
                 console.error(error);
@@ -1578,14 +1644,18 @@
                 if (Array.isArray(data.content.sections)) webSections = data.content.sections;
                 if (Array.isArray(data.content.promoSlides)) promoSlides = data.content.promoSlides;
                 if (data.content.theme) siteTheme = data.content.theme;
+                if (data.content.settings) siteSettings = { ...defaultSiteSettings, ...data.content.settings };
+                localStorage.setItem('arabMalaysiaSiteSettings', JSON.stringify(siteSettings));
                 localStorage.setItem('webSectionsData', JSON.stringify(webSections));
                 localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
             } else {
                 webSections = JSON.parse(localStorage.getItem('webSectionsData')) || defaultSectionsData;
                 siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
                 promoSlides = JSON.parse(localStorage.getItem('promoSlidesData')) || promoSlides;
+                siteSettings = { ...defaultSiteSettings, ...(JSON.parse(localStorage.getItem('arabMalaysiaSiteSettings') || 'null') || {}) };
             }
             localStorage.setItem('promoSlidesData', JSON.stringify(promoSlides));
+            lastPublishedSnapshot = makeSiteSnapshot();
             cloudContentReady = true;
         }
 
@@ -1637,7 +1707,15 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
 
-            if (targetTabId === 'colors') {
+            if (targetTabId === 'settings') {
+                document.getElementById('tabSettingsBtn').classList.add('active');
+                document.getElementById('tabSettings').classList.add('active');
+                applySiteSettings();
+            } else if (targetTabId === 'images') {
+                document.getElementById('tabImagesBtn').classList.add('active');
+                document.getElementById('tabImages').classList.add('active');
+                buildAdminImageLibrary();
+            } else if (targetTabId === 'colors') {
                 document.getElementById('tabColorsBtn').classList.add('active');
                 document.getElementById('tabColors').classList.add('active');
             } else {
@@ -1751,8 +1829,28 @@
                 const labelName = currentLang === 'ar' ? s.titleAr : s.titleEn;
                 const divRow = document.createElement('div');
                 divRow.className = 'manage-list-item';
+                divRow.draggable = true;
+                divRow.dataset.sectionId = s.id;
+                divRow.addEventListener('dragstart', event => {
+                    isDraggingSectionId = s.id;
+                    divRow.classList.add('dragging');
+                    event.dataTransfer.effectAllowed = 'move';
+                    event.dataTransfer.setData('text/plain', s.id);
+                });
+                divRow.addEventListener('dragend', () => {
+                    isDraggingSectionId = null;
+                    divRow.classList.remove('dragging');
+                    container.querySelectorAll('.drag-over').forEach(node => node.classList.remove('drag-over'));
+                });
+                divRow.addEventListener('dragover', event => { event.preventDefault(); divRow.classList.add('drag-over'); });
+                divRow.addEventListener('dragleave', () => divRow.classList.remove('drag-over'));
+                divRow.addEventListener('drop', event => {
+                    event.preventDefault();
+                    divRow.classList.remove('drag-over');
+                    reorderSections(event.dataTransfer.getData('text/plain') || isDraggingSectionId, s.id);
+                });
                 divRow.innerHTML = `
-                    <span><strong>${labelName}</strong> (${s.cards.length} عناصر)</span>
+                    <span>☰ <strong>${labelName}</strong> (${s.cards.length} عناصر)</span>
                     <div class="manage-actions">
                         <button class="edit-icon-btn" onclick="editTargetSectionDataNode('${s.id}')" title="تعديل القسم"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button class="delete-icon-btn" onclick="deleteTargetSectionDataNode('${s.id}')" title="حذف القسم"><i class="fa-solid fa-trash-can"></i></button>
@@ -1760,6 +1858,16 @@
                 `;
                 container.appendChild(divRow);
             });
+        }
+
+        function reorderSections(fromId, toId) {
+            if (!fromId || !toId || fromId === toId) return;
+            const fromIndex = webSections.findIndex(item => item.id === fromId);
+            const toIndex = webSections.findIndex(item => item.id === toId);
+            if (fromIndex < 0 || toIndex < 0) return;
+            const [moved] = webSections.splice(fromIndex, 1);
+            webSections.splice(toIndex, 0, moved);
+            commitAndSyncSystemDatastores(false);
         }
 
         /* Feature Added: Build individual card/item list for deletions inside sections */
@@ -1969,28 +2077,138 @@
             }
         }
 
-        async function commitAndSyncSystemDatastores() {
+        function applySiteSettings() {
+            const map = [
+                ['newsStrip', siteSettings.newsEnabled],
+                ['currencyStrip', siteSettings.currencyEnabled],
+                ['sportsNewsSection', siteSettings.sportsEnabled]
+            ];
+            map.forEach(([id, enabled]) => {
+                const node = document.getElementById(id);
+                if (node) node.style.display = enabled ? '' : 'none';
+            });
+            ['settingNewsEnabled','settingCurrencyEnabled','settingSportsEnabled'].forEach((id, index) => {
+                const node = document.getElementById(id);
+                if (node) node.checked = [siteSettings.newsEnabled, siteSettings.currencyEnabled, siteSettings.sportsEnabled][index];
+            });
+        }
+
+        function updateSiteSettings() {
+            siteSettings = {
+                newsEnabled: document.getElementById('settingNewsEnabled').checked,
+                currencyEnabled: document.getElementById('settingCurrencyEnabled').checked,
+                sportsEnabled: document.getElementById('settingSportsEnabled').checked
+            };
+            localStorage.setItem('arabMalaysiaSiteSettings', JSON.stringify(siteSettings));
+            applySiteSettings();
+            commitAndSyncSystemDatastores(false);
+        }
+
+        function makeSiteSnapshot() {
+            return JSON.parse(JSON.stringify({ sections: webSections, theme: siteTheme, promoSlides, settings: siteSettings }));
+        }
+
+        async function commitAndSyncSystemDatastores(publish = false) {
             localStorage.setItem('webSectionsData', JSON.stringify(webSections));
             localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
             localStorage.setItem('promoSlidesData', JSON.stringify(promoSlides));
+            localStorage.setItem('arabMalaysiaSiteSettings', JSON.stringify(siteSettings));
             renderPromoBanners();
             renderDynamicSections();
             buildPromoSlidesAdminList();
             buildAdminManagementListViewConsole();
             buildCardsManagementListViewConsole();
             populateAdminSectionConsoleDropdowns();
-            if (!isUserAdminLoggedIn) return;
+            buildAdminImageLibrary();
+            const status = document.getElementById('adminDraftStatus');
+            if (!publish) {
+                if (status) status.textContent = 'هناك تعديلات محلية غير منشورة. استخدم «معاينة الموقع» لمراجعتها ثم «حفظ ونشر التغييرات».';
+                return;
+            }
+            if (!isUserAdminLoggedIn) {
+                alert('يجب تسجيل دخول المسؤول قبل نشر التغييرات.');
+                return;
+            }
             const { error } = await supabaseClient.from('site_content').upsert({
                 id: 1,
-                content: { sections: webSections, theme: siteTheme, promoSlides: promoSlides },
+                content: { sections: webSections, theme: siteTheme, promoSlides: promoSlides, settings: siteSettings },
                 updated_at: new Date().toISOString()
             }, { onConflict: 'id' });
             if (error) {
                 console.error('Cloud save failed:', error);
-                alert('تم تحديث العرض محلياً، لكن تعذر الحفظ في السحابة: ' + error.message);
+                alert('تم الاحتفاظ بالتعديلات كمسودة على هذا الجهاز، لكن تعذر النشر في السحابة: ' + error.message);
                 return;
             }
             cloudContentExists = true;
+            lastPublishedSnapshot = makeSiteSnapshot();
+            if (status) status.textContent = 'تم نشر آخر التعديلات بنجاح.';
+            alert('تم حفظ التغييرات ونشرها لجميع الزوار.');
+        }
+
+        async function publishWebsiteChanges() {
+            if (!confirm('سيتم نشر التعديلات الحالية لتظهر لجميع زوار الموقع. هل تريد المتابعة؟')) return;
+            await commitAndSyncSystemDatastores(true);
+        }
+
+        function previewWebsite() {
+            window.open(location.href.split('#')[0] + '#preview', '_blank', 'noopener');
+        }
+
+        function restoreLastPublished() {
+            if (!lastPublishedSnapshot) {
+                alert('لا توجد نسخة منشورة محفوظة في هذه الجلسة للاستعادة.');
+                return;
+            }
+            if (!confirm('سيتم استبدال المسودة الحالية بآخر نسخة منشورة. هل تريد المتابعة؟')) return;
+            webSections = JSON.parse(JSON.stringify(lastPublishedSnapshot.sections));
+            siteTheme = JSON.parse(JSON.stringify(lastPublishedSnapshot.theme));
+            promoSlides = JSON.parse(JSON.stringify(lastPublishedSnapshot.promoSlides));
+            siteSettings = JSON.parse(JSON.stringify(lastPublishedSnapshot.settings || defaultSiteSettings));
+            applyThemeStyles(siteTheme);
+            applySiteSettings();
+            commitAndSyncSystemDatastores(false);
+            const status = document.getElementById('adminDraftStatus');
+            if (status) status.textContent = 'تمت استعادة آخر نسخة منشورة كمسودة محلية. اضغط «حفظ ونشر» لاعتمادها.';
+        }
+
+        function openStandaloneAdmin() {
+            window.open(location.href.split('#')[0] + '#admin', '_blank', 'noopener');
+        }
+
+        function buildAdminImageLibrary() {
+            const host = document.getElementById('adminImageLibrary');
+            if (!host) return;
+            const entries = [];
+            (promoSlides || []).forEach((slide, index) => entries.push({
+                url: slide.img, label: `البانر الرئيسي ${index + 1}`, kind: 'promo'
+            }));
+            (webSections || []).forEach(sec => (sec.cards || []).forEach(card =>
+                (card.images || []).forEach((url, index) => entries.push({
+                    url, label: `${sec.titleAr || sec.titleEn} — ${card.nameAr || card.nameEn} (${index + 1})`,
+                    kind: 'card', secId: sec.id, cardId: card.id
+                }))
+            ));
+            host.innerHTML = entries.length ? entries.map(item => `
+                <div class="image-library-card">
+                    <img src="${escapeAdminText(item.url)}" alt="">
+                    <small>${escapeAdminText(item.label)}</small>
+                    <button class="admin-btn" type="button" onclick="openImageLibraryTarget('${item.kind}','${item.secId || ''}','${item.cardId || ''}')">إدارة الصورة</button>
+                </div>`).join('') : '<p>لا توجد صور في المكتبة حالياً.</p>';
+        }
+
+        function openImageLibraryTarget(kind, secId, cardId) {
+            if (kind === 'promo') {
+                switchTab('sections');
+                document.getElementById('promoSlidesAdminList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            switchTab('sections');
+            document.getElementById('filterSectionSelect').value = secId;
+            buildCardsManagementListViewConsole();
+            const host = document.getElementById('adminImagesManagement');
+            if (host) host.dataset.cardId = cardId;
+            buildImagesManagementListView();
+            document.getElementById('adminImagesManagement').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         /* ---------------- Automatic news ticker ----------------
