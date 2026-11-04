@@ -445,10 +445,11 @@
         .image-library-card img{width:100%;height:90px;object-fit:cover;border-radius:7px}
         .image-library-card small{display:block;overflow-wrap:anywhere;margin:6px 0;color:#475569}
         body.admin-only>header,body.admin-only>.promo-banner,body.admin-only>.news-strip,body.admin-only>.currency-strip,body.admin-only>.sports-news-section,body.admin-only>main,body.admin-only>footer,body.admin-only>.whatsapp-float,body.admin-only>.scroll-top{display:none!important}
-        body.admin-only .admin-modal{display:flex!important;opacity:1!important;position:relative;inset:auto;background:transparent;backdrop-filter:none;min-height:100vh;padding:18px}
-        body.admin-only .admin-box{width:min(1050px,100%);max-width:1050px;max-height:none;min-height:80vh;margin:auto}
-        body.admin-only #authBox{max-width:520px;min-height:0}
-        @media(max-width:600px){.admin-workspace-actions{padding:10px}.admin-workspace-actions .admin-btn{min-width:100%}}
+        body.admin-only .admin-modal{display:flex!important;opacity:1!important;position:fixed;inset:0;width:100%;height:100%;background:#f4f7fc;backdrop-filter:none;min-height:100vh;padding:0;overflow:auto;z-index:99999}
+        body.admin-only .admin-box{width:100%;max-width:none;max-height:none;min-height:100vh;margin:0;border-radius:0}
+        body.admin-only #authBox{width:min(480px,calc(100% - 32px));min-height:0;max-height:none;margin:auto;border-radius:18px}
+        body.admin-only #dashboardBox{width:100%;min-height:100vh;height:100vh;max-height:none;margin:0;border-radius:0}
+        @media(max-width:600px){body.admin-only .admin-workspace-actions{padding:10px}body.admin-only .admin-workspace-actions .admin-btn{min-width:0}}
 
         /* Admin Screen Styles */
         .admin-modal {
@@ -1312,6 +1313,19 @@
             if (location.hash === '#admin') {
                 document.body.classList.add('admin-only');
                 document.getElementById('adminDialog').classList.add('active');
+                if (isUserAdminLoggedIn) {
+                    document.getElementById('authBox').style.display = 'none';
+                    document.getElementById('dashboardBox').style.display = 'flex';
+                    buildPremiumAdminShell();
+                    applyAdminAppearance();
+                    buildAdminManagementListViewConsole();
+                    buildCardsManagementListViewConsole();
+                    buildPromoSlidesAdminList();
+                    buildAdminImageLibrary();
+                } else {
+                    document.getElementById('authBox').style.display = 'flex';
+                    document.getElementById('dashboardBox').style.display = 'none';
+                }
             }
             renderPromoBanners();
             renderDynamicSections();
@@ -1742,24 +1756,12 @@
             applyAdminAppearance();
         }
         function openAdminPanelDirectly() {
-            document.getElementById('adminToggleBtn').click();
+            openStandaloneAdmin();
         }
 
+        // Open the administration workspace in a dedicated browser tab.
         document.getElementById('adminToggleBtn').addEventListener('click', () => {
-            const dialog = document.getElementById('adminDialog');
-            dialog.classList.add('active');
-            if (isUserAdminLoggedIn) {
-                document.getElementById('authBox').style.display = 'none';
-                document.getElementById('dashboardBox').style.display = 'flex';
-                buildPremiumAdminShell();
-                buildAdminManagementListViewConsole();
-                buildCardsManagementListViewConsole();
-                buildPromoSlidesAdminList();
-                buildAdminImageLibrary();
-            } else {
-                document.getElementById('authBox').style.display = 'flex';
-                document.getElementById('dashboardBox').style.display = 'none';
-            }
+            openStandaloneAdmin();
         });
 
         function closeAdmin() {
@@ -2395,7 +2397,9 @@
         }
 
         function openStandaloneAdmin() {
-            window.open(location.href.split('#')[0] + '#admin', '_blank', 'noopener');
+            const target = new URL(location.href);
+            target.hash = 'admin';
+            window.open(target.toString(), '_blank', 'noopener');
         }
 
         function buildAdminImageLibrary() {
