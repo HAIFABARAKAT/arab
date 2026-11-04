@@ -727,9 +727,9 @@
         .sports-news-heading h2{font-size:20px;color:var(--text-color);display:flex;align-items:center;gap:10px}
         .sports-news-heading h2 i{color:var(--btn-color)}
         .sports-news-refresh{border:0;border-radius:50%;width:36px;height:36px;background:rgba(33,150,243,.1);color:var(--btn-color);cursor:pointer}
-        .sports-news-content{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);min-height:250px}
-        .sports-news-image-wrap{min-height:250px;overflow:hidden;background:#e8edf3}
-        .sports-news-image{display:block;width:100%;height:100%;min-height:250px;object-fit:cover;transition:opacity .35s ease}
+        .sports-news-content{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);height:300px;min-height:300px;overflow:hidden}
+        .sports-news-image-wrap{width:100%;height:300px;min-height:0;overflow:hidden;background:#e8edf3}
+        .sports-news-image{display:block;width:100%;height:100%;min-height:0;max-width:100%;object-fit:cover;transition:opacity .35s ease}
         .sports-news-copy{padding:24px;display:flex;flex-direction:column;justify-content:center;min-width:0}
         .sports-news-source{font-size:12px;color:var(--btn-color);font-weight:700;margin-bottom:10px}
         .sports-news-title{font-size:21px;line-height:1.55;margin-bottom:12px;color:var(--text-color)}
@@ -743,7 +743,7 @@
         .sports-news-dot.active{width:18px;border-radius:8px;background:var(--btn-color)}
         .sports-news-loading{padding:30px;text-align:center;color:#777;grid-column:1/-1}
         .sports-news-content.is-changing .sports-news-image,.sports-news-content.is-changing .sports-news-copy{opacity:.25}
-        @media(max-width:768px){.sports-news-section{max-width:92%}.sports-news-content{grid-template-columns:1fr}.sports-news-image-wrap,.sports-news-image{min-height:190px;height:190px}.sports-news-copy{padding:17px}.sports-news-title{font-size:18px}.sports-news-summary{-webkit-line-clamp:3}.sports-news-heading{padding:13px 15px}.sports-news-heading h2{font-size:17px}}
+        @media(max-width:768px){.sports-news-section{max-width:92%}.sports-news-content{grid-template-columns:1fr}.sports-news-content{height:auto;min-height:0}.sports-news-image-wrap{height:190px;min-height:190px}.sports-news-image{height:190px;min-height:190px}.sports-news-copy{padding:17px}.sports-news-title{font-size:18px}.sports-news-summary{-webkit-line-clamp:3}.sports-news-heading{padding:13px 15px}.sports-news-heading h2{font-size:17px}}
         @media(prefers-reduced-motion:reduce){.sports-news-image,.sports-news-copy{transition:none!important}}
     </style>
 </head>
