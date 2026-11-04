@@ -1988,12 +1988,12 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
         }
 
         const platformModuleConfig = {
+            members: {label:'إدارة الأعضاء', title:'display_name', detail:'email', status:'member_status'},
             businesses: {label:'دليل الأعمال', title:'name_ar', detail:'city', status:'status', approved:'published', rejected:'suspended', extra:"verification_status"},
             listings: {label:'السوق العربي', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
             jobs: {label:'الوظائف', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
             properties: {label:'العقارات', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
-            community_posts: {label:'المجتمع', title:'title', detail:'city', status:'status', approved:'published', rejected:'rejected'},
-            members: {label:'إدارة الأعضاء'}
+            community_posts: {label:'المجتمع', title:'title', detail:'city', status:'status', approved:'published', rejected:'rejected'}
         };
         let activePlatformModule = 'businesses';
         function openPlatformModules() {
@@ -2021,11 +2021,8 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             const host = document.getElementById('platformModuleRows');
             const status = document.getElementById('platformModuleStatus');
             if (!host) return;
-            if (activePlatformModule === 'members') {
-                await refreshMembersPanel();
-                return;
-            }
             host.innerHTML = '<p>جارٍ تحميل البيانات...</p>';
+            if (activePlatformModule === 'members') { await refreshMembersPanel(host,status); return; }
             const {data,error} = await supabaseClient.from(activePlatformModule).select('*').order('created_at',{ascending:false}).limit(100);
             if (error) { host.innerHTML = `<p style="color:#b91c1c">تعذر التحميل: ${safeModuleText(error.message)}</p>`; return; }
             const pending = (data||[]).filter(row => ['pending','draft'].includes(row[cfg.status]) || (activePlatformModule==='businesses' && row.verification_status==='pending'));
@@ -2040,88 +2037,38 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 return `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap"><div style="min-width:180px;flex:1"><b>${title}</b><div style="color:#64748b;font-size:13px;margin-top:5px">${detail} · الحالة: ${state}</div><small style="color:#94a3b8">${id}</small></div><div style="display:flex;gap:7px;flex-wrap:wrap">${canApprove?`<button class="admin-btn" style="width:auto;background:#15803d" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','approve')">اعتماد ونشر</button><button class="admin-btn" style="width:auto;background:#b91c1c" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','reject')">رفض</button>`:''}<button class="admin-btn" style="width:auto;background:#64748b" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','delete')">حذف</button></div></article>`;
             }).join('');
         }
-
-        async function refreshMembersPanel() {
-            const host = document.getElementById('platformModuleRows');
-            const status = document.getElementById('platformModuleStatus');
-            if (!host) return;
-            host.innerHTML = '<p>جارٍ تحميل الأعضاء...</p>';
-            if (!isUserAdminLoggedIn) {
-                host.innerHTML = '<p style="color:#b91c1c">يلزم حساب إداري مصرح.</p>';
-                return;
-            }
-            const { data, error } = await supabaseClient
-                .from('profiles')
-                .select('id,email,display_name,phone,city,created_at')
-                .order('created_at', { ascending: false })
-                .limit(500);
-            if (error) {
-                host.innerHTML = `<p style="color:#b91c1c">تعذر تحميل الأعضاء: ${safeModuleText(error.message)}. تأكد من تشغيل ملف SQL الخاص بإدارة الأعضاء.</p>`;
-                return;
-            }
-            status.textContent = `إجمالي الأعضاء المسجلين: ${(data || []).length}`;
-            if (!data || !data.length) {
-                host.innerHTML = '<div style="padding:20px;background:#f8fafc;border-radius:12px">لا يوجد أعضاء مسجلون حتى الآن.</div>';
-                return;
-            }
-            host.innerHTML = data.map(member => {
-                const id = safeModuleText(member.id);
-                const name = safeModuleText(member.display_name || 'عضو جديد');
-                const email = safeModuleText(member.email || 'لا يوجد بريد مسجل');
-                const phone = safeModuleText(member.phone || 'لم يضف رقم هاتف');
-                const city = safeModuleText(member.city || '—');
-                const joined = member.created_at ? new Date(member.created_at).toLocaleDateString('ar') : '—';
-                return `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap">
-                    <div style="min-width:220px;flex:1">
-                      <b>${name}</b>
-                      <div style="color:#475569;font-size:13px;margin-top:5px">${email}</div>
-                      <div style="color:#64748b;font-size:13px;margin-top:4px">الهاتف: ${phone} · المدينة: ${city}</div>
-                      <small style="color:#94a3b8">تاريخ التسجيل: ${joined}</small>
-                    </div>
-                    <button class="admin-btn" style="width:auto;background:#0f766e" onclick="viewMemberAds('${id}')">عرض إعلانات العضو</button>
-                </article>`;
+        async function refreshMembersPanel(host,status) {
+            const {data,error}=await supabaseClient.from('profiles').select('id,email,display_name,phone,city,created_at,member_status,status_reason,ban_until').order('created_at',{ascending:false}).limit(500);
+            if(error){host.innerHTML=`<p style="color:#b91c1c">تعذر تحميل الأعضاء: ${safeModuleText(error.message)}</p>`;return;}
+            const rows=data||[];
+            const counts=rows.reduce((a,r)=>(a[r.member_status||'pending']=(a[r.member_status||'pending']||0)+1,a),{});
+            status.textContent=`الأعضاء: ${rows.length} — بانتظار الموافقة: ${counts.pending||0} — مفعّلون: ${counts.active||0} — مجمّدون: ${counts.frozen||0} — محظورون: ${counts.banned||0}`;
+            if(!rows.length){host.innerHTML='<div style="padding:20px;background:#f8fafc;border-radius:12px">لا يوجد أعضاء مسجلون حتى الآن.</div>';return;}
+            const labels={pending:'بانتظار الموافقة',active:'مفعّل',frozen:'مجمّد',banned:'حظر مؤقت',deleted:'محذوف'};
+            host.innerHTML=rows.map(r=>{
+                const id=safeModuleText(r.id),name=safeModuleText(r.display_name||'عضو بدون اسم'),email=safeModuleText(r.email),phone=safeModuleText(r.phone),city=safeModuleText(r.city),state=r.member_status||'pending';
+                const reason=safeModuleText(r.status_reason||'—');
+                const date=r.created_at?new Date(r.created_at).toLocaleDateString('ar-MY'):'—';
+                const actions=state==='deleted'?'':`<button class="admin-btn" style="width:auto;background:#15803d" onclick="setMemberStatus('${id}','active')">تفعيل / رفع القيود</button><button class="admin-btn" style="width:auto;background:#64748b" onclick="setMemberStatus('${id}','frozen')">تجميد</button><button class="admin-btn" style="width:auto;background:#b45309" onclick="setMemberStatus('${id}','banned')">حظر مؤقت</button><button class="admin-btn" style="width:auto;background:#b91c1c" onclick="setMemberStatus('${id}','deleted')">حذف</button>`;
+                return `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:grid;gap:9px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><b>${name}</b><div style="color:#475569;font-size:13px">${email} · ${phone}</div><div style="color:#64748b;font-size:12px">${city} · تاريخ التسجيل: ${date}</div></div><b style="color:${state==='active'?'#15803d':state==='pending'?'#b45309':'#b91c1c'}">${safeModuleText(labels[state]||state)}</b></div><div style="font-size:12px;color:#64748b">ملاحظة الإدارة: ${reason}${r.ban_until?` · ينتهي الحظر: ${safeModuleText(new Date(r.ban_until).toLocaleString('ar-MY'))}`:''}</div><div style="display:flex;gap:7px;flex-wrap:wrap">${actions}</div></article>`;
             }).join('');
         }
-
-        async function viewMemberAds(userId) {
-            const host = document.getElementById('platformModuleRows');
-            const status = document.getElementById('platformModuleStatus');
-            if (!host || !isUserAdminLoggedIn) return;
-            host.innerHTML = '<p>جارٍ تحميل محتوى العضو...</p>';
-            const specs = [
-                ['businesses','owner_id','name_ar','دليل الأعمال'],
-                ['listings','owner_id','title_ar','السوق العربي'],
-                ['jobs','owner_id','title_ar','الوظائف'],
-                ['properties','owner_id','title_ar','العقارات'],
-                ['community_posts','author_id','title','المجتمع']
-            ];
-            try {
-                const all = [];
-                for (const [table, ownerCol, titleCol, label] of specs) {
-                    const { data, error } = await supabaseClient.from(table)
-                        .select(`id,${titleCol},status,created_at`)
-                        .eq(ownerCol, userId)
-                        .order('created_at', { ascending: false })
-                        .limit(100);
-                    if (error) throw new Error(`${label}: ${error.message}`);
-                    (data || []).forEach(row => all.push({
-                        title: row[titleCol] || 'بدون عنوان',
-                        status: row.status || '—',
-                        created_at: row.created_at,
-                        label
-                    }));
-                }
-                all.sort((a,b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
-                status.textContent = `عدد المحتويات المسجلة لهذا العضو: ${all.length}`;
-                host.innerHTML = `<button class="admin-btn" style="width:auto;background:#64748b;margin-bottom:10px" onclick="refreshMembersPanel()">العودة إلى قائمة الأعضاء</button>` +
-                    (all.length ? all.map(item => `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:13px">
-                      <b>${safeModuleText(item.title)}</b>
-                      <div style="color:#64748b;font-size:13px;margin-top:5px">${safeModuleText(item.label)} · الحالة: ${safeModuleText(item.status)} · ${item.created_at ? new Date(item.created_at).toLocaleDateString('ar') : '—'}</div>
-                    </article>`).join('') : '<div style="padding:20px;background:#f8fafc;border-radius:12px">لا توجد إعلانات أو منشورات لهذا العضو حتى الآن.</div>');
-            } catch (error) {
-                host.innerHTML = `<p style="color:#b91c1c">تعذر تحميل محتوى العضو: ${safeModuleText(error.message)}</p><button class="admin-btn" style="width:auto" onclick="refreshMembersPanel()">العودة إلى قائمة الأعضاء</button>`;
+        window.setMemberStatus=async function(id,nextStatus){
+            if(!isUserAdminLoggedIn)return alert('يلزم حساب إداري مصرح.');
+            const labels={active:'تفعيل العضو',frozen:'تجميد العضو',banned:'حظر العضو مؤقتاً',deleted:'حذف العضو'};
+            let reason=prompt(`اكتب سبب ${labels[nextStatus]} (اختياري):`,''); if(reason===null)return;
+            let banUntil=null;
+            if(nextStatus==='banned'){
+                const days=prompt('مدة الحظر بالأيام؟ أدخل رقماً مثل 3 أو 7 أو 30. اكتب 0 للحظر حتى رفعه يدوياً.','7');
+                if(days===null)return; const n=Number(days); if(!Number.isInteger(n)||n<0||n>3650)return alert('أدخل عدداً صحيحاً من 0 إلى 3650.');
+                if(n>0)banUntil=new Date(Date.now()+n*86400000).toISOString();
             }
-        }
+            const confirmText=nextStatus==='deleted'?'سيتم تعطيل الحساب وحفظ بياناته وإعلاناته دون حذفها نهائياً. هل تريد المتابعة؟':`تأكيد: ${labels[nextStatus]}؟`;
+            if(!confirm(confirmText))return;
+            const {error}=await supabaseClient.rpc('admin_set_member_status',{p_user_id:id,p_status:nextStatus,p_reason:reason||null,p_ban_until:banUntil});
+            if(error){alert('تعذر تحديث حالة العضو: '+error.message);return;}
+            await refreshPlatformModules();
+        };
 
         async function moderatePlatformRecord(table,id,action) {
             if (!isUserAdminLoggedIn || !platformModuleConfig[table]) return alert('يلزم حساب إداري مصرح.');
@@ -3209,23 +3156,23 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
 </div>
 <script>
 (function(){
- let mpUser=null, mpKind='business';
+ let mpUser=null, mpKind='business', mpMemberStatus='active';
  const $=id=>document.getElementById(id);
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function client(){if(!window.supabase||!window.supabase.createClient) throw new Error('تعذر تحميل مكتبة الاتصال. حدّث الصفحة.'); return window.supabase.createClient('https://chboavdptdcmozlqqjqc.supabase.co','sb_publishable_ruJ8os5RULLAricBrdfXZA_wZQPiekd');}
  const db=()=>window.__arabMalaysiaMemberClient||(window.__arabMalaysiaMemberClient=client());
  window.mpOpen=async function(){ $('memberPortal').style.display='flex'; $('mpFeedback').textContent=''; $('mpFeedback').style.background='transparent'; $('mpFeedback').style.border='0'; await mpRefreshSession(); };
  window.mpClose=()=>$('memberPortal').style.display='none';
- async function mpRefreshSession(){try{const {data,error}=await db().auth.getSession();if(error)throw error;mpSetUser(data.session?.user||null);}catch(e){$('mpFeedback').innerHTML='<span class="mp-error">'+esc(e.message)+'</span>';}}
- function mpSetUser(user){mpUser=user;$('mpAuth').style.display=user?'none':'block';$('mpMember').style.display=user?'block':'none';if(user){$('mpWelcome').textContent='مرحباً '+(user.user_metadata?.display_name||'بك');$('mpUserEmail').textContent=user.email||'';mpRenderForm();}}
- window.mpSignIn=async function(){try{mpMessage('جارٍ تسجيل الدخول...','ok');const {data,error}=await db().auth.signInWithPassword({email:$('mpEmail').value.trim(),password:$('mpPassword').value});if(error)throw error;mpSetUser(data.user);mpMessage('تم تسجيل الدخول بنجاح.','ok');}catch(e){mpMessage(e.message,'err');}};
- window.mpSignUp=async function(){try{mpMessage('جارٍ إنشاء الحساب...','ok');const email=$('mpEmail').value.trim(),password=$('mpPassword').value,name=$('mpName').value.trim();if(!name||!email||password.length<8)throw new Error('أدخل الاسم والبريد وكلمة مرور من 8 أحرف على الأقل.');const {data,error}=await db().auth.signUp({email,password,options:{data:{display_name:name,phone:$('mpPhone').value.trim()}}});if(error)throw error;if(data.user&&!data.session){mpMessage('تم إنشاء الحساب. افحص بريدك لتأكيد التسجيل، ثم سجّل الدخول.','ok');}else{mpSetUser(data.user);mpMessage('تم إنشاء الحساب بنجاح.','ok');}}catch(e){mpMessage(e.message,'err');}};
- window.mpSignOut=async function(){try{const {error}=await db().auth.signOut();if(error)throw error;mpSetUser(null);mpMessage('تم تسجيل الخروج.','ok');}catch(e){mpMessage(e.message,'err');}};
+ async function mpRefreshSession(){try{const {data,error}=await db().auth.getSession();if(error)throw error;await mpSetUser(data.session?.user||null);}catch(e){$('mpFeedback').innerHTML='<span class="mp-error">'+esc(e.message)+'</span>';}}
+ async function mpSetUser(user){mpUser=user;mpMemberStatus='active';$('mpAuth').style.display=user?'none':'block';$('mpMember').style.display=user?'block':'none';if(user){$('mpWelcome').textContent='مرحباً '+(user.user_metadata?.display_name||'بك');$('mpUserEmail').textContent=user.email||'';try{const {data,error}=await db().from('profiles').select('member_status,ban_until').eq('id',user.id).single();if(error)throw error;mpMemberStatus=data.member_status||'pending';if(mpMemberStatus==='banned'&&data.ban_until&&new Date(data.ban_until)<=new Date())mpMemberStatus='active';}catch(e){mpMemberStatus='pending';}mpRenderForm();}}
+ window.mpSignIn=async function(){try{mpMessage('جارٍ تسجيل الدخول...','ok');const {data,error}=await db().auth.signInWithPassword({email:$('mpEmail').value.trim(),password:$('mpPassword').value});if(error)throw error;await mpSetUser(data.user);mpMessage(mpMemberStatus==='frozen'?'تم تسجيل الدخول. حسابك مجمّد حالياً ويمكنك التصفح دون إضافة محتوى.':'تم تسجيل الدخول بنجاح.','ok');}catch(e){mpMessage(e.message,'err');}};
+ window.mpSignUp=async function(){try{mpMessage('جارٍ إنشاء الحساب...','ok');const email=$('mpEmail').value.trim(),password=$('mpPassword').value,name=$('mpName').value.trim();if(!name||!email||password.length<8)throw new Error('أدخل الاسم والبريد وكلمة مرور من 8 أحرف على الأقل.');const {data,error}=await db().auth.signUp({email,password,options:{data:{display_name:name,phone:$('mpPhone').value.trim()}}});if(error)throw error;if(data.user?.id){if(data.session)await db().auth.signOut();await mpSetUser(null);mpMessage('تم إنشاء حسابك بنجاح، وهو الآن بانتظار موافقة إدارة عرب ماليزيا. ستتمكن من الدخول وإضافة الإعلانات بعد اعتماد الحساب.','ok');}else{mpMessage('تم إرسال طلب التسجيل.','ok');}}catch(e){mpMessage(e.message,'err');}};
+ window.mpSignOut=async function(){try{const {error}=await db().auth.signOut();if(error)throw error;await mpSetUser(null);mpMessage('تم تسجيل الخروج.','ok');}catch(e){mpMessage(e.message,'err');}};
  window.mpChoose=function(kind,btn){mpKind=kind;document.querySelectorAll('#memberPortal .mp-tab').forEach(x=>x.classList.toggle('active',x===btn));mpRenderForm();};
  function field(label,id,placeholder='',type='text',wide=false){return `<div class="mp-field ${wide?'mp-wide':''}"><label for="${id}">${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}"></div>`;}
  function area(label,id,placeholder){return `<div class="mp-field mp-wide"><label for="${id}">${label}</label><textarea id="${id}" placeholder="${placeholder}"></textarea></div>`;}
  function select(label,id,opts){return `<div class="mp-field"><label for="${id}">${label}</label><select id="${id}">${opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select></div>`;}
- function mpRenderForm(){const h=$('mpFormHost');if(mpKind==='mine'){mpLoadMine();return;}if(mpKind==='feed'){mpLoadFeed();return;}let f='';
+ function mpRenderForm(){const h=$('mpFormHost');if(mpKind!=='mine'&&mpKind!=='feed'&&mpMemberStatus!=='active'){h.innerHTML='<div class=\"mp-note\">حسابك غير مفعّل لإضافة المحتوى حالياً. يمكنك التصفح ومراجعة محتوياتك، ويرجى التواصل مع إدارة المنصة.</div>';return;}if(mpKind==='mine'){mpLoadMine();return;}if(mpKind==='feed'){mpLoadFeed();return;}let f='';
  if(mpKind==='business')f=`<div class="mp-grid">${field('اسم النشاط بالعربية','mpTitle','مثال: مطعم عربي')}${field('الاسم بالإنجليزية','mpTitleEn','Business name')}${field('نوع النشاط','mpCategoryText','مطعم، خدمات، تجارة...')}${field('المدينة','mpCity','Kuala Lumpur')}${field('الهاتف','mpContact','+60...')}${field('واتساب','mpWhatsapp','+60...')}${field('الموقع الإلكتروني','mpWebsite','https://...','url')}${field('رابط الشعار (اختياري)','mpLogo','https://...','url')}${area('وصف النشاط','mpDesc','اكتب وصفاً واضحاً للخدمات...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال النشاط للمراجعة</button>`;
  if(mpKind==='listing')f=`<div class="mp-grid">${select('نوع الإعلان','mpType',[['general','عام'],['car','سيارات'],['service','خدمات'],['for_sale','للبيع'],['for_rent','للإيجار']])}${field('عنوان الإعلان','mpTitle','ماذا تعرض؟')}${field('السعر بالرينغيت','mpPrice','0','number')}${field('المدينة','mpCity','Kuala Lumpur')}${field('رقم التواصل','mpContact','+60...')}${field('رابط صورة (اختياري)','mpImage','https://...','url',true)}${area('التفاصيل','mpDesc','اكتب تفاصيل الإعلان...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال الإعلان للمراجعة</button>`;
  if(mpKind==='job')f=`<div class="mp-grid">${field('المسمى الوظيفي','mpTitle','مثال: محاسب')}${field('اسم الشركة','mpCompany','اسم الشركة')}${field('المدينة','mpCity','Kuala Lumpur')}${select('نوع الوظيفة','mpEmployment',[['full-time','دوام كامل'],['part-time','دوام جزئي'],['contract','عقد'],['internship','تدريب']])}${field('الحد الأدنى للراتب','mpSalaryMin','اختياري','number')}${field('الحد الأعلى للراتب','mpSalaryMax','اختياري','number')}${field('البريد للتقديم','mpContact','jobs@example.com','email')}${area('وصف الوظيفة والمتطلبات','mpDesc','المهام والخبرات المطلوبة...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال الوظيفة للمراجعة</button>`;
@@ -3234,7 +3181,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
  h.innerHTML=f;
  }
  function mpMessage(t,k){const el=$('mpFeedback');el.className=k==='ok'?'mp-success':'mp-error';el.textContent=t;el.style.display='block';el.style.background=k==='ok'?'#ecfdf5':'#fef2f2';el.style.border='1px solid '+(k==='ok'?'#a7f3d0':'#fecaca');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
- window.mpSubmit=async function(){try{if(!mpUser)throw new Error('سجّل الدخول أولاً.');const val=id=>$(id)?.value?.trim()||null;const city=val('mpCity');let table,payload;
+ window.mpSubmit=async function(){try{if(!mpUser)throw new Error('سجّل الدخول أولاً.');if(mpMemberStatus!=='active')throw new Error('حسابك غير مفعّل لإضافة المحتوى حالياً.');const val=id=>$(id)?.value?.trim()||null;const city=val('mpCity');let table,payload;
  if(mpKind==='business'){table='businesses';const name=val('mpTitle');if(!name||!city)throw new Error('اسم النشاط والمدينة مطلوبان.');payload={owner_id:mpUser.id,name_ar:name,name_en:val('mpTitleEn'),slug:'biz-'+crypto.randomUUID(),description_ar:val('mpDesc'),phone:val('mpContact'),whatsapp:val('mpWhatsapp'),website_url:val('mpWebsite'),logo_url:val('mpLogo'),city,status:'draft',verification_status:'pending'};}
  if(mpKind==='listing'){table='listings';if(!val('mpTitle')||!city)throw new Error('عنوان الإعلان والمدينة مطلوبان.');payload={owner_id:mpUser.id,listing_type:val('mpType'),title_ar:val('mpTitle'),description_ar:val('mpDesc'),price:val('mpPrice')?Number(val('mpPrice')):null,city,contact_phone:val('mpContact'),image_urls:val('mpImage')?[val('mpImage')]:[],status:'pending'};}
  if(mpKind==='job'){table='jobs';if(!val('mpTitle')||!city)throw new Error('المسمى الوظيفي والمدينة مطلوبان.');payload={owner_id:mpUser.id,title_ar:val('mpTitle'),company_name:val('mpCompany'),description_ar:val('mpDesc'),city,employment_type:val('mpEmployment'),salary_min:val('mpSalaryMin')?Number(val('mpSalaryMin')):null,salary_max:val('mpSalaryMax')?Number(val('mpSalaryMax')):null,contact_email:val('mpContact'),status:'pending'};}
@@ -3244,7 +3191,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
  }catch(e){mpMessage(e.message,'err');}};
  async function mpLoadFeed(){const h=$('mpFormHost');h.innerHTML='<p>جارٍ تحميل منشورات المجتمع...</p>';try{const {data,error}=await db().from('community_posts').select('id,title,body,city,created_at').eq('status','published').order('created_at',{ascending:false}).limit(30);if(error)throw error;if(!data?.length){h.innerHTML='<div class="mp-note">لا توجد منشورات منشورة حالياً. يمكنك إضافة منشور من تبويب «منشور مجتمعي».</div>';return;}h.innerHTML='<div class="mp-list">'+data.map(p=>`<article class="mp-item" style="display:block"><b>${esc(p.title||'منشور مجتمعي')}</b><div class="mp-muted">${esc(p.city||'ماليزيا')} · ${new Date(p.created_at).toLocaleDateString('ar')}</div><p>${esc(p.body)}</p><div id="mpComments-${esc(p.id)}" class="mp-muted">جارٍ تحميل التعليقات...</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><input id="mpComment-${esc(p.id)}" placeholder="اكتب تعليقاً..." style="flex:1;min-width:180px"><button class="mp-action primary" onclick="mpAddComment('${esc(p.id)}')">إرسال التعليق</button></div></article>`).join('')+'</div>';for(const p of data)mpLoadComments(p.id);}catch(e){h.innerHTML='<p class="mp-error">تعذر تحميل المجتمع: '+esc(e.message)+'</p>';}}
  async function mpLoadComments(postId){try{const {data,error}=await db().from('comments').select('body,created_at').eq('post_id',postId).eq('status','published').order('created_at',{ascending:true}).limit(20);if(error)throw error;const el=$('mpComments-'+postId);if(el)el.innerHTML=(data||[]).map(c=>`<div style="padding:6px 0;border-top:1px solid #e2e8f0">${esc(c.body)}</div>`).join('')||'لا توجد تعليقات بعد.';}catch(e){const el=$('mpComments-'+postId);if(el)el.textContent='تعذر تحميل التعليقات.';}}
- window.mpAddComment=async function(postId){try{const body=$('mpComment-'+postId)?.value?.trim();if(!body)throw new Error('اكتب التعليق أولاً.');const {error}=await db().from('comments').insert({post_id:postId,author_id:mpUser.id,body,status:'published'});if(error)throw error;$('mpComment-'+postId).value='';await mpLoadComments(postId);mpMessage('تم نشر تعليقك.','ok');}catch(e){mpMessage(e.message,'err');}};
+ window.mpAddComment=async function(postId){try{if(mpMemberStatus!=='active')throw new Error('حسابك غير مفعّل لإضافة التعليقات حالياً.');const body=$('mpComment-'+postId)?.value?.trim();if(!body)throw new Error('اكتب التعليق أولاً.');const {error}=await db().from('comments').insert({post_id:postId,author_id:mpUser.id,body,status:'published'});if(error)throw error;$('mpComment-'+postId).value='';await mpLoadComments(postId);mpMessage('تم نشر تعليقك.','ok');}catch(e){mpMessage(e.message,'err');}};
  async function mpLoadMine(){const h=$('mpFormHost');h.innerHTML='<p>جارٍ تحميل إعلاناتك...</p>';const specs=[['businesses','name_ar','status'],['listings','title_ar','status'],['jobs','title_ar','status'],['properties','title_ar','status'],['community_posts','title','status']];try{let rows=[];for(const [table,title,status] of specs){const owner=table==='community_posts'?'author_id':'owner_id';const {data,error}=await db().from(table).select(`id,${title},${status},created_at`).eq(owner,mpUser.id).order('created_at',{ascending:false}).limit(50);if(error)throw error;(data||[]).forEach(r=>rows.push({...r,_table:table,_title:r[title]}));}rows.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));h.innerHTML=rows.length?'<div class="mp-list">'+rows.map(r=>`<div class="mp-item"><div><b>${esc(r._title||'بدون عنوان')}</b><div class="mp-muted">${esc(r._table)} · ${new Date(r.created_at).toLocaleDateString('ar')}</div></div><span>${esc(r.status)}</span></div>`).join('')+'</div>':'<div class="mp-note">لم تضف أي محتوى بعد.</div>';}catch(e){h.innerHTML='<p class="mp-error">تعذر تحميل إعلاناتك: '+esc(e.message)+'</p>';}}
  document.addEventListener('keydown',e=>{if(e.key==='Escape')window.mpClose();});
 })();
