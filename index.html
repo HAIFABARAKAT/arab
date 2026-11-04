@@ -1064,6 +1064,31 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
 }
 </style>
 
+
+<style>
+#memberPortalLauncher{position:fixed;left:18px;bottom:22px;z-index:9998;background:#0756a5;color:#fff;border:0;border-radius:999px;padding:13px 18px;font-weight:700;box-shadow:0 5px 22px #0003;cursor:pointer}
+#memberPortal{display:none;position:fixed;inset:0;z-index:9999;background:#0f172a99;align-items:center;justify-content:center;padding:14px;font-family:inherit}
+#memberPortal .mp-card{width:min(920px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 20px 70px #0005;direction:rtl;color:#1e293b}
+#memberPortal .mp-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#083b72;color:#fff;position:sticky;top:0;z-index:2}
+#memberPortal .mp-head button{background:transparent;border:0;color:white;font-size:25px;cursor:pointer}
+#memberPortal .mp-body{padding:18px}
+#memberPortal .mp-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+#memberPortal button.mp-tab,#memberPortal .mp-action{border:0;border-radius:9px;padding:10px 14px;background:#e2e8f0;color:#123;cursor:pointer;font-weight:600}
+#memberPortal button.mp-tab.active,#memberPortal .mp-action.primary{background:#0756a5;color:#fff}
+#memberPortal .mp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#memberPortal label{display:block;font-weight:600;font-size:13px;margin-bottom:5px}
+#memberPortal input,#memberPortal textarea,#memberPortal select{box-sizing:border-box;width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:11px;background:#fff;color:#1e293b;font:inherit}
+#memberPortal textarea{min-height:92px;resize:vertical}
+#memberPortal .mp-field{margin-bottom:12px}
+#memberPortal .mp-wide{grid-column:1/-1}
+#memberPortal .mp-note{background:#eff6ff;border-radius:10px;padding:11px;margin:10px 0;color:#1e40af;font-size:13px}
+#memberPortal .mp-list{display:grid;gap:9px}
+#memberPortal .mp-item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#memberPortal .mp-muted{color:#64748b;font-size:13px}
+#memberPortal .mp-error{color:#b91c1c}.mp-success{color:#047857}
+@media(max-width:600px){#memberPortal .mp-grid{grid-template-columns:1fr}#memberPortal .mp-wide{grid-column:auto}#memberPortalLauncher{bottom:12px;left:10px}}
+</style>
+
 </head>
 <body>
     <!-- Arab Malaysia 2.0 Core Foundation / STAGING BUILD: production systems are not modified. -->
@@ -3061,5 +3086,81 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
         setInterval(loadLatestNews, NEWS_REFRESH_INTERVAL);
 
     </script>
+
+<button id="memberPortalLauncher" type="button" onclick="mpOpen()">👤 حسابي / أضف إعلاناً</button>
+<div id="memberPortal" role="dialog" aria-modal="true" aria-label="بوابة الأعضاء">
+ <div class="mp-card">
+  <div class="mp-head"><div><b>بوابة أعضاء عرب ماليزيا</b><div style="font-size:12px;opacity:.8">أنشئ حسابك وأدرج خدماتك وإعلاناتك</div></div><button type="button" onclick="mpClose()" aria-label="إغلاق">×</button></div>
+  <div class="mp-body">
+   <div id="mpAuth">
+    <div class="mp-note">سجّل الدخول أو أنشئ حساباً. قد يتطلب التسجيل تأكيد البريد الإلكتروني حسب إعدادات المشروع.</div>
+    <div class="mp-grid">
+     <div class="mp-field"><label>الاسم</label><input id="mpName" autocomplete="name" placeholder="اسمك الكامل"></div>
+     <div class="mp-field"><label>رقم الهاتف</label><input id="mpPhone" autocomplete="tel" placeholder="+60..."></div>
+     <div class="mp-field"><label>البريد الإلكتروني</label><input id="mpEmail" type="email" autocomplete="email" placeholder="name@example.com"></div>
+     <div class="mp-field"><label>كلمة المرور</label><input id="mpPassword" type="password" autocomplete="current-password" minlength="8" placeholder="8 أحرف على الأقل"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="mp-action primary" onclick="mpSignIn()">تسجيل الدخول</button><button class="mp-action" onclick="mpSignUp()">إنشاء حساب جديد</button></div>
+   </div>
+   <div id="mpMember" style="display:none">
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><div><b id="mpWelcome">مرحباً</b><div class="mp-muted" id="mpUserEmail"></div></div><button class="mp-action" onclick="mpSignOut()">تسجيل الخروج</button></div>
+    <div class="mp-note">كل الإضافات الجديدة تدخل حالة «بانتظار المراجعة» ولا تظهر للعامة إلا بعد موافقة الإدارة.</div>
+    <div class="mp-tabs">
+     <button class="mp-tab active" data-kind="business" onclick="mpChoose('business',this)">إضافة نشاط تجاري</button>
+     <button class="mp-tab" data-kind="listing" onclick="mpChoose('listing',this)">إعلان السوق</button>
+     <button class="mp-tab" data-kind="job" onclick="mpChoose('job',this)">وظيفة</button>
+     <button class="mp-tab" data-kind="property" onclick="mpChoose('property',this)">عقار</button>
+     <button class="mp-tab" data-kind="post" onclick="mpChoose('post',this)">منشور مجتمعي</button>
+     <button class="mp-tab" data-kind="feed" onclick="mpChoose('feed',this)">المجتمع والتعليقات</button><button class="mp-tab" data-kind="mine" onclick="mpChoose('mine',this)">إعلاناتي</button>
+    </div>
+    <div id="mpFormHost"></div>
+    <div id="mpFeedback" aria-live="polite" style="margin-top:12px"></div>
+   </div>
+  </div>
+ </div>
+</div>
+<script>
+(function(){
+ let mpUser=null, mpKind='business';
+ const $=id=>document.getElementById(id);
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function client(){if(!window.supabase||!window.supabase.createClient) throw new Error('تعذر تحميل مكتبة الاتصال. حدّث الصفحة.'); return window.supabase.createClient('https://chboavdptdcmozlqqjqc.supabase.co','sb_publishable_ruJ8os5RULLAricBrdfXZA_wZQPiekd');}
+ const db=()=>window.__arabMalaysiaMemberClient||(window.__arabMalaysiaMemberClient=client());
+ window.mpOpen=async function(){ $('memberPortal').style.display='flex'; await mpRefreshSession(); };
+ window.mpClose=()=>$('memberPortal').style.display='none';
+ async function mpRefreshSession(){try{const {data,error}=await db().auth.getSession();if(error)throw error;mpSetUser(data.session?.user||null);}catch(e){$('mpFeedback').innerHTML='<span class="mp-error">'+esc(e.message)+'</span>';}}
+ function mpSetUser(user){mpUser=user;$('mpAuth').style.display=user?'none':'block';$('mpMember').style.display=user?'block':'none';if(user){$('mpWelcome').textContent='مرحباً '+(user.user_metadata?.display_name||'بك');$('mpUserEmail').textContent=user.email||'';mpRenderForm();}}
+ window.mpSignIn=async function(){try{const {data,error}=await db().auth.signInWithPassword({email:$('mpEmail').value.trim(),password:$('mpPassword').value});if(error)throw error;mpSetUser(data.user);mpMessage('تم تسجيل الدخول بنجاح.','ok');}catch(e){mpMessage(e.message,'err');}};
+ window.mpSignUp=async function(){try{const email=$('mpEmail').value.trim(),password=$('mpPassword').value,name=$('mpName').value.trim();if(!name||!email||password.length<8)throw new Error('أدخل الاسم والبريد وكلمة مرور من 8 أحرف على الأقل.');const {data,error}=await db().auth.signUp({email,password,options:{data:{display_name:name,phone:$('mpPhone').value.trim()}}});if(error)throw error;if(data.user&&!data.session){mpMessage('تم إنشاء الحساب. افحص بريدك لتأكيد التسجيل، ثم سجّل الدخول.','ok');}else{mpSetUser(data.user);mpMessage('تم إنشاء الحساب بنجاح.','ok');}}catch(e){mpMessage(e.message,'err');}};
+ window.mpSignOut=async function(){try{const {error}=await db().auth.signOut();if(error)throw error;mpSetUser(null);mpMessage('تم تسجيل الخروج.','ok');}catch(e){mpMessage(e.message,'err');}};
+ window.mpChoose=function(kind,btn){mpKind=kind;document.querySelectorAll('#memberPortal .mp-tab').forEach(x=>x.classList.toggle('active',x===btn));mpRenderForm();};
+ function field(label,id,placeholder='',type='text',wide=false){return `<div class="mp-field ${wide?'mp-wide':''}"><label for="${id}">${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}"></div>`;}
+ function area(label,id,placeholder){return `<div class="mp-field mp-wide"><label for="${id}">${label}</label><textarea id="${id}" placeholder="${placeholder}"></textarea></div>`;}
+ function select(label,id,opts){return `<div class="mp-field"><label for="${id}">${label}</label><select id="${id}">${opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select></div>`;}
+ function mpRenderForm(){const h=$('mpFormHost');if(mpKind==='mine'){mpLoadMine();return;}if(mpKind==='feed'){mpLoadFeed();return;}let f='';
+ if(mpKind==='business')f=`<div class="mp-grid">${field('اسم النشاط بالعربية','mpTitle','مثال: مطعم عربي')}${field('الاسم بالإنجليزية','mpTitleEn','Business name')}${field('نوع النشاط','mpCategoryText','مطعم، خدمات، تجارة...')}${field('المدينة','mpCity','Kuala Lumpur')}${field('الهاتف','mpContact','+60...')}${field('واتساب','mpWhatsapp','+60...')}${field('الموقع الإلكتروني','mpWebsite','https://...','url')}${field('رابط الشعار (اختياري)','mpLogo','https://...','url')}${area('وصف النشاط','mpDesc','اكتب وصفاً واضحاً للخدمات...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال النشاط للمراجعة</button>`;
+ if(mpKind==='listing')f=`<div class="mp-grid">${select('نوع الإعلان','mpType',[['general','عام'],['car','سيارات'],['service','خدمات'],['for_sale','للبيع'],['for_rent','للإيجار']])}${field('عنوان الإعلان','mpTitle','ماذا تعرض؟')}${field('السعر بالرينغيت','mpPrice','0','number')}${field('المدينة','mpCity','Kuala Lumpur')}${field('رقم التواصل','mpContact','+60...')}${field('رابط صورة (اختياري)','mpImage','https://...','url',true)}${area('التفاصيل','mpDesc','اكتب تفاصيل الإعلان...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال الإعلان للمراجعة</button>`;
+ if(mpKind==='job')f=`<div class="mp-grid">${field('المسمى الوظيفي','mpTitle','مثال: محاسب')}${field('اسم الشركة','mpCompany','اسم الشركة')}${field('المدينة','mpCity','Kuala Lumpur')}${select('نوع الوظيفة','mpEmployment',[['full-time','دوام كامل'],['part-time','دوام جزئي'],['contract','عقد'],['internship','تدريب']])}${field('الحد الأدنى للراتب','mpSalaryMin','اختياري','number')}${field('الحد الأعلى للراتب','mpSalaryMax','اختياري','number')}${field('البريد للتقديم','mpContact','jobs@example.com','email')}${area('وصف الوظيفة والمتطلبات','mpDesc','المهام والخبرات المطلوبة...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال الوظيفة للمراجعة</button>`;
+ if(mpKind==='property')f=`<div class="mp-grid">${select('نوع العقار','mpPropertyType',[['apartment','شقة'],['house','منزل'],['room','غرفة'],['commercial','تجاري'],['land','أرض']])}${select('نوع العرض','mpOffer',[['rent','إيجار'],['sale','بيع']])}${field('عنوان الإعلان','mpTitle','عنوان العقار')}${field('المدينة','mpCity','Kuala Lumpur')}${field('السعر بالرينغيت','mpPrice','0','number')}${field('عدد غرف النوم','mpBedrooms','0','number')}${field('عدد الحمامات','mpBathrooms','0','number')}${field('رابط صورة (اختياري)','mpImage','https://...','url',true)}${area('الوصف والعنوان','mpDesc','تفاصيل العقار...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال العقار للمراجعة</button>`;
+ if(mpKind==='post')f=`<div class="mp-grid">${field('عنوان المنشور (اختياري)','mpTitle','عنوان مختصر')}${select('نوع المنشور','mpPostType',[['discussion','نقاش'],['question','سؤال'],['announcement','إعلان مجتمعي'],['event','فعالية']])}${field('المدينة','mpCity','Malaysia')}${area('محتوى المنشور','mpDesc','شارك المجتمع بما تريد...')}</div><button class="mp-action primary" onclick="mpSubmit()">نشر للمراجعة</button>`;
+ h.innerHTML=f;
+ }
+ function mpMessage(t,k){$('mpFeedback').className=k==='ok'?'mp-success':'mp-error';$('mpFeedback').textContent=t;}
+ window.mpSubmit=async function(){try{if(!mpUser)throw new Error('سجّل الدخول أولاً.');const val=id=>$(id)?.value?.trim()||null;const city=val('mpCity');let table,payload;
+ if(mpKind==='business'){table='businesses';const name=val('mpTitle');if(!name||!city)throw new Error('اسم النشاط والمدينة مطلوبان.');payload={owner_id:mpUser.id,name_ar:name,name_en:val('mpTitleEn'),slug:'biz-'+crypto.randomUUID(),description_ar:val('mpDesc'),phone:val('mpContact'),whatsapp:val('mpWhatsapp'),website_url:val('mpWebsite'),logo_url:val('mpLogo'),city,status:'draft',verification_status:'pending'};}
+ if(mpKind==='listing'){table='listings';if(!val('mpTitle')||!city)throw new Error('عنوان الإعلان والمدينة مطلوبان.');payload={owner_id:mpUser.id,listing_type:val('mpType'),title_ar:val('mpTitle'),description_ar:val('mpDesc'),price:val('mpPrice')?Number(val('mpPrice')):null,city,contact_phone:val('mpContact'),image_urls:val('mpImage')?[val('mpImage')]:[],status:'pending'};}
+ if(mpKind==='job'){table='jobs';if(!val('mpTitle')||!city)throw new Error('المسمى الوظيفي والمدينة مطلوبان.');payload={owner_id:mpUser.id,title_ar:val('mpTitle'),company_name:val('mpCompany'),description_ar:val('mpDesc'),city,employment_type:val('mpEmployment'),salary_min:val('mpSalaryMin')?Number(val('mpSalaryMin')):null,salary_max:val('mpSalaryMax')?Number(val('mpSalaryMax')):null,contact_email:val('mpContact'),status:'pending'};}
+ if(mpKind==='property'){table='properties';if(!val('mpTitle')||!city)throw new Error('عنوان العقار والمدينة مطلوبان.');payload={owner_id:mpUser.id,property_type:val('mpPropertyType'),offer_type:val('mpOffer'),title_ar:val('mpTitle'),description_ar:val('mpDesc'),city,price:val('mpPrice')?Number(val('mpPrice')):null,bedrooms:val('mpBedrooms')?Number(val('mpBedrooms')):null,bathrooms:val('mpBathrooms')?Number(val('mpBathrooms')):null,image_urls:val('mpImage')?[val('mpImage')]:[],status:'pending'};}
+ if(mpKind==='post'){table='community_posts';if(!val('mpDesc'))throw new Error('محتوى المنشور مطلوب.');payload={author_id:mpUser.id,title:val('mpTitle'),body:val('mpDesc'),city,post_type:val('mpPostType'),status:'pending'};}
+ const {error}=await db().from(table).insert(payload);if(error)throw error;mpMessage('تم إرسال طلبك بنجاح، وهو الآن بانتظار مراجعة الإدارة.','ok');mpKind='mine';document.querySelectorAll('#memberPortal .mp-tab').forEach(x=>x.classList.toggle('active',x.dataset.kind==='mine'));await mpLoadMine();
+ }catch(e){mpMessage(e.message,'err');}};
+ async function mpLoadFeed(){const h=$('mpFormHost');h.innerHTML='<p>جارٍ تحميل منشورات المجتمع...</p>';try{const {data,error}=await db().from('community_posts').select('id,title,body,city,created_at').eq('status','published').order('created_at',{ascending:false}).limit(30);if(error)throw error;if(!data?.length){h.innerHTML='<div class="mp-note">لا توجد منشورات منشورة حالياً. يمكنك إضافة منشور من تبويب «منشور مجتمعي».</div>';return;}h.innerHTML='<div class="mp-list">'+data.map(p=>`<article class="mp-item" style="display:block"><b>${esc(p.title||'منشور مجتمعي')}</b><div class="mp-muted">${esc(p.city||'ماليزيا')} · ${new Date(p.created_at).toLocaleDateString('ar')}</div><p>${esc(p.body)}</p><div id="mpComments-${esc(p.id)}" class="mp-muted">جارٍ تحميل التعليقات...</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><input id="mpComment-${esc(p.id)}" placeholder="اكتب تعليقاً..." style="flex:1;min-width:180px"><button class="mp-action primary" onclick="mpAddComment('${esc(p.id)}')">إرسال التعليق</button></div></article>`).join('')+'</div>';for(const p of data)mpLoadComments(p.id);}catch(e){h.innerHTML='<p class="mp-error">تعذر تحميل المجتمع: '+esc(e.message)+'</p>';}}
+ async function mpLoadComments(postId){try{const {data,error}=await db().from('comments').select('body,created_at').eq('post_id',postId).eq('status','published').order('created_at',{ascending:true}).limit(20);if(error)throw error;const el=$('mpComments-'+postId);if(el)el.innerHTML=(data||[]).map(c=>`<div style="padding:6px 0;border-top:1px solid #e2e8f0">${esc(c.body)}</div>`).join('')||'لا توجد تعليقات بعد.';}catch(e){const el=$('mpComments-'+postId);if(el)el.textContent='تعذر تحميل التعليقات.';}}
+ window.mpAddComment=async function(postId){try{const body=$('mpComment-'+postId)?.value?.trim();if(!body)throw new Error('اكتب التعليق أولاً.');const {error}=await db().from('comments').insert({post_id:postId,author_id:mpUser.id,body,status:'published'});if(error)throw error;$('mpComment-'+postId).value='';await mpLoadComments(postId);mpMessage('تم نشر تعليقك.','ok');}catch(e){mpMessage(e.message,'err');}};
+ async function mpLoadMine(){const h=$('mpFormHost');h.innerHTML='<p>جارٍ تحميل إعلاناتك...</p>';const specs=[['businesses','name_ar','status'],['listings','title_ar','status'],['jobs','title_ar','status'],['properties','title_ar','status'],['community_posts','title','status']];try{let rows=[];for(const [table,title,status] of specs){const owner=table==='community_posts'?'author_id':'owner_id';const {data,error}=await db().from(table).select(`id,${title},${status},created_at`).eq(owner,mpUser.id).order('created_at',{ascending:false}).limit(50);if(error)throw error;(data||[]).forEach(r=>rows.push({...r,_table:table,_title:r[title]}));}rows.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));h.innerHTML=rows.length?'<div class="mp-list">'+rows.map(r=>`<div class="mp-item"><div><b>${esc(r._title||'بدون عنوان')}</b><div class="mp-muted">${esc(r._table)} · ${new Date(r.created_at).toLocaleDateString('ar')}</div></div><span>${esc(r.status)}</span></div>`).join('')+'</div>':'<div class="mp-note">لم تضف أي محتوى بعد.</div>';}catch(e){h.innerHTML='<p class="mp-error">تعذر تحميل إعلاناتك: '+esc(e.message)+'</p>';}}
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')window.mpClose();});
+})();
+</script>
+
 </body>
 </html>
