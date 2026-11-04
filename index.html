@@ -462,6 +462,9 @@
         body.admin-only #dashboardBox{width:100%;min-height:100vh;height:100vh;max-height:none;margin:0;border-radius:0}
         @media(max-width:600px){body.admin-only .admin-workspace-actions{padding:10px}body.admin-only .admin-workspace-actions .admin-btn{min-width:0}}
 
+
+        .amc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.amc-head h3{margin:0 0 5px;color:var(--btn-color)}.amc-count{background:#eaf2ff;color:#174ea6;padding:7px 12px;border-radius:20px;font-weight:800;font-size:12px}.amc-toolbar{display:grid;grid-template-columns:1fr 210px;gap:10px;margin:15px 0}.amc-toolbar input,.amc-toolbar select{width:100%;padding:12px;border:1px solid #d7e0eb;border-radius:10px;background:#fff;color:#172033}.amc-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}.amc-item{border:1px solid #e1e7ef;background:#fff;border-radius:13px;padding:13px;box-shadow:0 3px 12px rgba(15,23,42,.045);min-width:0}.amc-item.is-hidden{background:#f8fafc;border-style:dashed;opacity:.82}.amc-item-top{display:flex;align-items:flex-start;gap:10px}.amc-thumb{width:58px;height:52px;border-radius:9px;object-fit:cover;background:#edf2f7;flex:none}.amc-meta{min-width:0;flex:1}.amc-meta b{display:block;color:#172033;overflow-wrap:anywhere}.amc-meta small{display:block;color:#64748b;margin-top:4px}.amc-state{font-size:11px;font-weight:800;border-radius:20px;padding:5px 9px;background:#dcfce7;color:#166534;white-space:nowrap}.amc-state.off{background:#fee2e2;color:#991b1b}.amc-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.amc-actions button,.amc-addbar button{border:0;border-radius:8px;padding:8px 11px;font-weight:700;cursor:pointer}.amc-toggle{background:#e0f2fe;color:#075985}.amc-edit{background:#ede9fe;color:#5b21b6}.amc-delete{background:#fee2e2;color:#991b1b}.amc-addbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid #e5eaf1}.amc-empty{padding:25px;text-align:center;color:#64748b;background:#f8fafc;border-radius:12px}@media(max-width:600px){.amc-toolbar{grid-template-columns:1fr}.amc-list{grid-template-columns:1fr}}
+
         /* Admin Screen Styles */
         .admin-modal {
             position: fixed;
@@ -1344,6 +1347,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 <button class="tab-btn" id="tabImagesBtn" onclick="switchTab('images')"><i class="fa-regular fa-images"></i><span>مكتبة الصور</span></button>
                 <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><span>الأخبار والعملات والرياضة</span></button>
                 <button class="tab-btn" id="tabExperienceBtn" onclick="switchTab('experience')"><i class="fa-solid fa-sliders"></i><span>إدارة واجهة المنصة</span></button>
+                <button class="tab-btn" id="tabControlBtn" onclick="switchTab('control')"><i class="fa-solid fa-list-check"></i><span>التحكم بكل عنصر</span></button>
             </div>
             <div class="admin-workspace-actions">
                 <button class="admin-btn" type="button" onclick="previewWebsite()">معاينة الموقع</button>
@@ -1521,6 +1525,17 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                         <div class="form-group"><label>Business card description in English</label><textarea id="expBusinessTextEn" rows="3"></textarea></div>
                         <button type="button" class="admin-btn" onclick="saveExperienceEditor()">حفظ التعديلات كمسودة</button>
                     </div>
+                </div>
+
+
+                <div class="panel-tab" id="tabControl">
+                  <div class="manage-list-box">
+                    <div class="amc-head"><div><h3>مركز التحكم الفردي</h3><p class="manage-help">كل خدمة وقسم وبطاقة ومدينة وبانر عنصر مستقل. إخفاء عنصر واحد لا يخفي بقية العناصر.</p></div><span class="amc-count" id="amcCount">— عنصر</span></div>
+                    <div class="amc-toolbar"><input id="amcSearch" type="search" placeholder="ابحث عن خدمة أو قسم أو عنصر..." oninput="renderGranularAdmin()"><select id="amcType" onchange="renderGranularAdmin()"><option value="all">كل الأنواع</option><option value="module">مكونات الصفحة</option><option value="service">الخدمات</option><option value="section">الأقسام</option><option value="card">عناصر الأقسام</option><option value="city">المدن</option><option value="promo">صور الواجهة</option></select></div>
+                    <div id="granularAdminList" class="amc-list"></div>
+                    <div class="amc-addbar"><button class="admin-btn" type="button" onclick="granularAdd('service')">＋ خدمة جديدة</button><button class="admin-btn" type="button" onclick="granularAdd('city')">＋ مدينة</button><button class="admin-btn" type="button" onclick="granularAdd('section')">＋ قسم</button><button class="admin-btn" type="button" onclick="granularAdd('card')">＋ عنصر داخل قسم</button></div>
+                  </div>
+                  <div class="manage-list-box" style="margin-top:14px"><h3>طريقة العمل</h3><p class="manage-help">زر «إخفاء» يوقف ظهور العنصر للزوار دون حذفه. زر «تعديل» يغيّر بيانات العنصر. زر «حذف» نهائي ويطلب تأكيداً. بعد الانتهاء استخدم «حفظ ونشر التغييرات» أعلى اللوحة ليظهر التغيير لجميع الزوار.</p></div>
                 </div>
 
                 <div class="panel-tab" id="tabImages">
@@ -1916,7 +1931,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             const container = document.getElementById('slideContainer');
             container.innerHTML = '';
             if (activePromoIdx >= promoSlides.length) activePromoIdx = 0;
-            promoSlides.forEach(slide => {
+            promoSlides.filter(slide => slide.visible !== false).forEach(slide => {
                 const title = currentLang === 'ar' ? slide.titleAr : slide.titleEn;
                 const slideDiv = document.createElement('div');
                 slideDiv.className = 'slide';
@@ -1962,7 +1977,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             const mainWrapper = document.getElementById('sectionsWrapper');
             mainWrapper.innerHTML = '';
 
-            webSections.forEach((section) => {
+            webSections.filter(section => section.visible !== false).forEach((section) => {
                 const secTitle = currentLang === 'ar' ? section.titleAr : section.titleEn;
                 const sectionEl = document.createElement('section');
                 sectionEl.className = 'section-container';
@@ -1975,7 +1990,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 const grid = document.createElement('div');
                 grid.className = 'cards-grid';
 
-                section.cards.forEach((card) => {
+                (section.cards || []).filter(card => card.visible !== false).forEach((card) => {
                     const cardName = currentLang === 'ar' ? card.nameAr : card.nameEn;
                     card.images = Array.isArray(card.images) ? card.images : [];
                     card.currentImgIdx = Number.isInteger(card.currentImgIdx) ? card.currentImgIdx : 0;
@@ -2458,9 +2473,10 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             document.querySelectorAll('#dashboardBox .admin-workspace-actions').forEach(el => el.style.display = '');
             const tabMap = {
                 overview: 'tabOverview', colors: 'tabColors', sections: 'tabSections',
-                images: 'tabImages', settings: 'tabSettings', experience: 'tabExperience'
+                images: 'tabImages', settings: 'tabSettings', experience: 'tabExperience', control: 'tabControl'
             };
             const targetId = tabMap[targetTabId] || 'tabOverview';
+            if(targetTabId==='control') renderGranularAdmin();
             document.querySelectorAll('.tab-btn, .premium-overview').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.panel-tab').forEach(t => {
                 const active = t.id === targetId;
@@ -2468,12 +2484,12 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 // Explicit display prevents a hidden panel when dashboard CSS/layout is reflowed.
                 t.style.setProperty('display', active ? 'block' : 'none', 'important');
             });
-            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام والبطاقات', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة', experience: 'إدارة واجهة المنصة' };
+            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام والبطاقات', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة', experience: 'إدارة واجهة المنصة', control: 'التحكم بكل عنصر' };
             const heading = document.getElementById('adminPageHeading');
             if (heading) heading.textContent = headings[targetTabId] || 'لوحة التحكم';
             const activeButton = targetTabId === 'overview'
                 ? document.querySelector('.premium-overview')
-                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',images:'tabImagesBtn',settings:'tabSettingsBtn',experience:'tabExperienceBtn'})[targetTabId]);
+                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',images:'tabImagesBtn',settings:'tabSettingsBtn',experience:'tabExperienceBtn',control:'tabControlBtn'})[targetTabId]);
             if (activeButton) activeButton.classList.add('active');
             if (targetTabId === 'overview') updateAdminOverviewStats();
             if (targetTabId === 'settings') applySiteSettings();
@@ -2609,7 +2625,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                     reorderSections(event.dataTransfer.getData('text/plain') || isDraggingSectionId, s.id);
                 });
                 divRow.innerHTML = `
-                    <span>☰ <strong>${labelName}</strong> (${s.cards.length} عناصر)</span>
+                    <span>☰ <strong>${labelName}</strong> (${s.cards.length} عناصر) ${s.visible===false?'<small style="color:#b42318"> · مخفي</small>':''}</span>
                     <div class="manage-actions">
                         <button class="edit-icon-btn" onclick="editTargetSectionDataNode('${s.id}')" title="تعديل القسم"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button class="delete-icon-btn" onclick="deleteTargetSectionDataNode('${s.id}')" title="حذف القسم"><i class="fa-solid fa-trash-can"></i></button>
@@ -2647,7 +2663,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                     const divRow = document.createElement('div');
                     divRow.className = 'manage-list-item';
                     divRow.innerHTML = `
-                        <span>${cName}</span>
+                        <span>${cName} ${card.visible===false?'<small style="color:#b42318"> · مخفي</small>':''}</span>
                         <div class="manage-actions">
                             <button class="edit-icon-btn" onclick="editTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="تعديل العنصر"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button class="delete-icon-btn" onclick="deleteTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="حذف هذا العنصر"><i class="fa-solid fa-trash-can"></i></button>
@@ -2881,6 +2897,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             buildCardsManagementListViewConsole();
             populateAdminSectionConsoleDropdowns();
             buildAdminImageLibrary();
+            if(document.getElementById('tabControl')) renderGranularAdmin();
             const status = document.getElementById('adminDraftStatus');
             if (!publish) {
                 if (status) status.textContent = 'هناك تعديلات محلية غير منشورة. استخدم «معاينة الموقع» لمراجعتها ثم «حفظ ونشر التغييرات».';
@@ -2981,6 +2998,63 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
         function deleteExperienceTile(i){if(!confirm('هل تريد حذف هذه البطاقة؟'))return;experienceConfig.tiles.splice(i,1);buildExperienceAdminEditor();saveExperienceEditor();}
         function addExperienceCity(){experienceConfig.cities.push({id:'city_'+Date.now(),name:'New city',titleAr:'وصف المدينة',titleEn:'City description',visible:true});buildExperienceAdminEditor();}
         function deleteExperienceCity(i){if(!confirm('هل تريد حذف هذه المدينة؟'))return;experienceConfig.cities.splice(i,1);buildExperienceAdminEditor();saveExperienceEditor();}
+
+
+        // Granular control center: independent visibility and CRUD for each homepage object.
+        function granularItems(){
+          const a=[];
+          const modules=[['heroVisible','الواجهة الرئيسية','Main hero'],['promoVisible','مستطيل الصور المتحرك','Main slideshow'],['servicesVisible','منطقة الخدمات','Services area'],['lifeVisible','بطاقة الحياة والدراسة','Life & study card'],['businessVisible','بطاقة أصحاب الأعمال','Business card'],['citiesVisible','قسم المدن','Cities area']];
+          modules.forEach(([key,ar,en])=>a.push({type:'module',id:key,key,title:ar,sub:en,visible:experienceConfig[key]!==false}));
+          [['newsEnabled','شريط الأخبار'],['currencyEnabled','شريط العملات'],['sportsEnabled','قسم الرياضة']].forEach(([key,title])=>a.push({type:'module',id:key,key,title,sub:'مكوّن الصفحة الرئيسية',visible:siteSettings[key]!==false}));
+          (experienceConfig.tiles||[]).forEach(x=>a.push({type:'service',id:x.id,title:x.titleAr||x.titleEn,sub:x.titleEn||'خدمة',visible:x.visible!==false,raw:x}));
+          webSections.forEach(sec=>{a.push({type:'section',id:sec.id,title:sec.titleAr||sec.titleEn,sub:`قسم · ${(sec.cards||[]).length} عناصر`,visible:sec.visible!==false,raw:sec});(sec.cards||[]).forEach(card=>a.push({type:'card',id:card.id,secId:sec.id,title:card.nameAr||card.nameEn,sub:`ضمن ${sec.titleAr||sec.titleEn}`,visible:card.visible!==false,raw:card,image:(card.images||[])[0]}));});
+          (experienceConfig.cities||[]).forEach(x=>a.push({type:'city',id:x.id,title:x.name,sub:x.titleAr||x.titleEn,visible:x.visible!==false,raw:x}));
+          promoSlides.forEach((x,i)=>a.push({type:'promo',id:String(i),title:x.titleAr||`صورة الواجهة ${i+1}`,sub:x.titleEn||'صورة متحركة',visible:x.visible!==false,image:x.img,raw:x}));
+          return a;
+        }
+        function renderGranularAdmin(){
+          const host=document.getElementById('granularAdminList');if(!host)return;
+          const q=(document.getElementById('amcSearch')?.value||'').trim().toLowerCase();const type=document.getElementById('amcType')?.value||'all';
+          const all=granularItems();const rows=all.filter(x=>(type==='all'||x.type===type)&&(!q||(x.title+' '+x.sub).toLowerCase().includes(q)));
+          const count=document.getElementById('amcCount');if(count)count.textContent=`${rows.length} من ${all.length} عنصر`;
+          const names={module:'مكوّن',service:'خدمة',section:'قسم',card:'عنصر',city:'مدينة',promo:'صورة واجهة'};
+          host.innerHTML=rows.length?rows.map(x=>`<article class="amc-item ${x.visible?'':'is-hidden'}"><div class="amc-item-top">${x.image?`<img class="amc-thumb" src="${escapeAdminText(x.image)}" alt="">`:'<div class="amc-thumb" style="display:grid;place-items:center;color:#64748b"><i class="fa-solid fa-cube"></i></div>'}<div class="amc-meta"><b>${escapeAdminText(x.title||'عنصر بلا اسم')}</b><small>${names[x.type]} · ${escapeAdminText(x.sub||'')}</small></div><span class="amc-state ${x.visible?'':'off'}">${x.visible?'ظاهر':'مخفي'}</span></div><div class="amc-actions"><button class="amc-toggle" onclick="granularToggle('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">${x.visible?'إخفاء':'إظهار'}</button>${x.type!=='module'?`<button class="amc-edit" onclick="granularEdit('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">تعديل</button>`:''}${['service','section','card','city','promo'].includes(x.type)?`<button class="amc-delete" onclick="granularDelete('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">حذف</button>`:''}</div></article>`).join(''):'<div class="amc-empty">لا توجد عناصر تطابق البحث.</div>';
+        }
+        function granularToggle(type,id,secId){
+          if(type==='module'){if(Object.prototype.hasOwnProperty.call(experienceConfig,id))experienceConfig[id]=!experienceConfig[id];else siteSettings[id]=!siteSettings[id];applySiteSettings();applyExperienceConfig();}
+          else if(type==='service'){const x=experienceConfig.tiles.find(v=>v.id===id);if(x)x.visible=x.visible===false;}
+          else if(type==='city'){const x=experienceConfig.cities.find(v=>v.id===id);if(x)x.visible=x.visible===false;}
+          else if(type==='section'){const x=webSections.find(v=>v.id===id);if(x)x.visible=x.visible===false;}
+          else if(type==='card'){const sec=webSections.find(v=>v.id===secId),x=sec?.cards.find(v=>v.id===id);if(x)x.visible=x.visible===false;}
+          else if(type==='promo'){const x=promoSlides[Number(id)];if(x)x.visible=x.visible===false;}
+          commitAndSyncSystemDatastores(false);renderGranularAdmin();
+        }
+        function granularDelete(type,id,secId){
+          if(!confirm('هل تريد حذف هذا العنصر نهائياً؟ يمكنك استخدام «إخفاء» بدلاً من الحذف إذا أردت الاحتفاظ به.'))return;
+          if(type==='service')experienceConfig.tiles=experienceConfig.tiles.filter(x=>x.id!==id);
+          if(type==='city')experienceConfig.cities=experienceConfig.cities.filter(x=>x.id!==id);
+          if(type==='section')webSections=webSections.filter(x=>x.id!==id);
+          if(type==='card'){const sec=webSections.find(x=>x.id===secId);if(sec)sec.cards=sec.cards.filter(x=>x.id!==id);}
+          if(type==='promo'){const removed=promoSlides.splice(Number(id),1)[0];if(removed)deleteCloudImageIfOwned(removed.img);}
+          commitAndSyncSystemDatastores(false);renderGranularAdmin();
+        }
+        function granularEdit(type,id,secId){
+          const ask=(label,val)=>prompt(label,val||'');
+          if(type==='service'){const x=experienceConfig.tiles.find(v=>v.id===id);if(!x)return;const ar=ask('اسم الخدمة بالعربية',x.titleAr);if(ar===null)return;const en=ask('اسم الخدمة بالإنجليزية',x.titleEn);if(en===null)return;const da=ask('وصف الخدمة بالعربية',x.descAr);if(da===null)return;const de=ask('وصف الخدمة بالإنجليزية',x.descEn);if(de===null)return;const href=ask('رابط الخدمة أو القسم',x.href);if(href===null)return;Object.assign(x,{titleAr:ar,titleEn:en,descAr:da,descEn:de,href});}
+          if(type==='city'){const x=experienceConfig.cities.find(v=>v.id===id);if(!x)return;const n=ask('اسم المدينة',x.name);if(n===null)return;const ar=ask('وصف المدينة بالعربية',x.titleAr);if(ar===null)return;const en=ask('وصف المدينة بالإنجليزية',x.titleEn);if(en===null)return;Object.assign(x,{name:n,titleAr:ar,titleEn:en});}
+          if(type==='section')editTargetSectionDataNode(id);
+          if(type==='card')editTargetCardDataNode(secId,id);
+          if(type==='promo'){const x=promoSlides[Number(id)];if(!x)return;const ar=ask('عنوان الصورة بالعربية',x.titleAr);if(ar===null)return;const en=ask('عنوان الصورة بالإنجليزية',x.titleEn);if(en===null)return;Object.assign(x,{titleAr:ar,titleEn:en});}
+          commitAndSyncSystemDatastores(false);renderGranularAdmin();
+        }
+        function granularAdd(type){
+          const ask=(label,def='')=>prompt(label,def);let x;
+          if(type==='service'){const ar=ask('اسم الخدمة بالعربية','خدمة جديدة');if(ar===null)return;const en=ask('اسم الخدمة بالإنجليزية','New service');if(en===null)return;experienceConfig.tiles.push({id:'tile_'+Date.now(),kind:'',icon:'fa-star',titleAr:ar,titleEn:en,descAr:'',descEn:'',visible:true,href:'#arabPlatformHub'});}
+          if(type==='city'){const n=ask('اسم المدينة','مدينة جديدة');if(n===null)return;const ar=ask('وصف المدينة بالعربية','');if(ar===null)return;const en=ask('وصف المدينة بالإنجليزية','');if(en===null)return;experienceConfig.cities.push({id:'city_'+Date.now(),name:n,titleAr:ar,titleEn:en,visible:true});}
+          if(type==='section'){const ar=ask('اسم القسم بالعربية','قسم جديد');if(ar===null)return;const en=ask('اسم القسم بالإنجليزية','New section');if(en===null)return;const folder=ask('اسم مجلد الصور','new-section');if(folder===null)return;webSections.push({id:'sec_'+Date.now(),titleAr:ar,titleEn:en,folder,cards:[],visible:true});}
+          if(type==='card'){if(!webSections.length){alert('أنشئ قسماً أولاً.');return;}const choices=webSections.map((v,i)=>`${i+1}. ${v.titleAr}`).join('\n');const n=Number(ask('اكتب رقم القسم الذي تريد إضافة العنصر إليه:\n'+choices,'1'));const sec=webSections[n-1];if(!sec)return;const ar=ask('اسم العنصر بالعربية','عنصر جديد');if(ar===null)return;const en=ask('اسم العنصر بالإنجليزية','New item');if(en===null)return;sec.cards.push({id:'card_'+Date.now(),nameAr:ar,nameEn:en,images:[],currentImgIdx:0,visible:true});}
+          commitAndSyncSystemDatastores(false);renderGranularAdmin();
+        }
 
         function buildAdminImageLibrary() {
             const host = document.getElementById('adminImageLibrary');
