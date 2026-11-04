@@ -937,8 +937,136 @@
 }
 </style>
 
+
+<style id="arab-malaysia-2-core-admin-layout">
+/* Core Foundation: stable admin shell on desktop and mobile */
+body.admin-only .admin-modal,
+.admin-modal.active:has(#dashboardBox.admin-dashboard-shell) {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+}
+#dashboardBox.admin-dashboard-shell,
+body.admin-only #dashboardBox.admin-dashboard-shell {
+  display: flex !important;
+  flex-direction: row !important;
+  direction: rtl !important;
+  align-items: stretch !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+#dashboardBox.admin-dashboard-shell > .premium-admin-sidebar {
+  flex: 0 0 248px !important;
+  width: 248px !important;
+  min-width: 248px !important;
+  max-width: 248px !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+#dashboardBox.admin-dashboard-shell > .premium-admin-main {
+  flex: 1 1 0% !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+#dashboardBox.admin-dashboard-shell .premium-admin-workspace {
+  flex: 1 1 0% !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+#dashboardBox.admin-dashboard-shell .premium-admin-topbar {
+  flex: 0 0 78px !important;
+  min-height: 78px !important;
+  box-sizing: border-box !important;
+}
+#dashboardBox.admin-dashboard-shell .admin-body {
+  min-width: 0 !important;
+  max-height: none !important;
+}
+@media (max-width: 760px) {
+  #dashboardBox.admin-dashboard-shell > .premium-admin-sidebar {
+    flex-basis: 64px !important;
+    width: 64px !important;
+    min-width: 64px !important;
+    max-width: 64px !important;
+    padding: 12px 5px !important;
+  }
+  #dashboardBox.admin-dashboard-shell .premium-brand {
+    justify-content: center !important;
+    padding: 2px 0 15px !important;
+  }
+  #dashboardBox.admin-dashboard-shell .premium-brand > div,
+  #dashboardBox.admin-dashboard-shell .premium-nav-label,
+  #dashboardBox.admin-dashboard-shell .premium-overview span,
+  #dashboardBox.admin-dashboard-shell .tab-btn span,
+  #dashboardBox.admin-dashboard-shell .premium-sidebar-foot span {
+    display: none !important;
+  }
+  #dashboardBox.admin-dashboard-shell .premium-overview,
+  #dashboardBox.admin-dashboard-shell .tab-btn {
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 13px 2px !important;
+  }
+  #dashboardBox.admin-dashboard-shell .premium-admin-topbar {
+    flex-basis: 66px !important;
+    min-height: 66px !important;
+    height: 66px !important;
+    padding: 0 10px !important;
+    gap: 6px !important;
+  }
+  #dashboardBox.admin-dashboard-shell .premium-admin-topbar h2 {
+    font-size: 15px !important;
+  }
+  #dashboardBox.admin-dashboard-shell .premium-online {
+    display: none !important;
+  }
+  #dashboardBox.admin-dashboard-shell .premium-admin-workspace {
+    padding: 11px 9px 22px !important;
+  }
+  #dashboardBox.admin-dashboard-shell .admin-workspace-actions .admin-btn {
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
+  }
+}
+</style>
+
 </head>
 <body>
+    <!-- Arab Malaysia 2.0 Core Foundation / STAGING BUILD: production systems are not modified. -->
     <!-- Arab Malaysia 2.0: staging test notice. Remove this banner before production deployment. -->
     <div id="stagingTestNotice" role="status" style="position:relative;z-index:99999;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding:9px 14px;background:#fff3cd;color:#664d03;border-bottom:1px solid #ffecb5;font:600 13px/1.5 Arial,sans-serif;text-align:center;">
       <span>نسخة تجريبية — Arab Malaysia 2.0 Staging Preview | هذه النسخة للاختبار فقط وليست إطلاقاً نهائياً.</span>
@@ -1811,48 +1939,6 @@
             switchTab('overview');
         }
 
-        function buildPremiumAdminShell() {
-            const dash = document.getElementById('dashboardBox');
-            if (!dash || dash.dataset.premiumBuilt === '1') return;
-            dash.dataset.premiumBuilt = '1';
-            // Make the dashboard itself the horizontal flex shell; without this
-            // class the sidebar and workspace fall into a vertical stack.
-            dash.classList.add('admin-dashboard-shell');
-            const header = dash.querySelector('.admin-header');
-            const tabs = dash.querySelector('.tab-menu');
-            const actions = dash.querySelector('.admin-workspace-actions');
-            const status = dash.querySelector('.admin-status');
-            const body = dash.querySelector('.admin-body');
-            const sidebar = document.createElement('aside');
-            sidebar.className = 'premium-admin-sidebar';
-            sidebar.innerHTML = `<div class="premium-brand"><span><i class="fa-solid fa-mosque"></i></span><div><b>عرب ماليزيا</b><small>مركز الإدارة</small></div></div><small class="premium-nav-label">القائمة الرئيسية</small><button class="premium-overview active" onclick="switchTab('overview')"><i class="fa-solid fa-grid-2"></i><span>نظرة عامة</span></button>`;
-            if (tabs) sidebar.appendChild(tabs);
-            sidebar.insertAdjacentHTML('beforeend', `<div class="premium-sidebar-foot"><i class="fa-solid fa-shield-halved"></i><span>وصول آمن للمسؤول</span></div>`);
-            const main = document.createElement('section');
-            main.className = 'premium-admin-main';
-            const topbar = document.createElement('div');
-            topbar.className = 'premium-admin-topbar';
-            topbar.innerHTML = `<div><small>ARAB MALAYSIA / ADMIN</small><h2 id="adminPageHeading">نظرة عامة</h2></div><div class="premium-top-actions"><span class="premium-online"><i></i> لوحة الإدارة</span><button type="button" onclick="toggleAdminDarkMode()" title="تبديل المظهر"><i id="adminThemeIcon" class="fa-solid fa-moon"></i></button></div>`;
-            if (header) {
-                const logout = header.querySelector('button[onclick="handleLogout()"]');
-                if (logout) sidebar.appendChild(logout);
-                const close = header.querySelector('.admin-close');
-                if (close) topbar.querySelector('.premium-top-actions').appendChild(close);
-                header.remove();
-            }
-            const workspace = document.createElement('div');
-            workspace.className = 'premium-admin-workspace';
-            [actions,status,body].forEach(el => { if (el) workspace.appendChild(el); });
-            main.append(topbar,workspace);
-            dash.innerHTML = '';
-            dash.append(sidebar,main);
-            tabs?.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
-                sidebar.querySelectorAll('.premium-overview,.tab-btn').forEach(item => item.classList.remove('active'));
-                btn.classList.add('active');
-            }));
-            switchTab('overview');
-            applyAdminAppearance();
-        }
         function openAdminPanelDirectly() {
             openStandaloneAdmin();
         }
