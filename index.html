@@ -670,6 +670,36 @@
 
         html[dir="ltr"] body { text-align: left; }
         html[dir="rtl"] body { text-align: right; }
+    
+        /* News ticker: inserted between the promo slider and site sections */
+        .news-strip{max-width:90%;margin:0 auto 28px;min-height:58px;display:flex;align-items:center;gap:14px;background:var(--card-bg);border:1px solid rgba(33,150,243,.18);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.07);overflow:hidden;padding:0 14px;direction:inherit}
+        .news-strip-label{flex:0 0 auto;display:flex;align-items:center;gap:9px;color:#fff;background:var(--banner-footer-color);padding:10px 15px;border-radius:9px;font-weight:700;white-space:nowrap}
+        .news-strip-label i{color:#ffd54f}
+        .news-track-window{flex:1;min-width:0;overflow:hidden}
+        .news-track{display:flex;align-items:center;gap:38px;width:max-content;white-space:nowrap;animation:newsTickerMove 65s linear infinite}
+        .news-strip:hover .news-track{animation-play-state:paused}
+        .news-track[dir="rtl"]{animation-name:newsTickerMoveRtl}
+        .news-item{border:0;background:transparent;color:var(--text-color);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:9px;max-width:520px;white-space:nowrap}
+        .news-item:hover{color:var(--text-hover-color)}
+        .news-item:before{content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--btn-color)}
+        .news-source-tag{font-size:11px;color:var(--btn-color);border:1px solid currentColor;border-radius:20px;padding:3px 8px}
+        .news-loading{font-size:13px;color:#777}
+        .news-refresh{flex:0 0 34px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(33,150,243,.1);color:var(--btn-color);cursor:pointer}
+        .news-refresh:disabled{opacity:.5;cursor:wait}
+        @keyframes newsTickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        @keyframes newsTickerMoveRtl{from{transform:translateX(0)}to{transform:translateX(50%)}}
+        .news-modal[hidden]{display:none!important}.news-modal{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px}
+        .news-modal-backdrop{position:absolute;inset:0;background:rgba(8,18,38,.68);backdrop-filter:blur(5px)}
+        .news-modal-card{position:relative;z-index:1;width:min(650px,100%);max-height:88vh;overflow:auto;background:var(--card-bg);color:var(--text-color);border-radius:20px;box-shadow:0 22px 70px rgba(0,0,0,.3);animation:newsModalIn .22s ease-out}
+        @keyframes newsModalIn{from{opacity:0;transform:translateY(15px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+        .news-modal-close{position:absolute;top:12px;inset-inline-end:12px;z-index:2;width:38px;height:38px;border:0;border-radius:50%;background:rgba(0,0,0,.62);color:#fff;font-size:27px;cursor:pointer}
+        .news-modal-image{width:100%;max-height:290px;object-fit:cover;display:block}.news-modal-content{padding:25px}
+        .news-modal-source{font-size:13px;color:var(--btn-color);font-weight:700;margin-bottom:10px}
+        .news-modal-content h2{font-size:22px;line-height:1.55;margin-bottom:12px}.news-modal-content p{font-size:15px;line-height:1.9;color:var(--text-color);opacity:.88;margin-bottom:22px}
+        .news-read-more{display:inline-flex;align-items:center;justify-content:center;background:var(--btn-color);color:#fff;text-decoration:none;padding:11px 22px;border-radius:25px;font-weight:700;transition:filter .2s}.news-read-more:hover{filter:brightness(1.1)}
+        @media(max-width:768px){.news-strip{max-width:92%;gap:8px;padding:0 8px;min-height:54px}.news-strip-label{padding:9px 10px;font-size:12px}.news-item{font-size:12px;max-width:290px}.news-track{gap:24px}.news-modal-content{padding:19px}.news-modal-content h2{font-size:19px}}
+        @media(prefers-reduced-motion:reduce){.news-track{animation:none!important}.news-modal-card{animation:none}}
+
     </style>
 </head>
 <body>
@@ -695,6 +725,26 @@
         <div class="slide-container" id="slideContainer"></div>
         <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-right"></i></button>
         <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-left"></i></button>
+    </div>
+
+    <!-- Automatic News Ticker -->
+    <section class="news-strip" id="newsStrip" aria-label="Latest news">
+        <div class="news-strip-label"><i class="fa-solid fa-newspaper"></i><span id="newsLabel">آخر الأخبار</span></div>
+        <div class="news-track-window"><div class="news-track" id="newsTrack"><span class="news-loading" id="newsLoading">جاري تحميل الأخبار...</span></div></div>
+        <button class="news-refresh" id="newsRefreshBtn" type="button" aria-label="Refresh news" title="Refresh news"><i class="fa-solid fa-rotate"></i></button>
+    </section>
+    <div class="news-modal" id="newsModal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle" hidden>
+        <div class="news-modal-backdrop" data-news-close="1"></div>
+        <article class="news-modal-card">
+            <button class="news-modal-close" type="button" id="newsModalClose" aria-label="Close">&times;</button>
+            <img class="news-modal-image" id="newsModalImage" alt="" hidden>
+            <div class="news-modal-content">
+                <div class="news-modal-source" id="newsModalSource"></div>
+                <h2 id="newsModalTitle"></h2>
+                <p id="newsModalSummary"></p>
+                <a class="news-read-more" id="newsReadMore" href="#" target="_blank" rel="noopener noreferrer">قراءة الخبر كاملاً</a>
+            </div>
+        </article>
     </div>
 
     <!-- Dynamic Section Elements Layout -->
@@ -1069,6 +1119,7 @@
 
             renderPromoBanners();
             renderDynamicSections();
+            if (typeof loadLatestNews === 'function') loadLatestNews();
         }
 
         document.getElementById('langToggleBtn').addEventListener('click', () => {
@@ -1860,6 +1911,128 @@
             }
             cloudContentExists = true;
         }
+
+        /* ---------------- Automatic news ticker ----------------
+           Google News RSS is queried for The Star and BERNAMA. RSS2JSON is used
+           as a browser-friendly RSS bridge; no site database or existing data is changed.
+        */
+        let latestNewsItems = [];
+        let newsFetchInProgress = false;
+        const NEWS_REFRESH_INTERVAL = 10 * 60 * 1000;
+
+        function newsText(value) {
+            const node = document.createElement('div');
+            node.innerHTML = String(value || '');
+            return (node.textContent || node.innerText || '').replace(/\s+/g, ' ').trim();
+        }
+
+        function newsFeedUrl(domain) {
+            const lang = currentLang === 'ar' ? 'ar' : 'en';
+            const query = encodeURIComponent(`site:${domain}`);
+            const googleRss = `https://news.google.com/rss/search?q=${query}&hl=${lang}&gl=MY&ceid=MY:${lang}`;
+            return `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(googleRss)}`;
+        }
+
+        async function fetchNewsSource(domain, label) {
+            const response = await fetch(newsFeedUrl(domain), { cache: 'no-store' });
+            if (!response.ok) throw new Error(`News feed HTTP ${response.status}`);
+            const payload = await response.json();
+            if (payload.status !== 'ok' || !Array.isArray(payload.items)) throw new Error('Invalid RSS response');
+            return payload.items.map(item => {
+                const title = newsText(item.title);
+                const description = newsText(item.description || item.content || item.contentSnippet || '');
+                const image = item.thumbnail || (item.enclosure && item.enclosure.link) || '';
+                return {
+                    title,
+                    description: description.slice(0, 650),
+                    image: /^https:\/\//i.test(image) ? image : '',
+                    link: item.link || '',
+                    source: label,
+                    published: item.pubDate || ''
+                };
+            }).filter(item => item.title && /^https?:\/\//i.test(item.link));
+        }
+
+        function renderNewsTicker(items) {
+            const track = document.getElementById('newsTrack');
+            const label = document.getElementById('newsLabel');
+            if (!track) return;
+            if (label) label.textContent = currentLang === 'ar' ? 'آخر الأخبار' : 'Latest News';
+            track.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            if (!items.length) {
+                track.innerHTML = `<span class="news-loading">${currentLang === 'ar' ? 'تعذر تحميل الأخبار حالياً. حاول التحديث لاحقاً.' : 'News are temporarily unavailable. Please try again later.'}</span>`;
+                return;
+            }
+            const makeButton = (item, index) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'news-item';
+                button.setAttribute('aria-label', item.title);
+                button.innerHTML = `<span>${escapeAdminText(item.title)}</span><span class="news-source-tag">${escapeAdminText(item.source)}</span>`;
+                button.addEventListener('click', () => openNewsModal(index));
+                return button;
+            };
+            track.innerHTML = '';
+            const repeated = items.concat(items);
+            repeated.forEach((item, index) => track.appendChild(makeButton(item, index % items.length)));
+            // Ensure a readable ticker even when only one story is returned.
+            track.style.animationDuration = `${Math.max(28, items.length * 9)}s`;
+        }
+
+        function openNewsModal(index) {
+            const item = latestNewsItems[index];
+            if (!item) return;
+            document.getElementById('newsModalSource').textContent = item.source + (item.published ? ' · ' + new Date(item.published).toLocaleDateString(currentLang === 'ar' ? 'ar' : 'en') : '');
+            document.getElementById('newsModalTitle').textContent = item.title;
+            document.getElementById('newsModalSummary').textContent = item.description || (currentLang === 'ar' ? 'لا يتوفر ملخص لهذا الخبر. اضغط لقراءة التفاصيل في موقع المصدر.' : 'No summary is available. Open the original source for full details.');
+            const image = document.getElementById('newsModalImage');
+            if (item.image) { image.src = item.image; image.hidden = false; } else { image.removeAttribute('src'); image.hidden = true; }
+            const readMore = document.getElementById('newsReadMore');
+            readMore.href = item.link;
+            readMore.textContent = currentLang === 'ar' ? 'قراءة الخبر كاملاً' : 'Read Full Story';
+            document.getElementById('newsModal').hidden = false;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNewsModal() {
+            const modal = document.getElementById('newsModal');
+            if (modal) modal.hidden = true;
+            document.body.style.overflow = '';
+        }
+
+        async function loadLatestNews() {
+            if (newsFetchInProgress) return;
+            newsFetchInProgress = true;
+            const refresh = document.getElementById('newsRefreshBtn');
+            if (refresh) refresh.disabled = true;
+            try {
+                const results = await Promise.allSettled([
+                    fetchNewsSource('thestar.com.my', 'The Star'),
+                    fetchNewsSource('bernama.com', 'BERNAMA')
+                ]);
+                const combined = [];
+                results.forEach(result => { if (result.status === 'fulfilled') combined.push(...result.value); });
+                const unique = new Map();
+                combined.sort((a, b) => new Date(b.published || 0) - new Date(a.published || 0));
+                combined.forEach(item => { if (!unique.has(item.link)) unique.set(item.link, item); });
+                latestNewsItems = Array.from(unique.values()).slice(0, 18);
+                renderNewsTicker(latestNewsItems);
+            } catch (error) {
+                console.warn('News ticker could not be refreshed:', error);
+                renderNewsTicker([]);
+            } finally {
+                newsFetchInProgress = false;
+                if (refresh) refresh.disabled = false;
+            }
+        }
+
+        document.getElementById('newsRefreshBtn').addEventListener('click', loadLatestNews);
+        document.getElementById('newsModalClose').addEventListener('click', closeNewsModal);
+        document.querySelector('#newsModal .news-modal-backdrop').addEventListener('click', closeNewsModal);
+        document.addEventListener('keydown', event => { if (event.key === 'Escape') closeNewsModal(); });
+        loadLatestNews();
+        setInterval(loadLatestNews, NEWS_REFRESH_INTERVAL);
+
     </script>
 </body>
 </html>
