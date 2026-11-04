@@ -2172,7 +2172,30 @@
         let sportsNewsTimer = null;
         const SPORTS_NEWS_REFRESH_INTERVAL = 10 * 60 * 1000;
         const SPORTS_NEWS_ROTATE_INTERVAL = 8000;
-        const SPORTS_NEWS_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=80';
+        // Different sport-themed fallbacks are used only when the RSS item has no usable photo.
+        const SPORTS_NEWS_FALLBACK_IMAGES = [
+            'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=1000&q=80'
+        ];
+
+        function extractSportsNewsImage(item) {
+            const candidates = [item.thumbnail, item.enclosure && item.enclosure.link,
+                item.enclosure && item.enclosure.url, item.image,
+                item['media:thumbnail'] && (item['media:thumbnail'].url || item['media:thumbnail']),
+                item['media:content'] && (item['media:content'].url || item['media:content'])];
+            for (const candidate of candidates) {
+                const url = typeof candidate === 'string' ? candidate : '';
+                if (/^https?:\/\//i.test(url)) return url;
+            }
+            // Some RSS providers embed the photo inside the HTML description instead of thumbnail fields.
+            const html = String(item.description || item.content || '');
+            const match = html.match(/<img[^>]+src=[\"']([^\"']+)[\"']/i);
+            if (match && /^https?:\/\//i.test(match[1])) return match[1];
+            return '';
+        }
 
         function sportsFeedUrl() {
             const lang = currentLang === 'ar' ? 'ar' : 'en';
@@ -2194,9 +2217,10 @@
             }
             const item = sportsNewsItems[sportsNewsIndex] || sportsNewsItems[0];
             host.classList.add('is-changing');
-            const imageUrl = item.image || SPORTS_NEWS_FALLBACK_IMAGE;
+            const fallbackImage = SPORTS_NEWS_FALLBACK_IMAGES[sportsNewsIndex % SPORTS_NEWS_FALLBACK_IMAGES.length];
+            const imageUrl = item.image || fallbackImage;
             host.innerHTML = `
-                <div class="sports-news-image-wrap"><img class="sports-news-image" src="${escapeAdminText(imageUrl)}" alt="${escapeAdminText(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='${SPORTS_NEWS_FALLBACK_IMAGE}'"></div>
+                <div class="sports-news-image-wrap"><img class="sports-news-image" src="${escapeAdminText(imageUrl)}" alt="${escapeAdminText(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackImage}'"></div>
                 <div class="sports-news-copy">
                     <div class="sports-news-source">${escapeAdminText(item.source || 'Sports News')}${item.published ? ' · ' + new Date(item.published).toLocaleDateString(ar ? 'ar' : 'en') : ''}</div>
                     <h3 class="sports-news-title">${escapeAdminText(item.title)}</h3>
@@ -2235,7 +2259,7 @@
                 if (payload.status !== 'ok' || !Array.isArray(payload.items)) throw new Error('Invalid sports RSS response');
                 const unique = new Map();
                 payload.items.map(item => {
-                    const image = item.thumbnail || (item.enclosure && item.enclosure.link) || '';
+                    const image = extractSportsNewsImage(item);
                     return {
                         title: newsText(item.title),
                         description: newsText(item.description || item.content || item.contentSnippet || '').slice(0, 650),
