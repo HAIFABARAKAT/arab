@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -676,18 +676,20 @@
         .news-strip-label{flex:0 0 auto;display:flex;align-items:center;gap:9px;color:#fff;background:var(--banner-footer-color);padding:10px 15px;border-radius:9px;font-weight:700;white-space:nowrap}
         .news-strip-label i{color:#ffd54f}
         .news-track-window{flex:1;min-width:0;overflow:hidden}
-        .news-track{display:flex;align-items:center;gap:38px;width:max-content;white-space:nowrap;animation:newsTickerMove 65s linear infinite}
+        .news-track{display:flex;align-items:center;flex-wrap:nowrap;width:max-content;max-width:none;white-space:nowrap;will-change:transform;animation:newsTickerMoveLtr 65s linear infinite}
+        .news-ticker-group{display:flex;align-items:center;flex:0 0 auto;gap:38px;padding-inline-end:38px;white-space:nowrap}
         .news-strip:hover .news-track{animation-play-state:paused}
         .news-track[dir="rtl"]{animation-name:newsTickerMoveRtl}
-        .news-item{border:0;background:transparent;color:var(--text-color);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:9px;max-width:520px;white-space:nowrap}
+        .news-item{border:0;background:transparent;color:var(--text-color);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;flex:0 0 520px;align-items:center;gap:9px;width:520px;min-width:0;max-width:520px;white-space:nowrap;overflow:hidden;text-align:start}
+        .news-item-title{display:block;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .news-item:hover{color:var(--text-hover-color)}
         .news-item:before{content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--btn-color)}
-        .news-source-tag{font-size:11px;color:var(--btn-color);border:1px solid currentColor;border-radius:20px;padding:3px 8px}
+        .news-source-tag{display:inline-block;flex:0 0 auto;font-size:11px;color:var(--btn-color);border:1px solid currentColor;border-radius:20px;padding:3px 8px;white-space:nowrap}
         .news-loading{font-size:13px;color:#777}
         .news-refresh{flex:0 0 34px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(33,150,243,.1);color:var(--btn-color);cursor:pointer}
         .news-refresh:disabled{opacity:.5;cursor:wait}
-        @keyframes newsTickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-        @keyframes newsTickerMoveRtl{from{transform:translateX(0)}to{transform:translateX(50%)}}
+        @keyframes newsTickerMoveLtr{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+        @keyframes newsTickerMoveRtl{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
         .news-modal[hidden]{display:none!important}.news-modal{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px}
         .news-modal-backdrop{position:absolute;inset:0;background:rgba(8,18,38,.68);backdrop-filter:blur(5px)}
         .news-modal-card{position:relative;z-index:1;width:min(650px,100%);max-height:88vh;overflow:auto;background:var(--card-bg);color:var(--text-color);border-radius:20px;box-shadow:0 22px 70px rgba(0,0,0,.3);animation:newsModalIn .22s ease-out}
@@ -697,7 +699,7 @@
         .news-modal-source{font-size:13px;color:var(--btn-color);font-weight:700;margin-bottom:10px}
         .news-modal-content h2{font-size:22px;line-height:1.55;margin-bottom:12px}.news-modal-content p{font-size:15px;line-height:1.9;color:var(--text-color);opacity:.88;margin-bottom:22px}
         .news-read-more{display:inline-flex;align-items:center;justify-content:center;background:var(--btn-color);color:#fff;text-decoration:none;padding:11px 22px;border-radius:25px;font-weight:700;transition:filter .2s}.news-read-more:hover{filter:brightness(1.1)}
-        @media(max-width:768px){.news-strip{max-width:92%;gap:8px;padding:0 8px;min-height:54px}.news-strip-label{padding:9px 10px;font-size:12px}.news-item{font-size:12px;max-width:290px}.news-track{gap:24px}.news-modal-content{padding:19px}.news-modal-content h2{font-size:19px}}
+        @media(max-width:768px){.news-strip{max-width:92%;gap:8px;padding:0 8px;min-height:54px}.news-strip-label{padding:9px 10px;font-size:12px}.news-item{font-size:12px;flex-basis:290px;width:290px;max-width:290px}.news-ticker-group{gap:24px;padding-inline-end:24px}.news-modal-content{padding:19px}.news-modal-content h2{font-size:19px}}
         @media(prefers-reduced-motion:reduce){.news-track{animation:none!important}.news-modal-card{animation:none}}
 
     </style>
@@ -1958,25 +1960,40 @@
             const label = document.getElementById('newsLabel');
             if (!track) return;
             if (label) label.textContent = currentLang === 'ar' ? 'آخر الأخبار' : 'Latest News';
-            track.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            const direction = currentLang === 'ar' ? 'rtl' : 'ltr';
+            track.dir = direction;
+
             if (!items.length) {
+                track.style.animation = 'none';
                 track.innerHTML = `<span class="news-loading">${currentLang === 'ar' ? 'تعذر تحميل الأخبار حالياً. حاول التحديث لاحقاً.' : 'News are temporarily unavailable. Please try again later.'}</span>`;
                 return;
             }
-            const makeButton = (item, index) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'news-item';
-                button.setAttribute('aria-label', item.title);
-                button.innerHTML = `<span>${escapeAdminText(item.title)}</span><span class="news-source-tag">${escapeAdminText(item.source)}</span>`;
-                button.addEventListener('click', () => openNewsModal(index));
-                return button;
+
+            const makeGroup = () => {
+                const group = document.createElement('div');
+                group.className = 'news-ticker-group';
+                group.setAttribute('aria-hidden', 'false');
+
+                items.forEach((item, index) => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'news-item';
+                    button.setAttribute('aria-label', item.title);
+                    button.innerHTML = `<span class="news-item-title">${escapeAdminText(item.title)}</span><span class="news-source-tag">${escapeAdminText(item.source)}</span>`;
+                    button.addEventListener('click', () => openNewsModal(index));
+                    group.appendChild(button);
+                });
+                return group;
             };
-            track.innerHTML = '';
-            const repeated = items.concat(items);
-            repeated.forEach((item, index) => track.appendChild(makeButton(item, index % items.length)));
-            // Ensure a readable ticker even when only one story is returned.
-            track.style.animationDuration = `${Math.max(28, items.length * 9)}s`;
+
+            track.style.animation = 'none';
+            track.replaceChildren(makeGroup(), makeGroup());
+            // Two identical, independently measured groups create a seamless loop.
+            const duration = Math.max(35, Math.min(110, items.length * 8));
+            track.style.animationDuration = `${duration}s`;
+            // Restart from the correct edge after content or language changes.
+            void track.offsetWidth;
+            track.style.animation = '';
         }
 
         function openNewsModal(index) {
