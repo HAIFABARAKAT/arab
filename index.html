@@ -1343,6 +1343,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 <button class="tab-btn" id="tabSectionsBtn" onclick="switchTab('sections')"><i class="fa-solid fa-layer-group"></i><span>الأقسام والبطاقات</span></button>
                 <button class="tab-btn" id="tabImagesBtn" onclick="switchTab('images')"><i class="fa-regular fa-images"></i><span>مكتبة الصور</span></button>
                 <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><span>الأخبار والعملات والرياضة</span></button>
+                <button class="tab-btn" id="tabExperienceBtn" onclick="switchTab('experience')"><i class="fa-solid fa-sliders"></i><span>إدارة واجهة المنصة</span></button>
             </div>
             <div class="admin-workspace-actions">
                 <button class="admin-btn" type="button" onclick="previewWebsite()">معاينة الموقع</button>
@@ -1363,7 +1364,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                     <div class="amx-admin-grid">
                       <div class="amx-admin-card"><i class="fa-solid fa-layer-group"></i><div><b>الأقسام والمحتوى</b><small>إضافة الأقسام والبطاقات وتعديلها وترتيبها.</small><button type="button" onclick="switchTab('sections')">فتح إدارة الأقسام</button></div></div>
                       <div class="amx-admin-card"><i class="fa-regular fa-images"></i><div><b>الصور والبنرات</b><small>إدارة صور المربع المتحرك ومكتبة الصور.</small><button type="button" onclick="switchTab('images')">فتح مكتبة الصور</button></div></div>
-                      <div class="amx-admin-card"><i class="fa-regular fa-newspaper"></i><div><b>الأخبار والعملات والرياضة</b><small>تحديث مكونات الأخبار وأسعار الصرف.</small><button type="button" onclick="switchTab('settings')">فتح إعدادات الصفحة</button></div></div>
+                      <div class="amx-admin-card"><i class="fa-regular fa-newspaper"></i><div><b>الأخبار والعملات والرياضة</b><small>تحديث مكونات الأخبار وأسعار الصرف.</small><button type="button" onclick="switchTab('settings')">فتح إعدادات الصفحة</button></div></div><div class="amx-admin-card"><i class="fa-solid fa-sliders"></i><div><b>إدارة واجهة المنصة</b><small>تعديل وإضافة وحذف وإخفاء جميع إضافات الواجهة الجديدة.</small><button type="button" onclick="switchTab('experience')">فتح إدارة الواجهة</button></div></div>
                     </div>
                     <h3 class="admin-overview-heading">الوصول السريع</h3>
                     <div class="admin-quick-grid">
@@ -1485,6 +1486,43 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                     </div>
                 </div>
 
+                <div class="panel-tab" id="tabExperience">
+                    <div class="manage-list-box">
+                        <h3 style="margin-bottom:8px">التحكم الكامل بإضافات الصفحة الرئيسية</h3>
+                        <p class="manage-help">من هنا يمكنك تعديل النصوص، إظهار أو إخفاء أي جزء، إضافة وحذف بطاقات الخدمات والمدن، ثم معاينة التغييرات ونشرها لجميع الزوار.</p>
+                        <div class="form-group"><label>العنوان الرئيسي بالعربية</label><input id="expHeroAr" type="text"></div>
+                        <div class="form-group"><label>Main headline in English</label><input id="expHeroEn" type="text"></div>
+                        <div class="form-group"><label>الوصف الرئيسي بالعربية</label><textarea id="expIntroAr" rows="2"></textarea></div>
+                        <div class="form-group"><label>Introduction in English</label><textarea id="expIntroEn" rows="2"></textarea></div>
+                        <div class="form-group"><label><input type="checkbox" id="expHeroVisible"> إظهار الواجهة الرئيسية المطوّرة</label></div>
+                        <div class="form-group"><label><input type="checkbox" id="expPromoVisible"> إظهار مستطيل الصور المتحرك الرئيسي</label></div>
+                        <div class="form-group"><label><input type="checkbox" id="expServicesVisible"> إظهار شبكة الخدمات</label></div>
+                        <div class="form-group"><label><input type="checkbox" id="expLifeVisible"> إظهار بطاقة دليل الحياة والدراسة</label></div>
+                        <div class="form-group"><label><input type="checkbox" id="expBusinessVisible"> إظهار بطاقة أصحاب الأعمال</label></div>
+                        <div class="form-group"><label><input type="checkbox" id="expCitiesVisible"> إظهار قسم المدن</label></div>
+                    </div>
+                    <div class="manage-list-box" style="margin-top:16px">
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>بطاقات الخدمات</h3><button type="button" class="admin-btn" style="width:auto" onclick="addExperienceTile()">＋ إضافة بطاقة</button></div>
+                        <div id="experienceTilesEditor" style="display:grid;gap:12px;margin-top:12px"></div>
+                    </div>
+                    <div class="manage-list-box" style="margin-top:16px">
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>المدن الماليزية</h3><button type="button" class="admin-btn" style="width:auto" onclick="addExperienceCity()">＋ إضافة مدينة</button></div>
+                        <div id="experienceCitiesEditor" style="display:grid;gap:12px;margin-top:12px"></div>
+                    </div>
+                    <div class="manage-list-box" style="margin-top:16px">
+                        <h3>بطاقات المحتوى التعريفي</h3>
+                        <div class="form-group"><label>عنوان دليل الحياة والدراسة بالعربية</label><input id="expLifeTitleAr"></div>
+                        <div class="form-group"><label>Life and study title in English</label><input id="expLifeTitleEn"></div>
+                        <div class="form-group"><label>وصف دليل الحياة والدراسة بالعربية</label><textarea id="expLifeTextAr" rows="3"></textarea></div>
+                        <div class="form-group"><label>Life and study description in English</label><textarea id="expLifeTextEn" rows="3"></textarea></div>
+                        <div class="form-group"><label>عنوان بطاقة أصحاب الأعمال بالعربية</label><input id="expBusinessTitleAr"></div>
+                        <div class="form-group"><label>Business card title in English</label><input id="expBusinessTitleEn"></div>
+                        <div class="form-group"><label>وصف بطاقة أصحاب الأعمال بالعربية</label><textarea id="expBusinessTextAr" rows="3"></textarea></div>
+                        <div class="form-group"><label>Business card description in English</label><textarea id="expBusinessTextEn" rows="3"></textarea></div>
+                        <button type="button" class="admin-btn" onclick="saveExperienceEditor()">حفظ التعديلات كمسودة</button>
+                    </div>
+                </div>
+
                 <div class="panel-tab" id="tabImages">
                     <div class="manage-list-box">
                         <h3 style="color:var(--btn-color);margin-bottom:8px;">مكتبة صور الموقع</h3>
@@ -1518,6 +1556,39 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             { img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", titleAr: "عروض الرحلات السياحية الشاملة في ماليزيا", titleEn: "Comprehensive Tour Package Offers in Malaysia" }
         ];
         let promoSlides = JSON.parse(localStorage.getItem('promoSlidesData') || 'null') || defaultPromoSlides.map(slide => ({ ...slide }));
+        const defaultExperienceConfig = {
+          heroVisible:true, promoVisible:true, servicesVisible:true, lifeVisible:true, businessVisible:true, citiesVisible:true,
+          heroAr:'كل ما يحتاجه العربي في ماليزيا… في مكان واحد', heroEn:'Everything Arabs need in Malaysia — all in one place',
+          introAr:'اكتشف الخدمات الموثوقة، فرص العمل، العقارات، السوق العربي، الأخبار والمجتمع. منصة تجمع المعلومات والفرص وتقرّب المسافات.',
+          introEn:'Discover trusted services, jobs, properties, the Arab marketplace, news and community. One platform bringing information and opportunities closer.',
+          lifeTitleAr:'دليلك للحياة والدراسة في ماليزيا', lifeTitleEn:'Your guide to living and studying in Malaysia',
+          lifeTextAr:'ابدأ من المدينة المناسبة، وتعرّف على مجالات السكن والتعليم والتنقل والخدمات الأساسية. هذه الواجهة تمهّد لتجميع الأدلة العملية في مكان واحد.',
+          lifeTextEn:'Start with the right city and explore housing, education, transport and essential services. This space brings practical guides together.',
+          businessTitleAr:'هل تدير نشاطاً تجارياً؟', businessTitleEn:'Do you run a business?',
+          businessTextAr:'اعرض نشاطك أو خدمتك أمام الجمهور العربي في ماليزيا عبر بوابة الأعضاء، وتابع حالة المحتوى الذي ترسله.',
+          businessTextEn:'Present your business or service to the Arab audience in Malaysia through the member portal, and track the content you submit.',
+          tiles:[
+            {id:'businesses',kind:'businesses',icon:'fa-store',titleAr:'دليل الأعمال والخدمات',titleEn:'Business directory',descAr:'شركات، مطاعم حلال، صحة، تعليم وخدمات يومية.',descEn:'Companies, halal restaurants, health, education and daily services.',visible:true,href:'#arabPlatformHub'},
+            {id:'listings',kind:'listings',icon:'fa-shop',titleAr:'السوق العربي',titleEn:'Arab marketplace',descAr:'إعلانات البيع والشراء والسيارات والخدمات.',descEn:'Classifieds, cars, buying, selling and services.',visible:true,href:'#arabPlatformHub'},
+            {id:'jobs',kind:'jobs',icon:'fa-briefcase',titleAr:'الوظائف والفرص',titleEn:'Jobs & opportunities',descAr:'تصفح الفرص وأرسل طلب التقديم.',descEn:'Browse opportunities and apply.',visible:true,href:'#arabPlatformHub'},
+            {id:'properties',kind:'properties',icon:'fa-house',titleAr:'العقارات والسكن',titleEn:'Property & housing',descAr:'عقارات للإيجار والبيع في المدن الماليزية.',descEn:'Properties for rent and sale across Malaysia.',visible:true,href:'#arabPlatformHub'},
+            {id:'community_posts',kind:'community_posts',icon:'fa-people-group',titleAr:'مجتمع العرب',titleEn:'Arab community',descAr:'تجارب وأسئلة ومشاركات وتواصل مجتمعي.',descEn:'Experiences, questions, posts and community.',visible:true,href:'#arabPlatformHub'},
+            {id:'news',kind:'',icon:'fa-newspaper',titleAr:'أخبار ماليزيا',titleEn:'Malaysia news',descAr:'تابع الأخبار والتحديثات من المصادر الإخبارية.',descEn:'Follow updates from trusted news sources.',visible:true,href:'#newsStrip'},
+            {id:'currency',kind:'',icon:'fa-coins',titleAr:'العملات والأسعار',titleEn:'Currency rates',descAr:'تابع شريط أسعار الصرف مقابل الرنجت.',descEn:'Exchange rates against the Malaysian ringgit.',visible:true,href:'#currencyStrip'},
+            {id:'sports',kind:'',icon:'fa-futbol',titleAr:'الأخبار الرياضية',titleEn:'Sports news',descAr:'آخر المستجدات الرياضية في مكان واحد.',descEn:'Latest sports updates in one place.',visible:true,href:'#sportsNewsSection'}
+          ],
+          cities:[
+            {id:'kl',name:'Kuala Lumpur',titleAr:'العاصمة ومركز الأعمال والخدمات والجامعات.',titleEn:'The capital and hub for business, services and universities.',visible:true},
+            {id:'selangor',name:'Selangor',titleAr:'مدن سكنية وتجارية ومناطق جامعية متنوعة.',titleEn:'Residential, commercial and university areas.',visible:true},
+            {id:'penang',name:'Penang',titleAr:'وجهة تجمع السياحة والتعليم والأعمال.',titleEn:'A destination for tourism, education and business.',visible:true},
+            {id:'johor',name:'Johor Bahru',titleAr:'مدينة حيوية قريبة من سنغافورة.',titleEn:'A vibrant city close to Singapore.',visible:true},
+            {id:'melaka',name:'Melaka',titleAr:'مدينة تاريخية ووجهة سياحية مميزة.',titleEn:'A historic city and distinctive tourism destination.',visible:true}
+          ]
+        };
+        let experienceConfig = { ...defaultExperienceConfig, ...(JSON.parse(localStorage.getItem('arabMalaysiaExperienceConfig')||'null')||{}) };
+        experienceConfig.tiles = Array.isArray(experienceConfig.tiles) ? experienceConfig.tiles : defaultExperienceConfig.tiles.map(x=>({...x}));
+        experienceConfig.cities = Array.isArray(experienceConfig.cities) ? experienceConfig.cities : defaultExperienceConfig.cities.map(x=>({...x}));
+
 
         const defaultSectionsData = [
             {
@@ -2261,6 +2332,8 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 if (Array.isArray(data.content.promoSlides)) promoSlides = data.content.promoSlides;
                 if (data.content.theme) siteTheme = data.content.theme;
                 if (data.content.settings) siteSettings = { ...defaultSiteSettings, ...data.content.settings };
+                if (data.content.experience) experienceConfig = { ...defaultExperienceConfig, ...data.content.experience };
+                localStorage.setItem('arabMalaysiaExperienceConfig', JSON.stringify(experienceConfig));
                 localStorage.setItem('arabMalaysiaSiteSettings', JSON.stringify(siteSettings));
                 localStorage.setItem('webSectionsData', JSON.stringify(webSections));
                 localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
@@ -2272,6 +2345,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             }
             localStorage.setItem('promoSlidesData', JSON.stringify(promoSlides));
             lastPublishedSnapshot = makeSiteSnapshot();
+            if (typeof applyExperienceConfig === 'function') applyExperienceConfig();
             cloudContentReady = true;
         }
 
@@ -2365,7 +2439,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             document.querySelectorAll('#dashboardBox .admin-workspace-actions').forEach(el => el.style.display = '');
             const tabMap = {
                 overview: 'tabOverview', colors: 'tabColors', sections: 'tabSections',
-                images: 'tabImages', settings: 'tabSettings'
+                images: 'tabImages', settings: 'tabSettings', experience: 'tabExperience'
             };
             const targetId = tabMap[targetTabId] || 'tabOverview';
             document.querySelectorAll('.tab-btn, .premium-overview').forEach(b => b.classList.remove('active'));
@@ -2375,15 +2449,16 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 // Explicit display prevents a hidden panel when dashboard CSS/layout is reflowed.
                 t.style.setProperty('display', active ? 'block' : 'none', 'important');
             });
-            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام والبطاقات', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة' };
+            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام والبطاقات', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة', experience: 'إدارة واجهة المنصة' };
             const heading = document.getElementById('adminPageHeading');
             if (heading) heading.textContent = headings[targetTabId] || 'لوحة التحكم';
             const activeButton = targetTabId === 'overview'
                 ? document.querySelector('.premium-overview')
-                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',images:'tabImagesBtn',settings:'tabSettingsBtn'})[targetTabId]);
+                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',images:'tabImagesBtn',settings:'tabSettingsBtn',experience:'tabExperienceBtn'})[targetTabId]);
             if (activeButton) activeButton.classList.add('active');
             if (targetTabId === 'overview') updateAdminOverviewStats();
             if (targetTabId === 'settings') applySiteSettings();
+            if (targetTabId === 'experience') buildExperienceAdminEditor();
             if (targetTabId === 'images') buildAdminImageLibrary();
             const workspace = document.querySelector('.premium-admin-workspace');
             if (workspace) workspace.scrollTop = 0;
@@ -2770,7 +2845,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
         }
 
         function makeSiteSnapshot() {
-            return JSON.parse(JSON.stringify({ sections: webSections, theme: siteTheme, promoSlides, settings: siteSettings }));
+            return JSON.parse(JSON.stringify({ sections: webSections, theme: siteTheme, promoSlides, settings: siteSettings, experience: experienceConfig }));
         }
 
         async function commitAndSyncSystemDatastores(publish = false) {
@@ -2778,6 +2853,8 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
             localStorage.setItem('promoSlidesData', JSON.stringify(promoSlides));
             localStorage.setItem('arabMalaysiaSiteSettings', JSON.stringify(siteSettings));
+            localStorage.setItem('arabMalaysiaExperienceConfig', JSON.stringify(experienceConfig));
+            applyExperienceConfig();
             renderPromoBanners();
             renderDynamicSections();
             buildPromoSlidesAdminList();
@@ -2796,7 +2873,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             }
             const { error } = await supabaseClient.from('site_content').upsert({
                 id: 1,
-                content: { sections: webSections, theme: siteTheme, promoSlides: promoSlides, settings: siteSettings },
+                content: { sections: webSections, theme: siteTheme, promoSlides: promoSlides, settings: siteSettings, experience: experienceConfig },
                 updated_at: new Date().toISOString()
             }, { onConflict: 'id' });
             if (error) {
@@ -2829,6 +2906,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             siteTheme = JSON.parse(JSON.stringify(lastPublishedSnapshot.theme));
             promoSlides = JSON.parse(JSON.stringify(lastPublishedSnapshot.promoSlides));
             siteSettings = JSON.parse(JSON.stringify(lastPublishedSnapshot.settings || defaultSiteSettings));
+            experienceConfig = JSON.parse(JSON.stringify(lastPublishedSnapshot.experience || defaultExperienceConfig));
             applyThemeStyles(siteTheme);
             applySiteSettings();
             commitAndSyncSystemDatastores(false);
@@ -2841,6 +2919,49 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             target.hash = 'admin';
             window.open(target.toString(), '_blank', 'noopener');
         }
+
+        function applyExperienceConfig() {
+            const c=experienceConfig||defaultExperienceConfig;
+            const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
+            const visible=(id,on)=>{const e=document.getElementById(id);if(e)e.style.display=on?'':'none';};
+            visible('amx-platform',c.heroVisible||c.servicesVisible||c.lifeVisible||c.businessVisible||c.citiesVisible);
+            const hero=document.querySelector('#amx-platform .amx-hero'); if(hero)hero.style.display=c.heroVisible?'':'none';
+            const promo=document.getElementById('promoSlider');if(promo)promo.style.display=c.promoVisible===false?'none':'';
+            const serviceHead=document.querySelector('#amx-platform .amx-section-head'); if(serviceHead)serviceHead.style.display=c.servicesVisible?'':'none';
+            visible('amxServiceGrid',c.servicesVisible);
+            const featureRow=document.querySelector('#amx-platform .amx-feature-row'); if(featureRow)featureRow.style.display=(c.lifeVisible||c.businessVisible)?'':'none';
+            const life=document.querySelector('#amx-platform .amx-feature:not(.dark)');if(life)life.style.display=c.lifeVisible?'':'none';
+            const biz=document.querySelector('#amx-platform .amx-feature.dark');if(biz)biz.style.display=c.businessVisible?'':'none';
+            const cityHead=document.getElementById('amxCitiesTitle')?.closest('.amx-section-head');if(cityHead)cityHead.style.display=c.citiesVisible?'':'none';
+            const cityGrid=document.querySelector('#amx-platform .amx-city-grid');if(cityGrid)cityGrid.style.display=c.citiesVisible?'':'none';
+            set('amxHeroTitle',currentLang==='en'?c.heroEn:c.heroAr);set('amxHeroText',currentLang==='en'?c.introEn:c.introAr);
+            set('amxLifeTitle',currentLang==='en'?c.lifeTitleEn:c.lifeTitleAr);set('amxLifeText',currentLang==='en'?c.lifeTextEn:c.lifeTextAr);
+            set('amxBusinessTitle',currentLang==='en'?c.businessTitleEn:c.businessTitleAr);set('amxBusinessText',currentLang==='en'?c.businessTextEn:c.businessTextAr);
+            const grid=document.getElementById('amxServiceGrid');if(grid){grid.innerHTML=(c.tiles||[]).filter(x=>x.visible!==false).map(x=>`<a class="amx-tile" href="${escapeAdminText(x.href||'#arabPlatformHub')}" data-kind="${escapeAdminText(x.kind||'')}"><span class="amx-tile-icon"><i class="fa-solid ${escapeAdminText(x.icon||'fa-star')}"></i></span><b>${escapeAdminText(currentLang==='en'?(x.titleEn||x.titleAr):(x.titleAr||x.titleEn))}</b><small>${escapeAdminText(currentLang==='en'?(x.descEn||x.descAr):(x.descAr||x.descEn))}</small><span class="amx-arrow">${currentLang==='en'?'Explore →':'استكشف ←'}</span></a>`).join('');grid.querySelectorAll('[data-kind]').forEach(a=>a.addEventListener('click',()=>{const b=document.querySelector('.amh-tab[data-kind="'+a.dataset.kind+'"]');if(b)b.click()}));}
+            const cities=document.querySelector('#amx-platform .amx-city-grid');if(cities){cities.innerHTML=(c.cities||[]).filter(x=>x.visible!==false).map(x=>`<article class="amx-city"><div class="amx-city-top">${escapeAdminText(x.name)}</div><div class="amx-city-body">${escapeAdminText(currentLang==='en'?(x.titleEn||x.titleAr):(x.titleAr||x.titleEn))}</div><button type="button" data-city="${escapeAdminText(x.name)}">${currentLang==='en'?'Explore city':'استكشف المدينة'}</button></article>`).join('');cities.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{const hub=document.getElementById('arabPlatformHub');const city=document.getElementById('amhCity');if(city){const match=[...city.options].find(o=>o.value.toLowerCase()===b.dataset.city.toLowerCase());city.value=match?match.value:'';city.dispatchEvent(new Event('change',{bubbles:true}));}hub?.scrollIntoView({behavior:'smooth'});}));}
+        }
+        function experienceField(id,label,value,field='text') {return `<label style="display:block;font-size:12px;font-weight:700;margin:6px 0">${label}<${field==='textarea'?'textarea':'input'} data-exp-field="${id}" ${field==='textarea'?'rows="2"':''} style="width:100%;padding:9px;border:1px solid #d5deea;border-radius:8px;margin-top:4px">${field==='textarea'?escapeAdminText(value||''):''}</${field==='textarea'?'textarea':'input'}>${field==='textarea'?'': ''}</label>`;}
+        function buildExperienceAdminEditor(){
+          const c=experienceConfig;const put=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v??'';};
+          ['heroAr','heroEn','introAr','introEn','lifeTitleAr','lifeTitleEn','lifeTextAr','lifeTextEn','businessTitleAr','businessTitleEn','businessTextAr','businessTextEn'].forEach(k=>put('exp'+k[0].toUpperCase()+k.slice(1),c[k]));
+          ['heroVisible','promoVisible','servicesVisible','lifeVisible','businessVisible','citiesVisible'].forEach(k=>{const e=document.getElementById('exp'+k[0].toUpperCase()+k.slice(1));if(e)e.checked=c[k]!==false;});
+          const tiles=document.getElementById('experienceTilesEditor');if(tiles)tiles.innerHTML=(c.tiles||[]).map((x,i)=>`<div style="border:1px solid #dbe3ef;border-radius:10px;padding:12px;background:#fff"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>بطاقة ${i+1}</b><label><input type="checkbox" data-tile-visible="${i}" ${x.visible!==false?'checked':''}> ظاهرة</label><button type="button" class="admin-btn" style="width:auto;background:#b42318" onclick="deleteExperienceTile(${i})">حذف</button></div><div class="form-group"><label>الاسم بالعربية</label><input data-tile="${i}" data-field="titleAr" value="${escapeAdminText(x.titleAr||'')}"></div><div class="form-group"><label>Title in English</label><input data-tile="${i}" data-field="titleEn" value="${escapeAdminText(x.titleEn||'')}"></div><div class="form-group"><label>الوصف بالعربية</label><textarea data-tile="${i}" data-field="descAr" rows="2">${escapeAdminText(x.descAr||'')}</textarea></div><div class="form-group"><label>Description in English</label><textarea data-tile="${i}" data-field="descEn" rows="2">${escapeAdminText(x.descEn||'')}</textarea></div><div class="form-group"><label>نوع القسم المرتبط (businesses / listings / jobs / properties / community_posts أو اتركه فارغاً)</label><input data-tile="${i}" data-field="kind" value="${escapeAdminText(x.kind||'')}"></div><div class="form-group"><label>رابط البطاقة (مثل #newsStrip أو #arabPlatformHub)</label><input data-tile="${i}" data-field="href" value="${escapeAdminText(x.href||'')}"></div><div class="form-group"><label>أيقونة Font Awesome (مثال fa-star)</label><input data-tile="${i}" data-field="icon" value="${escapeAdminText(x.icon||'fa-star')}"></div></div>`).join('');
+          const cities=document.getElementById('experienceCitiesEditor');if(cities)cities.innerHTML=(c.cities||[]).map((x,i)=>`<div style="border:1px solid #dbe3ef;border-radius:10px;padding:12px;background:#fff"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>${escapeAdminText(x.name||'مدينة')}</b><label><input type="checkbox" data-city-visible="${i}" ${x.visible!==false?'checked':''}> ظاهرة</label><button type="button" class="admin-btn" style="width:auto;background:#b42318" onclick="deleteExperienceCity(${i})">حذف</button></div><div class="form-group"><label>اسم المدينة بالإنجليزية</label><input data-city="${i}" data-field="name" value="${escapeAdminText(x.name||'')}"></div><div class="form-group"><label>الوصف بالعربية</label><textarea data-city="${i}" data-field="titleAr" rows="2">${escapeAdminText(x.titleAr||'')}</textarea></div><div class="form-group"><label>Description in English</label><textarea data-city="${i}" data-field="titleEn" rows="2">${escapeAdminText(x.titleEn||'')}</textarea></div></div>`).join('');
+        }
+        function saveExperienceEditor(){
+          const c=experienceConfig;const val=id=>document.getElementById(id)?.value||'';const checked=id=>!!document.getElementById(id)?.checked;
+          ['heroAr','heroEn','introAr','introEn','lifeTitleAr','lifeTitleEn','lifeTextAr','lifeTextEn','businessTitleAr','businessTitleEn','businessTextAr','businessTextEn'].forEach(k=>c[k]=val('exp'+k[0].toUpperCase()+k.slice(1)));
+          ['heroVisible','promoVisible','servicesVisible','lifeVisible','businessVisible','citiesVisible'].forEach(k=>c[k]=checked('exp'+k[0].toUpperCase()+k.slice(1)));
+          document.querySelectorAll('[data-tile][data-field]').forEach(e=>{const x=c.tiles[Number(e.dataset.tile)];if(x)x[e.dataset.field]=e.value;});
+          document.querySelectorAll('[data-tile-visible]').forEach(e=>{const x=c.tiles[Number(e.dataset.tile)];if(x)x.visible=e.checked;});
+          document.querySelectorAll('[data-city][data-field]').forEach(e=>{const x=c.cities[Number(e.dataset.city)];if(x)x[e.dataset.field]=e.value;});
+          document.querySelectorAll('[data-city-visible]').forEach(e=>{const x=c.cities[Number(e.dataset.city)];if(x)x.visible=e.checked;});
+          localStorage.setItem('arabMalaysiaExperienceConfig',JSON.stringify(c));applyExperienceConfig();commitAndSyncSystemDatastores(false);alert('تم حفظ التعديلات كمسودة. اضغط «حفظ ونشر التغييرات» لتظهر لجميع الزوار.');
+        }
+        function addExperienceTile(){experienceConfig.tiles.push({id:'tile_'+Date.now(),kind:'',icon:'fa-star',titleAr:'خدمة جديدة',titleEn:'New service',descAr:'اكتب وصف الخدمة',descEn:'Add a service description',visible:true,href:'#arabPlatformHub'});buildExperienceAdminEditor();}
+        function deleteExperienceTile(i){if(!confirm('هل تريد حذف هذه البطاقة؟'))return;experienceConfig.tiles.splice(i,1);buildExperienceAdminEditor();saveExperienceEditor();}
+        function addExperienceCity(){experienceConfig.cities.push({id:'city_'+Date.now(),name:'New city',titleAr:'وصف المدينة',titleEn:'City description',visible:true});buildExperienceAdminEditor();}
+        function deleteExperienceCity(i){if(!confirm('هل تريد حذف هذه المدينة؟'))return;experienceConfig.cities.splice(i,1);buildExperienceAdminEditor();saveExperienceEditor();}
 
         function buildAdminImageLibrary() {
             const host = document.getElementById('adminImageLibrary');
@@ -3302,7 +3423,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
  function field(label,id,placeholder='',type='text',wide=false){return `<div class="mp-field ${wide?'mp-wide':''}"><label for="${id}">${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}"></div>`;}
  function area(label,id,placeholder){return `<div class="mp-field mp-wide"><label for="${id}">${label}</label><textarea id="${id}" placeholder="${placeholder}"></textarea></div>`;}
  function fileField(label,id,multiple){return `<div class="mp-field mp-wide"><label for="${id}">${label}</label><input id="${id}" class="upload-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" ${multiple?'multiple':''}><small class="mp-muted">JPEG أو PNG أو WebP أو GIF · الحد الأقصى 5MB للصورة</small></div>`;}
- async function mpUploadImages(id,maxFiles){const input=$(id);const files=Array.from(input?.files||[]);if(!files.length)return [];if(files.length>maxFiles)throw new Error(`يمكن رفع ${maxFiles} صور كحد أقصى.`);const urls=[];for(const file of files){if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type))throw new Error('نوع صورة غير مدعوم.');if(file.size>5*1024*1024)throw new Error('حجم كل صورة يجب ألا يتجاوز 5MB.');const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';const path=`members/${mpUser.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;const {error}=await db().storage.from('Image').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});if(error)throw error;const {data}=db().storage.from('Image').getPublicUrl(path);if(!data?.publicUrl)throw new Error('تعذر إنشاء رابط الصورة العامة.');urls.push(data.publicUrl);}return urls;}
+ async function mpUploadImages(id,maxFiles){const input=$(id);const files=Array.from(input?.files||[]);if(!files.length)return [];if(files.length>maxFiles)throw new Error(`يمكن رفع ${maxFiles} صور كحد أقصى.`);const urls=[];for(const file of files){if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type))throw new Error('نوع صورة غير مدعوم.');if(file.size>5*1024*1024)throw new Error('حجم كل صورة يجب ألا يتجاوز 5MB.');const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';const path=`members/${mpUser.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;const {error}=await db().storage.from('Image').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});if(error)throw new Error('تعذر رفع الصورة إلى مساحة التخزين Image: '+(error.message||String(error)));const {data}=db().storage.from('Image').getPublicUrl(path);if(!data?.publicUrl)throw new Error('تعذر إنشاء رابط الصورة العامة.');urls.push(data.publicUrl);}return urls;}
  function select(label,id,opts){return `<div class="mp-field"><label for="${id}">${label}</label><select id="${id}">${opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select></div>`;}
  function mpRenderForm(){const h=$('mpFormHost');if(mpKind!=='mine'&&mpKind!=='feed'&&mpMemberStatus!=='active'){h.innerHTML='<div class=\"mp-note\">حسابك غير مفعّل لإضافة المحتوى حالياً. يمكنك التصفح ومراجعة محتوياتك، ويرجى التواصل مع إدارة المنصة.</div>';return;}if(mpKind==='mine'){mpLoadMine();return;}if(mpKind==='feed'){mpLoadFeed();return;}let f='';
  if(mpKind==='business')f=`<div class="mp-grid">${field('اسم النشاط بالعربية','mpTitle','مثال: مطعم عربي')}${field('الاسم بالإنجليزية','mpTitleEn','Business name')}${field('نوع النشاط','mpCategoryText','مطعم، خدمات، تجارة...')}${field('المدينة','mpCity','Kuala Lumpur')}${field('الهاتف','mpContact','+60...')}${field('واتساب','mpWhatsapp','+60...')}${field('الموقع الإلكتروني','mpWebsite','https://...','url')}${fileField('شعار النشاط (اختياري)','mpLogoFile',false)}${area('وصف النشاط','mpDesc','اكتب وصفاً واضحاً للخدمات...')}</div><button class="mp-action primary" onclick="mpSubmit()">إرسال النشاط للمراجعة</button>`;
@@ -3319,12 +3440,13 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
  if(mpKind==='job'){table='jobs';if(!val('mpTitle')||!city)throw new Error('المسمى الوظيفي والمدينة مطلوبان.');payload={owner_id:mpUser.id,title_ar:val('mpTitle'),company_name:val('mpCompany'),description_ar:val('mpDesc'),city,employment_type:val('mpEmployment'),salary_min:val('mpSalaryMin')?Number(val('mpSalaryMin')):null,salary_max:val('mpSalaryMax')?Number(val('mpSalaryMax')):null,contact_email:val('mpContact'),status:'pending'};}
  if(mpKind==='property'){table='properties';if(!val('mpTitle')||!city)throw new Error('عنوان العقار والمدينة مطلوبان.');payload={owner_id:mpUser.id,property_type:val('mpPropertyType'),offer_type:val('mpOffer'),title_ar:val('mpTitle'),description_ar:val('mpDesc'),city,price:val('mpPrice')?Number(val('mpPrice')):null,bedrooms:val('mpBedrooms')?Number(val('mpBedrooms')):null,bathrooms:val('mpBathrooms')?Number(val('mpBathrooms')):null,image_urls:await mpUploadImages('mpImageFiles',4),status:'pending'};}
  if(mpKind==='post'){table='community_posts';if(!val('mpDesc'))throw new Error('محتوى المنشور مطلوب.');payload={author_id:mpUser.id,title:val('mpTitle'),body:val('mpDesc'),city,post_type:val('mpPostType'),status:'pending'};}
- const {error}=await db().from(table).insert(payload);if(error)throw error;mpMessage('تم إرسال طلبك بنجاح، وهو الآن بانتظار مراجعة الإدارة.','ok');mpKind='mine';document.querySelectorAll('#memberPortal .mp-tab').forEach(x=>x.classList.toggle('active',x.dataset.kind==='mine'));await mpLoadMine();
+ const {error}=await db().from(table).insert(payload);if(error)throw new Error('تم تجهيز الصور، لكن قاعدة البيانات رفضت حفظ المحتوى: '+(error.message||String(error)));mpMessage('تم إرسال طلبك بنجاح، وهو الآن بانتظار مراجعة الإدارة.','ok');mpKind='mine';document.querySelectorAll('#memberPortal .mp-tab').forEach(x=>x.classList.toggle('active',x.dataset.kind==='mine'));await mpLoadMine();
  }catch(e){mpMessage(e.message,'err');}};
  async function mpLoadFeed(){const h=$('mpFormHost');h.innerHTML='<p>جارٍ تحميل منشورات المجتمع...</p>';try{const {data,error}=await db().from('community_posts').select('id,title,body,city,created_at').eq('status','published').order('created_at',{ascending:false}).limit(30);if(error)throw error;if(!data?.length){h.innerHTML='<div class="mp-note">لا توجد منشورات منشورة حالياً. يمكنك إضافة منشور من تبويب «منشور مجتمعي».</div>';return;}h.innerHTML='<div class="mp-list">'+data.map(p=>`<article class="mp-item" style="display:block"><b>${esc(p.title||'منشور مجتمعي')}</b><div class="mp-muted">${esc(p.city||'ماليزيا')} · ${new Date(p.created_at).toLocaleDateString('ar')}</div><p>${esc(p.body)}</p><div id="mpComments-${esc(p.id)}" class="mp-muted">جارٍ تحميل التعليقات...</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><input id="mpComment-${esc(p.id)}" placeholder="اكتب تعليقاً..." style="flex:1;min-width:180px"><button class="mp-action primary" onclick="mpAddComment('${esc(p.id)}')">إرسال التعليق</button></div></article>`).join('')+'</div>';for(const p of data)mpLoadComments(p.id);}catch(e){h.innerHTML='<p class="mp-error">تعذر تحميل المجتمع: '+esc(e.message)+'</p>';}}
  async function mpLoadComments(postId){try{const {data,error}=await db().from('comments').select('body,created_at').eq('post_id',postId).eq('status','published').order('created_at',{ascending:true}).limit(20);if(error)throw error;const el=$('mpComments-'+postId);if(el)el.innerHTML=(data||[]).map(c=>`<div style="padding:6px 0;border-top:1px solid #e2e8f0">${esc(c.body)}</div>`).join('')||'لا توجد تعليقات بعد.';}catch(e){const el=$('mpComments-'+postId);if(el)el.textContent='تعذر تحميل التعليقات.';}}
  window.mpAddComment=async function(postId){try{if(mpMemberStatus!=='active')throw new Error('حسابك غير مفعّل لإضافة التعليقات حالياً.');const body=$('mpComment-'+postId)?.value?.trim();if(!body)throw new Error('اكتب التعليق أولاً.');const {error}=await db().from('comments').insert({post_id:postId,author_id:mpUser.id,body,status:'published'});if(error)throw error;$('mpComment-'+postId).value='';await mpLoadComments(postId);mpMessage('تم نشر تعليقك.','ok');}catch(e){mpMessage(e.message,'err');}};
- async function mpLoadMine(){const h=$('mpFormHost');h.innerHTML='<p>جارٍ تحميل إعلاناتك...</p>';const specs=[['businesses','name_ar','status'],['listings','title_ar','status'],['jobs','title_ar','status'],['properties','title_ar','status'],['community_posts','title','status']];try{let rows=[];for(const [table,title,status] of specs){const owner=table==='community_posts'?'author_id':'owner_id';const {data,error}=await db().from(table).select(`id,${title},${status},created_at`).eq(owner,mpUser.id).order('created_at',{ascending:false}).limit(50);if(error)throw error;(data||[]).forEach(r=>rows.push({...r,_table:table,_title:r[title]}));}rows.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));h.innerHTML=rows.length?'<div class="mp-list">'+rows.map(r=>`<div class="mp-item"><div><b>${esc(r._title||'بدون عنوان')}</b><div class="mp-muted">${esc(r._table)} · ${new Date(r.created_at).toLocaleDateString('ar')}</div></div><span>${esc(r.status)}</span></div>`).join('')+'</div>':'<div class="mp-note">لم تضف أي محتوى بعد.</div>';}catch(e){h.innerHTML='<p class="mp-error">تعذر تحميل إعلاناتك: '+esc(e.message)+'</p>';}}
+ window.mpRequestContentAction=async function(table,id,kind){try{const message=prompt(kind==='delete'?'اكتب سبب طلب حذف الإعلان (اختياري):':'اكتب التعديلات التي تريدها:');if(message===null)return;const {error}=await db().from('member_content_requests').insert({owner_id:mpUser.id,content_table:table,content_id:id,request_type:kind,message:message.trim()||null});if(error)throw error;mpMessage(kind==='delete'?'تم إرسال طلب الحذف إلى الإدارة.':'تم إرسال طلب التعديل إلى الإدارة.','ok');}catch(e){mpMessage('تعذر إرسال الطلب: '+e.message,'err');}};
+ async function mpLoadMine(){const h=$('mpFormHost');h.innerHTML='<p>جارٍ تحميل إعلاناتك...</p>';const specs=[['businesses','name_ar','status'],['listings','title_ar','status'],['jobs','title_ar','status'],['properties','title_ar','status'],['community_posts','title','status']];const labels={pending:'بانتظار المراجعة',draft:'مسودة',published:'منشور',rejected:'مرفوض',suspended:'موقوف',closed:'مغلق',expired:'منتهي',archived:'مؤرشف'};try{let notices=[];try{const nr=await db().from('notifications').select('id,title,body,created_at,read_at').eq('user_id',mpUser.id).order('created_at',{ascending:false}).limit(5);if(!nr.error)notices=nr.data||[];}catch(_){}let rows=[];for(const [table,title,status] of specs){const owner=table==='community_posts'?'author_id':'owner_id';const {data,error}=await db().from(table).select(`id,${title},${status},created_at`).eq(owner,mpUser.id).order('created_at',{ascending:false}).limit(50);if(error)throw error;(data||[]).forEach(r=>rows.push({...r,_table:table,_title:r[title]}));}rows.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));let counts={};try{const {data}=await db().rpc('get_my_content_view_counts');(data||[]).forEach(x=>counts[x.content_table+':'+x.content_id]=x.view_count);}catch(_){}h.innerHTML=(notices.length?'<div class="mp-note" style="margin-bottom:12px"><b>آخر إشعاراتك</b>'+notices.map(n=>`<div style="padding:6px 0;border-top:1px solid #e2e8f0"><b>${esc(n.title)}</b><div>${esc(n.body||'')}</div><small>${new Date(n.created_at).toLocaleDateString('ar')}</small></div>`).join('')+'</div>':'')+(rows.length?'<div class="mp-list">'+rows.map(r=>{const canRequest=['businesses','listings','jobs','properties'].includes(r._table);const views=counts[r._table+':'+r.id]||0;return `<div class="mp-item" style="align-items:flex-start"><div style="flex:1;min-width:0"><b>${esc(r._title||'بدون عنوان')}</b><div class="mp-muted">${esc(r._table)} · ${new Date(r.created_at).toLocaleDateString('ar')}</div><div class="mp-muted">الحالة: ${esc(labels[r.status]||r.status)} · المشاهدات: ${views}</div>${canRequest?`<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px"><button class="mp-action" type="button" onclick="mpRequestContentAction('${r._table}','${r.id}','edit')">طلب تعديل</button><button class="mp-action" type="button" style="background:#fee2e2;color:#991b1b" onclick="mpRequestContentAction('${r._table}','${r.id}','delete')">طلب حذف</button></div>`:''}</div></div>`}).join('')+'</div>':'<div class="mp-note">لم تضف أي محتوى بعد.</div>');}catch(e){h.innerHTML='<p class="mp-error">تعذر تحميل إعلاناتك: '+esc(e.message)+'</p>';}}
  document.addEventListener('keydown',e=>{if(e.key==='Escape')window.mpClose();});
 })();
 </script>
@@ -3351,9 +3473,11 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
   if(state.kind==='community_posts'){chip=text(r.post_type||L[lang()].community);}
   const meta=[city,r.address,state.kind==='properties'&&r.bedrooms?`${r.bedrooms} غرف`:null].filter(Boolean).map(text).join(' · ');
   const rawImage=state.kind==='businesses'?r.logo_url:(Array.isArray(r.image_urls)?r.image_urls[0]:'');const imageUrl=safeUrl(rawImage);const imageBlock=imageUrl?`<img class="amh-card-image" src="${text(imageUrl)}" alt="${title}" loading="lazy" decoding="async">`:'';
-  return `<article class="amh-card">${imageBlock}<div class="amh-card-top"><h3>${title}</h3><span class="amh-chip">${chip}</span></div><div class="amh-meta">${meta}</div>${price}<p class="amh-desc">${desc.length>230?desc.slice(0,230)+'…':desc}</p><div class="amh-card-actions">${actions}</div></article>`;
+  return `<article class="amh-card" data-view-table="${text(state.kind)}" data-view-id="${text(r.id)}">${imageBlock}<div class="amh-card-top"><h3>${title}</h3><span class="amh-chip">${chip}</span></div><div class="amh-meta">${meta}</div>${price}<p class="amh-desc">${desc.length>230?desc.slice(0,230)+'…':desc}</p><div class="amh-card-actions">${actions}</div></article>`;
  }
- function render(){const t=L[lang()];const q=($('amhSearch').value||'').trim().toLocaleLowerCase();const city=$('amhCity').value.toLocaleLowerCase();const rows=state.rows.filter(r=>{const hay=[titleOf(r),r.title_en,r.name_en,r.city,descOf(r),r.description_en,r.company_name].join(' ').toLocaleLowerCase();return (!q||hay.includes(q))&&(!city||String(r.city||'').toLocaleLowerCase()===city);});const visible=rows.slice(0,state.shown);$('amhGrid').innerHTML=visible.length?visible.map(card).join(''):`<div class="amh-empty">${text(t.empty)}<br><button type="button" class="amh-add" onclick="window.mpOpen&&window.mpOpen()">${text(t.add)}</button></div>`;$('amhStatus').textContent=`${rows.length} ${t.count}`;$('amhMore').hidden=rows.length<=state.shown;$('amhMore').textContent=state.shown>=rows.length?t.less:t.more;}
+ function render(){const t=L[lang()];const q=($('amhSearch').value||'').trim().toLocaleLowerCase();const city=$('amhCity').value.toLocaleLowerCase();const rows=state.rows.filter(r=>{const hay=[titleOf(r),r.title_en,r.name_en,r.city,descOf(r),r.description_en,r.company_name].join(' ').toLocaleLowerCase();return (!q||hay.includes(q))&&(!city||String(r.city||'').toLocaleLowerCase()===city);});const visible=rows.slice(0,state.shown);$('amhGrid').innerHTML=visible.length?visible.map(card).join(''):`<div class="amh-empty">${text(t.empty)}<br><button type="button" class="amh-add" onclick="window.mpOpen&&window.mpOpen()">${text(t.add)}</button></div>`;$('amhStatus').textContent=`${rows.length} ${t.count}`;$('amhMore').hidden=rows.length<=state.shown;$('amhMore').textContent=state.shown>=rows.length?t.less:t.more;trackVisible(visible);}
+ let viewerKey='';try{viewerKey=sessionStorage.getItem('am_viewer_key')||'';if(!viewerKey){viewerKey=crypto.randomUUID();sessionStorage.setItem('am_viewer_key',viewerKey);}}catch(_){}
+ function trackVisible(rows){if(!viewerKey||!supabaseClient)return;rows.forEach(r=>{if(!r.id||!['businesses','listings','jobs','properties'].includes(state.kind))return;supabaseClient.rpc('record_member_content_view',{p_table:state.kind,p_id:r.id,p_viewer_key:viewerKey}).then(()=>{}).catch(()=>{});});}
  async function load(force){const t=L[lang()];$('amhStatus').textContent=t.loading;$('amhGrid').innerHTML='';try{if(!state.cache[state.kind]||force){let query=supabaseClient.from(state.kind).select(fields[state.kind]).order('created_at',{ascending:false}).limit(60);if(state.kind==='businesses')query=query.eq('status','published').eq('verification_status','verified');else query=query.eq('status','published');const {data,error}=await query;if(error)throw error;state.cache[state.kind]=data||[];}state.rows=state.cache[state.kind];state.shown=state.limit;render();}catch(err){console.error('Arab Malaysia hub:',err);$('amhStatus').textContent=t.error;$('amhGrid').innerHTML=`<div class="amh-empty">${text(t.error)}</div>`;}}
  function choose(kind){if(!fields[kind])return;state.kind=kind;state.shown=state.limit;document.querySelectorAll('.amh-tab').forEach(b=>{const active=b.dataset.kind===kind;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});load(false);}
  function translate(){const t=L[lang()];$('amhKicker').textContent=lang()==='ar'?'دليلك إلى ماليزيا':'Your guide to Malaysia';$('amhTitle').textContent=lang()==='ar'?'اكتشف خدمات وفرص العرب في ماليزيا':'Discover Arab services and opportunities in Malaysia';$('amhIntro').textContent=lang()==='ar'?'دليل الأعمال، السوق، الوظائف، العقارات، ومجتمع يتشارك الخبرات.':'Business directory, marketplace, jobs, properties and a community sharing local knowledge.';$('amhAddBtn').textContent=t.add;$('amhSearch').placeholder=t.search;$('amhCity').options[0].textContent=t.allCities;$('amhFootnote').textContent=t.review;document.querySelectorAll('.amh-tab').forEach(b=>b.textContent=t[b.dataset.kind]);render();}
@@ -3369,12 +3493,12 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
  const $=id=>document.getElementById(id);
  const dict={en:{hero:'Everything Arabs need in Malaysia — all in one place',intro:'Discover trusted services, jobs, properties, the Arab marketplace, news and community. One platform bringing information and opportunities closer.',explore:'Explore directory & marketplace',post:'Post for free',services:'Explore the platform',servicesDesc:'Go directly to the service you are looking for.',life:'Your guide to living and studying in Malaysia',lifeText:'Start with the right city and explore housing, education, transport and essential services. This space is designed to bring practical guides together.',business:'Do you run a business?',businessText:'Present your business or service to the Arab audience in Malaysia through the member portal, and track the content you submit.',cities:'Explore Malaysian cities',citiesDesc:'Start with major cities where services and opportunities are concentrated.',cityBtn:'Explore city',member:'My account / Add a listing'},ar:{hero:'كل ما يحتاجه العربي في ماليزيا… في مكان واحد',intro:'اكتشف الخدمات الموثوقة، فرص العمل، العقارات، السوق العربي، الأخبار والمجتمع. منصة تجمع المعلومات والفرص وتقرّب المسافات.',explore:'استكشف الدليل والسوق',post:'أضف إعلانك مجاناً',services:'اكتشف المنصة',servicesDesc:'انتقل مباشرة إلى الخدمة التي تبحث عنها.',life:'دليلك للحياة والدراسة في ماليزيا',lifeText:'ابدأ من المدينة المناسبة، وتعرّف على مجالات السكن والتعليم والتنقل والخدمات الأساسية. هذه الواجهة تمهّد لتجميع الأدلة العملية في مكان واحد.',business:'هل تدير نشاطاً تجارياً؟',businessText:'اعرض نشاطك أو خدمتك أمام الجمهور العربي في ماليزيا عبر بوابة الأعضاء، وتابع حالة المحتوى الذي ترسله.',cities:'اكتشف المدن الماليزية',citiesDesc:'ابدأ باستكشاف أبرز المدن التي تتركز فيها الخدمات والفرص.',cityBtn:'استكشف المدينة',member:'حسابي / أضف نشاطاً'}};
  function lang(){return localStorage.getItem('siteLang')==='en'?'en':'ar'}
- function translate(){const d=dict[lang()];const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};set('amxHeroTitle',d.hero);set('amxHeroText',d.intro);set('amxExplore',d.explore);set('amxPost',d.post);set('amxServicesTitle',d.services);set('amxServicesDesc',d.servicesDesc);set('amxLifeTitle',d.life);set('amxLifeText',d.lifeText);set('amxBusinessTitle',d.business);set('amxBusinessText',d.businessText);set('amxCitiesTitle',d.cities);set('amxCitiesDesc',d.citiesDesc);set('amxMemberBtn',d.member);document.querySelectorAll('.amx-city button').forEach(b=>b.textContent=d.cityBtn);document.querySelectorAll('#amxServiceGrid .amx-tile').forEach((a,i)=>{a.style.direction=lang()==='ar'?'rtl':'ltr';const arrow=a.querySelector('.amx-arrow');if(arrow)arrow.textContent=lang()==='ar'?'استكشف ←':'Explore →'});const shell=$('amx-platform');if(shell){shell.dir=lang()==='ar'?'rtl':'ltr';shell.style.textAlign=lang()==='ar'?'right':'left'}}
+ function translate(){const d=dict[lang()];const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};set('amxHeroTitle',d.hero);set('amxHeroText',d.intro);set('amxExplore',d.explore);set('amxPost',d.post);set('amxServicesTitle',d.services);set('amxServicesDesc',d.servicesDesc);set('amxLifeTitle',d.life);set('amxLifeText',d.lifeText);set('amxBusinessTitle',d.business);set('amxBusinessText',d.businessText);set('amxCitiesTitle',d.cities);set('amxCitiesDesc',d.citiesDesc);set('amxMemberBtn',d.member);document.querySelectorAll('.amx-city button').forEach(b=>b.textContent=d.cityBtn);document.querySelectorAll('#amxServiceGrid .amx-tile').forEach((a,i)=>{a.style.direction=lang()==='ar'?'rtl':'ltr';const arrow=a.querySelector('.amx-arrow');if(arrow)arrow.textContent=lang()==='ar'?'استكشف ←':'Explore →'});const shell=$('amx-platform');if(shell){shell.dir=lang()==='ar'?'rtl':'ltr';shell.style.textAlign=lang()==='ar'?'right':'left'}if(typeof applyExperienceConfig==='function')applyExperienceConfig();}
  function openMember(){if(window.mpOpen)window.mpOpen();else if($('memberPortalLauncher'))$('memberPortalLauncher').click()}
  $('amxPost')?.addEventListener('click',openMember);$('amxMemberBtn')?.addEventListener('click',openMember);
  document.querySelectorAll('#amxServiceGrid [data-kind]').forEach(a=>a.addEventListener('click',()=>{const b=document.querySelector('.amh-tab[data-kind="'+a.dataset.kind+'"]');if(b)b.click()}));
  document.querySelectorAll('.amx-city button').forEach(b=>b.addEventListener('click',()=>{const hub=$('arabPlatformHub');if(hub){const city=$('amhCity');if(city){city.value=b.dataset.city;city.dispatchEvent(new Event('change',{bubbles:true}))}hub.scrollIntoView({behavior:'smooth',block:'start'})}}));
- $('langToggleBtn')?.addEventListener('click',()=>setTimeout(translate,20));document.addEventListener('DOMContentLoaded',translate);translate();
+ $('langToggleBtn')?.addEventListener('click',()=>setTimeout(translate,20));document.addEventListener('DOMContentLoaded',()=>{translate();if(typeof applyExperienceConfig==='function')applyExperienceConfig();});translate();if(typeof applyExperienceConfig==='function')applyExperienceConfig();
 })();
 </script>
 
