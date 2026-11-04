@@ -720,6 +720,31 @@
         @media(max-width:768px){.currency-strip{max-width:92%;margin:-14px auto 22px;min-height:44px;gap:8px;padding:0 9px}.currency-strip-label{font-size:11px}.currency-track{gap:22px}.currency-rate{font-size:11px}.currency-updated{display:none}.currency-credit{font-size:9px}}
         @media(prefers-reduced-motion:reduce){.currency-track{animation:none!important}}
 
+
+        /* Sports news card: isolated addition directly beneath currency rates */
+        .sports-news-section{max-width:90%;margin:0 auto 30px;background:var(--card-bg);border:1px solid rgba(33,150,243,.18);border-radius:20px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.07)}
+        .sports-news-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 20px;border-bottom:1px solid rgba(128,128,128,.15)}
+        .sports-news-heading h2{font-size:20px;color:var(--text-color);display:flex;align-items:center;gap:10px}
+        .sports-news-heading h2 i{color:var(--btn-color)}
+        .sports-news-refresh{border:0;border-radius:50%;width:36px;height:36px;background:rgba(33,150,243,.1);color:var(--btn-color);cursor:pointer}
+        .sports-news-content{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);min-height:250px}
+        .sports-news-image-wrap{min-height:250px;overflow:hidden;background:#e8edf3}
+        .sports-news-image{display:block;width:100%;height:100%;min-height:250px;object-fit:cover;transition:opacity .35s ease}
+        .sports-news-copy{padding:24px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+        .sports-news-source{font-size:12px;color:var(--btn-color);font-weight:700;margin-bottom:10px}
+        .sports-news-title{font-size:21px;line-height:1.55;margin-bottom:12px;color:var(--text-color)}
+        .sports-news-summary{font-size:14px;line-height:1.9;color:var(--text-color);opacity:.82;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+        .sports-news-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px}
+        .sports-news-read{display:inline-flex;align-items:center;justify-content:center;background:var(--btn-color);color:#fff;text-decoration:none;padding:10px 20px;border-radius:25px;font-weight:700;font-size:13px}
+        .sports-news-nav{display:flex;gap:8px}
+        .sports-news-nav button{width:36px;height:36px;border:0;border-radius:50%;background:rgba(33,150,243,.1);color:var(--btn-color);cursor:pointer}
+        .sports-news-dots{display:flex;gap:5px;align-items:center}
+        .sports-news-dot{width:6px;height:6px;border-radius:50%;background:#b7c3d0}
+        .sports-news-dot.active{width:18px;border-radius:8px;background:var(--btn-color)}
+        .sports-news-loading{padding:30px;text-align:center;color:#777;grid-column:1/-1}
+        .sports-news-content.is-changing .sports-news-image,.sports-news-content.is-changing .sports-news-copy{opacity:.25}
+        @media(max-width:768px){.sports-news-section{max-width:92%}.sports-news-content{grid-template-columns:1fr}.sports-news-image-wrap,.sports-news-image{min-height:190px;height:190px}.sports-news-copy{padding:17px}.sports-news-title{font-size:18px}.sports-news-summary{-webkit-line-clamp:3}.sports-news-heading{padding:13px 15px}.sports-news-heading h2{font-size:17px}}
+        @media(prefers-reduced-motion:reduce){.sports-news-image,.sports-news-copy{transition:none!important}}
     </style>
 </head>
 <body>
@@ -761,6 +786,18 @@
         <span class="currency-updated" id="currencyUpdated"></span>
         <a class="currency-credit" href="https://www.exchangerate-api.com/docs/free" target="_blank" rel="noopener noreferrer" id="currencyCredit">المصدر</a>
     </section>
+
+    <!-- Automatic Sports News Card: directly below currency rates -->
+    <section class="sports-news-section" id="sportsNewsSection" aria-label="Sports news">
+        <div class="sports-news-heading">
+            <h2><i class="fa-solid fa-futbol"></i><span id="sportsNewsLabel">أخبار رياضية</span></h2>
+            <button class="sports-news-refresh" id="sportsNewsRefresh" type="button" aria-label="Refresh sports news" title="Refresh sports news"><i class="fa-solid fa-rotate"></i></button>
+        </div>
+        <div class="sports-news-content" id="sportsNewsContent">
+            <div class="sports-news-loading" id="sportsNewsLoading">جاري تحميل الأخبار الرياضية...</div>
+        </div>
+    </section>
+
     <div class="news-modal" id="newsModal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle" hidden>
         <div class="news-modal-backdrop" data-news-close="1"></div>
         <article class="news-modal-card">
@@ -1149,6 +1186,7 @@
             renderDynamicSections();
             if (typeof loadLatestNews === 'function') loadLatestNews();
             if (typeof renderCurrencyTicker === 'function') renderCurrencyTicker();
+            if (typeof renderSportsNews === 'function') renderSportsNews();
         }
 
         document.getElementById('langToggleBtn').addEventListener('click', () => {
@@ -2125,6 +2163,109 @@
             if (modal) modal.hidden = true;
             document.body.style.overflow = '';
         }
+
+
+        /* ---------------- Automatic sports news card (isolated) ---------------- */
+        let sportsNewsItems = [];
+        let sportsNewsIndex = 0;
+        let sportsNewsLoading = false;
+        let sportsNewsTimer = null;
+        const SPORTS_NEWS_REFRESH_INTERVAL = 10 * 60 * 1000;
+        const SPORTS_NEWS_ROTATE_INTERVAL = 8000;
+        const SPORTS_NEWS_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=80';
+
+        function sportsFeedUrl() {
+            const lang = currentLang === 'ar' ? 'ar' : 'en';
+            const query = encodeURIComponent('sports Malaysia OR football OR basketball OR tennis');
+            const googleRss = `https://news.google.com/rss/search?q=${query}&hl=${lang}&gl=MY&ceid=MY:${lang}`;
+            return `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(googleRss)}`;
+        }
+
+        function renderSportsNews() {
+            const host = document.getElementById('sportsNewsContent');
+            const label = document.getElementById('sportsNewsLabel');
+            if (!host) return;
+            const ar = currentLang === 'ar';
+            if (label) label.textContent = ar ? 'أخبار رياضية' : 'Sports News';
+            host.dir = ar ? 'rtl' : 'ltr';
+            if (!sportsNewsItems.length) {
+                host.innerHTML = `<div class="sports-news-loading">${ar ? 'جاري تحميل الأخبار الرياضية...' : 'Loading sports news...'}</div>`;
+                return;
+            }
+            const item = sportsNewsItems[sportsNewsIndex] || sportsNewsItems[0];
+            host.classList.add('is-changing');
+            const imageUrl = item.image || SPORTS_NEWS_FALLBACK_IMAGE;
+            host.innerHTML = `
+                <div class="sports-news-image-wrap"><img class="sports-news-image" src="${escapeAdminText(imageUrl)}" alt="${escapeAdminText(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='${SPORTS_NEWS_FALLBACK_IMAGE}'"></div>
+                <div class="sports-news-copy">
+                    <div class="sports-news-source">${escapeAdminText(item.source || 'Sports News')}${item.published ? ' · ' + new Date(item.published).toLocaleDateString(ar ? 'ar' : 'en') : ''}</div>
+                    <h3 class="sports-news-title">${escapeAdminText(item.title)}</h3>
+                    <p class="sports-news-summary">${escapeAdminText(item.description || (ar ? 'تابع تفاصيل الخبر الرياضي عبر المصدر.' : 'Read the full sports story at the original source.'))}</p>
+                    <div class="sports-news-actions">
+                        <a class="sports-news-read" href="${escapeAdminText(item.link)}" target="_blank" rel="noopener noreferrer">${ar ? 'قراءة الخبر كاملاً' : 'Read Full Story'}</a>
+                        <div style="display:flex;align-items:center;gap:12px">
+                            <div class="sports-news-dots">${sportsNewsItems.map((_,i)=>`<span class="sports-news-dot ${i===sportsNewsIndex?'active':''}"></span>`).join('')}</div>
+                            <div class="sports-news-nav">
+                                <button type="button" id="sportsNewsPrev" aria-label="${ar?'الخبر السابق':'Previous story'}"><i class="fa-solid fa-chevron-${ar?'right':'left'}"></i></button>
+                                <button type="button" id="sportsNewsNext" aria-label="${ar?'الخبر التالي':'Next story'}"><i class="fa-solid fa-chevron-${ar?'left':'right'}"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            host.classList.remove('is-changing');
+            document.getElementById('sportsNewsPrev').addEventListener('click', () => moveSportsNews(-1));
+            document.getElementById('sportsNewsNext').addEventListener('click', () => moveSportsNews(1));
+        }
+
+        function moveSportsNews(step) {
+            if (!sportsNewsItems.length) return;
+            sportsNewsIndex = (sportsNewsIndex + step + sportsNewsItems.length) % sportsNewsItems.length;
+            renderSportsNews();
+        }
+
+        async function loadSportsNews() {
+            if (sportsNewsLoading) return;
+            sportsNewsLoading = true;
+            const refresh = document.getElementById('sportsNewsRefresh');
+            if (refresh) refresh.disabled = true;
+            try {
+                const response = await fetch(sportsFeedUrl(), { cache: 'no-store' });
+                if (!response.ok) throw new Error(`Sports feed HTTP ${response.status}`);
+                const payload = await response.json();
+                if (payload.status !== 'ok' || !Array.isArray(payload.items)) throw new Error('Invalid sports RSS response');
+                const unique = new Map();
+                payload.items.map(item => {
+                    const image = item.thumbnail || (item.enclosure && item.enclosure.link) || '';
+                    return {
+                        title: newsText(item.title),
+                        description: newsText(item.description || item.content || item.contentSnippet || '').slice(0, 650),
+                        image: /^https:\/\//i.test(image) ? image : '',
+                        link: item.link || '',
+                        source: item.author || 'Google News',
+                        published: item.pubDate || ''
+                    };
+                }).filter(item => item.title && /^https?:\/\//i.test(item.link)).forEach(item => {
+                    if (!unique.has(item.link)) unique.set(item.link, item);
+                });
+                sportsNewsItems = Array.from(unique.values()).slice(0, 12);
+                sportsNewsIndex = 0;
+                renderSportsNews();
+            } catch (error) {
+                console.warn('Sports news could not be refreshed:', error);
+                const host = document.getElementById('sportsNewsContent');
+                if (host && !sportsNewsItems.length) host.innerHTML = `<div class="sports-news-loading">${currentLang==='ar'?'تعذر تحميل الأخبار الرياضية حالياً. يرجى المحاولة لاحقاً.':'Sports news is temporarily unavailable. Please try again later.'}</div>`;
+            } finally {
+                sportsNewsLoading = false;
+                if (refresh) refresh.disabled = false;
+            }
+        }
+
+        document.getElementById('sportsNewsRefresh').addEventListener('click', loadSportsNews);
+        loadSportsNews();
+        sportsNewsTimer = setInterval(() => {
+            if (sportsNewsItems.length > 1) moveSportsNews(1);
+        }, SPORTS_NEWS_ROTATE_INTERVAL);
+        setInterval(loadSportsNews, SPORTS_NEWS_REFRESH_INTERVAL);
 
         async function loadLatestNews() {
             if (newsFetchInProgress) return;
