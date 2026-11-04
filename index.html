@@ -1929,30 +1929,30 @@
             if (icon) icon.className = enabled ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
         function switchTab(targetTabId) {
+            const tabMap = {
+                overview: 'tabOverview', colors: 'tabColors', sections: 'tabSections',
+                images: 'tabImages', settings: 'tabSettings'
+            };
+            const targetId = tabMap[targetTabId] || 'tabOverview';
             document.querySelectorAll('.tab-btn, .premium-overview').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel-tab').forEach(t => {
+                const active = t.id === targetId;
+                t.classList.toggle('active', active);
+                // Explicit display prevents a hidden panel when dashboard CSS/layout is reflowed.
+                t.style.setProperty('display', active ? 'block' : 'none', 'important');
+            });
             const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام والبطاقات', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة' };
             const heading = document.getElementById('adminPageHeading');
             if (heading) heading.textContent = headings[targetTabId] || 'لوحة التحكم';
-            if (targetTabId === 'overview') {
-                document.querySelector('.premium-overview')?.classList.add('active');
-                document.getElementById('tabOverview').classList.add('active');
-                updateAdminOverviewStats();
-            } else if (targetTabId === 'settings') {
-                document.getElementById('tabSettingsBtn').classList.add('active');
-                document.getElementById('tabSettings').classList.add('active');
-                applySiteSettings();
-            } else if (targetTabId === 'images') {
-                document.getElementById('tabImagesBtn').classList.add('active');
-                document.getElementById('tabImages').classList.add('active');
-                buildAdminImageLibrary();
-            } else if (targetTabId === 'colors') {
-                document.getElementById('tabColorsBtn').classList.add('active');
-                document.getElementById('tabColors').classList.add('active');
-            } else {
-                document.getElementById('tabSectionsBtn').classList.add('active');
-                document.getElementById('tabSections').classList.add('active');
-            }
+            const activeButton = targetTabId === 'overview'
+                ? document.querySelector('.premium-overview')
+                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',images:'tabImagesBtn',settings:'tabSettingsBtn'})[targetTabId]);
+            if (activeButton) activeButton.classList.add('active');
+            if (targetTabId === 'overview') updateAdminOverviewStats();
+            if (targetTabId === 'settings') applySiteSettings();
+            if (targetTabId === 'images') buildAdminImageLibrary();
+            const workspace = document.querySelector('.premium-admin-workspace');
+            if (workspace) workspace.scrollTop = 0;
         }
 
         function addNewSectionItem() {
