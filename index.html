@@ -3114,8 +3114,8 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
      <button class="mp-tab" data-kind="feed" onclick="mpChoose('feed',this)">المجتمع والتعليقات</button><button class="mp-tab" data-kind="mine" onclick="mpChoose('mine',this)">إعلاناتي</button>
     </div>
     <div id="mpFormHost"></div>
-    <div id="mpFeedback" aria-live="polite" style="margin-top:12px"></div>
    </div>
+   <div id="mpFeedback" aria-live="polite" role="status" style="display:block;margin-top:12px;padding:10px;border-radius:8px;min-height:20px"></div>
   </div>
  </div>
 </div>
@@ -3126,12 +3126,12 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function client(){if(!window.supabase||!window.supabase.createClient) throw new Error('تعذر تحميل مكتبة الاتصال. حدّث الصفحة.'); return window.supabase.createClient('https://chboavdptdcmozlqqjqc.supabase.co','sb_publishable_ruJ8os5RULLAricBrdfXZA_wZQPiekd');}
  const db=()=>window.__arabMalaysiaMemberClient||(window.__arabMalaysiaMemberClient=client());
- window.mpOpen=async function(){ $('memberPortal').style.display='flex'; await mpRefreshSession(); };
+ window.mpOpen=async function(){ $('memberPortal').style.display='flex'; $('mpFeedback').textContent=''; $('mpFeedback').style.background='transparent'; $('mpFeedback').style.border='0'; await mpRefreshSession(); };
  window.mpClose=()=>$('memberPortal').style.display='none';
  async function mpRefreshSession(){try{const {data,error}=await db().auth.getSession();if(error)throw error;mpSetUser(data.session?.user||null);}catch(e){$('mpFeedback').innerHTML='<span class="mp-error">'+esc(e.message)+'</span>';}}
  function mpSetUser(user){mpUser=user;$('mpAuth').style.display=user?'none':'block';$('mpMember').style.display=user?'block':'none';if(user){$('mpWelcome').textContent='مرحباً '+(user.user_metadata?.display_name||'بك');$('mpUserEmail').textContent=user.email||'';mpRenderForm();}}
- window.mpSignIn=async function(){try{const {data,error}=await db().auth.signInWithPassword({email:$('mpEmail').value.trim(),password:$('mpPassword').value});if(error)throw error;mpSetUser(data.user);mpMessage('تم تسجيل الدخول بنجاح.','ok');}catch(e){mpMessage(e.message,'err');}};
- window.mpSignUp=async function(){try{const email=$('mpEmail').value.trim(),password=$('mpPassword').value,name=$('mpName').value.trim();if(!name||!email||password.length<8)throw new Error('أدخل الاسم والبريد وكلمة مرور من 8 أحرف على الأقل.');const {data,error}=await db().auth.signUp({email,password,options:{data:{display_name:name,phone:$('mpPhone').value.trim()}}});if(error)throw error;if(data.user&&!data.session){mpMessage('تم إنشاء الحساب. افحص بريدك لتأكيد التسجيل، ثم سجّل الدخول.','ok');}else{mpSetUser(data.user);mpMessage('تم إنشاء الحساب بنجاح.','ok');}}catch(e){mpMessage(e.message,'err');}};
+ window.mpSignIn=async function(){try{mpMessage('جارٍ تسجيل الدخول...','ok');const {data,error}=await db().auth.signInWithPassword({email:$('mpEmail').value.trim(),password:$('mpPassword').value});if(error)throw error;mpSetUser(data.user);mpMessage('تم تسجيل الدخول بنجاح.','ok');}catch(e){mpMessage(e.message,'err');}};
+ window.mpSignUp=async function(){try{mpMessage('جارٍ إنشاء الحساب...','ok');const email=$('mpEmail').value.trim(),password=$('mpPassword').value,name=$('mpName').value.trim();if(!name||!email||password.length<8)throw new Error('أدخل الاسم والبريد وكلمة مرور من 8 أحرف على الأقل.');const {data,error}=await db().auth.signUp({email,password,options:{data:{display_name:name,phone:$('mpPhone').value.trim()}}});if(error)throw error;if(data.user&&!data.session){mpMessage('تم إنشاء الحساب. افحص بريدك لتأكيد التسجيل، ثم سجّل الدخول.','ok');}else{mpSetUser(data.user);mpMessage('تم إنشاء الحساب بنجاح.','ok');}}catch(e){mpMessage(e.message,'err');}};
  window.mpSignOut=async function(){try{const {error}=await db().auth.signOut();if(error)throw error;mpSetUser(null);mpMessage('تم تسجيل الخروج.','ok');}catch(e){mpMessage(e.message,'err');}};
  window.mpChoose=function(kind,btn){mpKind=kind;document.querySelectorAll('#memberPortal .mp-tab').forEach(x=>x.classList.toggle('active',x===btn));mpRenderForm();};
  function field(label,id,placeholder='',type='text',wide=false){return `<div class="mp-field ${wide?'mp-wide':''}"><label for="${id}">${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}"></div>`;}
@@ -3145,7 +3145,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
  if(mpKind==='post')f=`<div class="mp-grid">${field('عنوان المنشور (اختياري)','mpTitle','عنوان مختصر')}${select('نوع المنشور','mpPostType',[['discussion','نقاش'],['question','سؤال'],['announcement','إعلان مجتمعي'],['event','فعالية']])}${field('المدينة','mpCity','Malaysia')}${area('محتوى المنشور','mpDesc','شارك المجتمع بما تريد...')}</div><button class="mp-action primary" onclick="mpSubmit()">نشر للمراجعة</button>`;
  h.innerHTML=f;
  }
- function mpMessage(t,k){$('mpFeedback').className=k==='ok'?'mp-success':'mp-error';$('mpFeedback').textContent=t;}
+ function mpMessage(t,k){const el=$('mpFeedback');el.className=k==='ok'?'mp-success':'mp-error';el.textContent=t;el.style.display='block';el.style.background=k==='ok'?'#ecfdf5':'#fef2f2';el.style.border='1px solid '+(k==='ok'?'#a7f3d0':'#fecaca');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
  window.mpSubmit=async function(){try{if(!mpUser)throw new Error('سجّل الدخول أولاً.');const val=id=>$(id)?.value?.trim()||null;const city=val('mpCity');let table,payload;
  if(mpKind==='business'){table='businesses';const name=val('mpTitle');if(!name||!city)throw new Error('اسم النشاط والمدينة مطلوبان.');payload={owner_id:mpUser.id,name_ar:name,name_en:val('mpTitleEn'),slug:'biz-'+crypto.randomUUID(),description_ar:val('mpDesc'),phone:val('mpContact'),whatsapp:val('mpWhatsapp'),website_url:val('mpWebsite'),logo_url:val('mpLogo'),city,status:'draft',verification_status:'pending'};}
  if(mpKind==='listing'){table='listings';if(!val('mpTitle')||!city)throw new Error('عنوان الإعلان والمدينة مطلوبان.');payload={owner_id:mpUser.id,listing_type:val('mpType'),title_ar:val('mpTitle'),description_ar:val('mpDesc'),price:val('mpPrice')?Number(val('mpPrice')):null,city,contact_phone:val('mpContact'),image_urls:val('mpImage')?[val('mpImage')]:[],status:'pending'};}
