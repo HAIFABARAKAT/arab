@@ -676,10 +676,10 @@
         .news-strip-label{flex:0 0 auto;display:flex;align-items:center;gap:9px;color:#fff;background:var(--banner-footer-color);padding:10px 15px;border-radius:9px;font-weight:700;white-space:nowrap}
         .news-strip-label i{color:#ffd54f}
         .news-track-window{flex:1;min-width:0;overflow:hidden}
-        .news-track{display:flex;align-items:center;gap:38px;width:max-content;white-space:nowrap;animation:newsTickerMove 65s linear infinite}
+        .news-track{display:flex;align-items:center;column-gap:56px;width:max-content;white-space:nowrap;animation:newsTickerMove 65s linear infinite}
         .news-strip:hover .news-track{animation-play-state:paused}
         .news-track[dir="rtl"]{animation-name:newsTickerMoveRtl}
-        .news-item{border:0;background:transparent;color:var(--text-color);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:9px;max-width:520px;white-space:nowrap}
+        .news-item{border:0;background:transparent;color:var(--text-color);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:9px;max-width:520px;flex:0 0 auto;white-space:nowrap;margin:0;padding-inline:0}
         .news-item:hover{color:var(--text-hover-color)}
         .news-item:before{content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--btn-color)}
         .news-source-tag{font-size:11px;color:var(--btn-color);border:1px solid currentColor;border-radius:20px;padding:3px 8px}
@@ -697,9 +697,30 @@
         .news-modal-source{font-size:13px;color:var(--btn-color);font-weight:700;margin-bottom:10px}
         .news-modal-content h2{font-size:22px;line-height:1.55;margin-bottom:12px}.news-modal-content p{font-size:15px;line-height:1.9;color:var(--text-color);opacity:.88;margin-bottom:22px}
         .news-read-more{display:inline-flex;align-items:center;justify-content:center;background:var(--btn-color);color:#fff;text-decoration:none;padding:11px 22px;border-radius:25px;font-weight:700;transition:filter .2s}.news-read-more:hover{filter:brightness(1.1)}
-        @media(max-width:768px){.news-strip{max-width:92%;gap:8px;padding:0 8px;min-height:54px}.news-strip-label{padding:9px 10px;font-size:12px}.news-item{font-size:12px;max-width:290px}.news-track{gap:24px}.news-modal-content{padding:19px}.news-modal-content h2{font-size:19px}}
+        @media(max-width:768px){.news-strip{max-width:92%;gap:8px;padding:0 8px;min-height:54px}.news-strip-label{padding:9px 10px;font-size:12px}.news-item{font-size:12px;max-width:290px}.news-track{column-gap:42px}.news-modal-content{padding:19px}.news-modal-content h2{font-size:19px}}
         @media(prefers-reduced-motion:reduce){.news-track{animation:none!important}.news-modal-card{animation:none}}
 
+
+        /* Currency rates module: independent styles; existing site sections remain unchanged */
+        .fx-section{max-width:90%;margin:0 auto 30px;padding:18px;background:var(--card-bg);border:1px solid rgba(33,150,243,.16);border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.06);color:var(--text-color)}
+        .fx-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+        .fx-heading h2{font-size:20px;font-weight:800}
+        .fx-updated{font-size:12px;opacity:.72}
+        .fx-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+        .fx-card{padding:12px 10px;border:1px solid rgba(33,150,243,.15);border-radius:12px;background:var(--bg-color);min-width:0;text-align:center}
+        .fx-code{font-weight:800;font-size:15px;direction:ltr}
+        .fx-name{font-size:12px;opacity:.72;margin:3px 0 7px}
+        .fx-value{font-size:16px;font-weight:800;direction:ltr;overflow-wrap:anywhere}
+        .fx-unit{font-size:11px;opacity:.7}
+        .fx-converter{margin-top:16px;padding-top:15px;border-top:1px solid rgba(120,130,140,.2)}
+        .fx-converter h3{font-size:16px;margin-bottom:10px}
+        .fx-fields{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:9px;align-items:end}
+        .fx-field label{display:block;font-size:12px;margin-bottom:5px;opacity:.8}
+        .fx-field input,.fx-field select{width:100%;min-width:0;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:var(--card-bg);color:var(--text-color);font-size:14px}
+        .fx-result{margin-top:10px;font-size:17px;font-weight:800;min-height:26px}
+        .fx-note{font-size:11px;line-height:1.6;opacity:.68;margin-top:8px}
+        .fx-status{font-size:12px;opacity:.75;margin-top:8px}
+        @media(max-width:768px){.fx-section{max-width:92%;padding:13px}.fx-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.fx-fields{grid-template-columns:1fr 1fr}.fx-fields .fx-field:first-child{grid-column:1/-1}.fx-fields button{grid-column:1/-1}}
     </style>
 </head>
 <body>
@@ -746,6 +767,30 @@
             </div>
         </article>
     </div>
+
+
+    <!-- Currency rates and converter (official BNM data via data.gov.my) -->
+    <section class="fx-section" id="currencyRates" aria-label="Currency exchange rates">
+        <div class="fx-heading">
+            <h2 id="fxTitle">أسعار العملات مقابل الرينغيت الماليزي</h2>
+            <span class="fx-updated" id="fxUpdated">جاري تحميل آخر تحديث...</span>
+        </div>
+        <div class="fx-grid" id="fxGrid" aria-live="polite">
+            <div class="fx-status" id="fxLoading">جاري تحميل أسعار العملات...</div>
+        </div>
+        <div class="fx-converter">
+            <h3 id="fxConverterTitle">محول العملات</h3>
+            <div class="fx-fields">
+                <div class="fx-field"><label id="fxAmountLabel" for="fxAmount">المبلغ</label><input id="fxAmount" type="number" min="0" step="any" value="100" inputmode="decimal"></div>
+                <div class="fx-field"><label id="fxFromLabel" for="fxFrom">من</label><select id="fxFrom"></select></div>
+                <div class="fx-field"><label id="fxToLabel" for="fxTo">إلى</label><select id="fxTo"></select></div>
+                <button type="button" class="news-read-more" id="fxConvertBtn">تحويل</button>
+            </div>
+            <div class="fx-result" id="fxResult" aria-live="polite"></div>
+            <p class="fx-note" id="fxNote">أسعار مرجعية رسمية من بنك نيجارا ماليزيا، وليست أسعار صرف فورية أو أسعار بيع وشراء مكاتب الصرافة. تتحدث البيانات حسب جدول النشر الرسمي.</p>
+            <div class="fx-status" id="fxStatus"></div>
+        </div>
+    </section>
 
     <!-- Dynamic Section Elements Layout -->
     <main id="sectionsWrapper"></main>
@@ -2030,6 +2075,94 @@
         document.getElementById('newsModalClose').addEventListener('click', closeNewsModal);
         document.querySelector('#newsModal .news-modal-backdrop').addEventListener('click', closeNewsModal);
         document.addEventListener('keydown', event => { if (event.key === 'Escape') closeNewsModal(); });
+
+        // Currency module: reads the latest 1200 middle-rate dataset published by BNM.
+        const FX_DATA_URL = 'https://storage.data.gov.my/finsector/exr/daily_1200.csv';
+        const FX_CURRENCIES = [
+            {code:'USD', ar:'الدولار الأمريكي', en:'US Dollar'},
+            {code:'SAR', ar:'الريال السعودي', en:'Saudi Riyal'},
+            {code:'EGP', ar:'الجنيه المصري', en:'Egyptian Pound'},
+            {code:'AED', ar:'الدرهم الإماراتي', en:'UAE Dirham'},
+            {code:'IDR', ar:'الروبية الإندونيسية', en:'Indonesian Rupiah'},
+            {code:'EUR', ar:'اليورو', en:'Euro'},
+            {code:'GBP', ar:'الجنيه الإسترليني', en:'British Pound'}
+        ];
+        let fxRates = null;
+        let fxRateDate = '';
+        function fxText(ar, en){ return currentLang === 'ar' ? ar : en; }
+        function parseFxCsv(csv){
+            const rows = csv.trim().split(/\r?\n/).map(line => line.split(','));
+            if (rows.length < 2) throw new Error('Empty exchange-rate dataset');
+            const headers = rows[0].map(v => v.replace(/^"|"$/g,''));
+            const dateIndex = headers.indexOf('date');
+            const typeIndex = headers.indexOf('rate_type');
+            const indexes = Object.fromEntries(FX_CURRENCIES.map(c => [c.code, headers.indexOf(c.code)]));
+            for (let i = rows.length - 1; i >= 1; i--){
+                const cells = rows[i].map(v => v.replace(/^"|"$/g,''));
+                if (cells[typeIndex] !== 'middle') continue;
+                const rates = {};
+                FX_CURRENCIES.forEach(c => { const n = Number(cells[indexes[c.code]]); if (indexes[c.code] >= 0 && Number.isFinite(n) && n > 0) rates[c.code] = n; });
+                if (Object.keys(rates).length) return {date:cells[dateIndex], rates};
+            }
+            throw new Error('No middle rates found');
+        }
+        function renderFx(){
+            const grid = document.getElementById('fxGrid');
+            if (!grid || !fxRates) return;
+            grid.innerHTML = FX_CURRENCIES.filter(c => fxRates[c.code]).map(c => `<div class="fx-card"><div class="fx-code">${c.code} / MYR</div><div class="fx-name">${fxText(c.ar,c.en)}</div><div class="fx-value">${Number(fxRates[c.code]).toFixed(4)}</div><div class="fx-unit">MYR لكل 1 ${c.code}</div></div>`).join('');
+            const date = fxRateDate ? new Date(fxRateDate+'T00:00:00') : null;
+            document.getElementById('fxUpdated').textContent = date ? fxText('آخر تحديث: ','Updated: ')+date.toLocaleDateString(currentLang === 'ar' ? 'ar' : 'en',{year:'numeric',month:'short',day:'numeric'}) : '';
+            const from = document.getElementById('fxFrom'), to = document.getElementById('fxTo');
+            const options = [{code:'MYR',ar:'رينغيت ماليزي',en:'Malaysian Ringgit'}, ...FX_CURRENCIES.filter(c=>fxRates[c.code])];
+            const oldFrom=from.value||'MYR', oldTo=to.value||'USD';
+            const optionHtml = options.map(c=>`<option value="${c.code}">${c.code} - ${fxText(c.ar,c.en)}</option>`).join('');
+            from.innerHTML=optionHtml; to.innerHTML=optionHtml;
+            from.value=options.some(c=>c.code===oldFrom)?oldFrom:'MYR';
+            to.value=options.some(c=>c.code===oldTo)?oldTo:'USD';
+            document.getElementById('fxStatus').textContent=fxText('المصدر: بنك نيجارا ماليزيا عبر بوابة البيانات الحكومية الماليزية.','Source: Bank Negara Malaysia via Malaysia’s official open data portal.');
+            convertFx();
+        }
+        function convertFx(){
+            if (!fxRates) return;
+            const amount=Number(document.getElementById('fxAmount').value);
+            const from=document.getElementById('fxFrom').value, to=document.getElementById('fxTo').value;
+            if (!Number.isFinite(amount) || amount < 0){document.getElementById('fxResult').textContent=fxText('أدخل مبلغاً صحيحاً.','Enter a valid amount.');return;}
+            const fromRate=from==='MYR'?1:fxRates[from], toRate=to==='MYR'?1:fxRates[to];
+            const result=amount*fromRate/toRate;
+            document.getElementById('fxResult').textContent=`${amount.toLocaleString(currentLang==='ar'?'ar':'en',{maximumFractionDigits:4})} ${from} = ${result.toLocaleString(currentLang==='ar'?'ar':'en',{maximumFractionDigits:4})} ${to}`;
+        }
+        async function loadFxRates(){
+            const status=document.getElementById('fxStatus');
+            try{
+                const response=await fetch(FX_DATA_URL,{cache:'no-store'});
+                if(!response.ok) throw new Error('Exchange rate request failed');
+                const parsed=parseFxCsv(await response.text());
+                fxRates=parsed.rates; fxRateDate=parsed.date; renderFx();
+            }catch(error){
+                console.warn('Currency rates unavailable:',error);
+                if(status) status.textContent=fxText('تعذر تحميل الأسعار الآن. يرجى المحاولة لاحقاً.','Rates could not be loaded right now. Please try again later.');
+                const grid=document.getElementById('fxGrid');
+                if(grid && !fxRates) grid.innerHTML=`<div class="fx-status">${fxText('الأسعار غير متاحة مؤقتاً.','Rates are temporarily unavailable.')}</div>`;
+            }
+        }
+        function applyFxLanguage(){
+            document.getElementById('fxTitle').textContent=fxText('أسعار العملات مقابل الرينغيت الماليزي','Exchange Rates Against Malaysian Ringgit');
+            document.getElementById('fxConverterTitle').textContent=fxText('محول العملات','Currency Converter');
+            document.getElementById('fxAmountLabel').textContent=fxText('المبلغ','Amount');
+            document.getElementById('fxFromLabel').textContent=fxText('من','From');
+            document.getElementById('fxToLabel').textContent=fxText('إلى','To');
+            document.getElementById('fxConvertBtn').textContent=fxText('تحويل','Convert');
+            document.getElementById('fxNote').textContent=fxText('أسعار مرجعية رسمية من بنك نيجارا ماليزيا، وليست أسعار صرف فورية أو أسعار بيع وشراء مكاتب الصرافة. تتحدث البيانات حسب جدول النشر الرسمي.','Official reference rates from Bank Negara Malaysia; these are not live rates or money-changer cash rates. Data updates according to the official publication schedule.');
+            if(fxRates) renderFx();
+        }
+        document.getElementById('fxConvertBtn').addEventListener('click',convertFx);
+        document.getElementById('fxAmount').addEventListener('input',convertFx);
+        document.getElementById('fxFrom').addEventListener('change',convertFx);
+        document.getElementById('fxTo').addEventListener('change',convertFx);
+        document.getElementById('langToggleBtn').addEventListener('click',applyFxLanguage);
+        applyFxLanguage();
+        loadFxRates();
+
         loadLatestNews();
         setInterval(loadLatestNews, NEWS_REFRESH_INTERVAL);
 
