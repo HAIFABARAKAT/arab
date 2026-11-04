@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عرب ماليزيا | Arab Malaysia</title>
+    <meta name="description" content="عرب ماليزيا منصة لخدمة العرب في ماليزيا: الأخبار، الخدمات، الأعمال، العقارات، الوظائف، المجتمع والدليل المحلي باللغتين العربية والإنجليزية.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="theme-color" content="#1a237e">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="عرب ماليزيا | Arab Malaysia">
+    <meta property="og:title" content="عرب ماليزيا | Arab Malaysia">
+    <meta property="og:description" content="منصة العرب في ماليزيا للأخبار والخدمات والأعمال والمجتمع.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -29,6 +36,10 @@
             overflow-x: hidden;
             width: 100%;
         }
+
+        .skip-to-content{position:fixed;top:8px;inset-inline-start:8px;z-index:5000;padding:10px 16px;background:#fff;color:#111;border:2px solid var(--btn-color);border-radius:8px;transform:translateY(-150%);transition:transform .2s}
+        .skip-to-content:focus{transform:translateY(0)}
+        :focus-visible{outline:3px solid #ffbf47!important;outline-offset:3px!important}
 
         /* Custom Smart Scrollbar */
         ::-webkit-scrollbar {
@@ -1091,6 +1102,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
 
 </head>
 <body>
+    <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
     <!-- Arab Malaysia 2.0 Core Foundation / STAGING BUILD: production systems are not modified. -->
     <!-- Arab Malaysia 2.0: staging test notice. Remove this banner before production deployment. -->
     <div id="stagingTestNotice" role="status" style="position:relative;z-index:99999;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding:9px 14px;background:#fff3cd;color:#664d03;border-bottom:1px solid #ffecb5;font:600 13px/1.5 Arial,sans-serif;text-align:center;">
@@ -1163,7 +1175,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
     </div>
 
     <!-- Dynamic Section Elements Layout -->
-    <main id="sectionsWrapper"></main>
+    <main id="sectionsWrapper" tabindex="-1"></main>
 
     <!-- Highly Extended Structured Footer Panel Grid -->
     <footer>
@@ -2780,6 +2792,8 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
         */
         let latestNewsItems = [];
         let newsFetchInProgress = false;
+        let newsReloadRequested = false;
+        const NEWS_CACHE_PREFIX = 'arabMalaysiaNews_v1_';
         const NEWS_REFRESH_INTERVAL = 10 * 60 * 1000;
 
         function newsText(value) {
@@ -2938,9 +2952,11 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             }
         }
 
+        let newsModalPreviousFocus = null;
         function openNewsModal(index) {
             const item = latestNewsItems[index];
             if (!item) return;
+            newsModalPreviousFocus = document.activeElement;
             document.getElementById('newsModalSource').textContent = item.source + (item.published ? ' · ' + new Date(item.published).toLocaleDateString(currentLang === 'ar' ? 'ar' : 'en') : '');
             document.getElementById('newsModalTitle').textContent = item.title;
             document.getElementById('newsModalSummary').textContent = item.description || (currentLang === 'ar' ? 'لا يتوفر ملخص لهذا الخبر. اضغط لقراءة التفاصيل في موقع المصدر.' : 'No summary is available. Open the original source for full details.');
@@ -2949,14 +2965,19 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             const readMore = document.getElementById('newsReadMore');
             readMore.href = item.link;
             readMore.textContent = currentLang === 'ar' ? 'قراءة الخبر كاملاً' : 'Read Full Story';
-            document.getElementById('newsModal').hidden = false;
+            const modal = document.getElementById('newsModal');
+            modal.hidden = false;
             document.body.style.overflow = 'hidden';
+            document.getElementById('newsModalClose').focus();
         }
 
         function closeNewsModal() {
             const modal = document.getElementById('newsModal');
-            if (modal) modal.hidden = true;
-            document.body.style.overflow = '';
+            if (modal && !modal.hidden) {
+                modal.hidden = true;
+                document.body.style.overflow = '';
+                if (newsModalPreviousFocus && typeof newsModalPreviousFocus.focus === 'function') newsModalPreviousFocus.focus();
+            }
         }
 
 
@@ -3087,8 +3108,9 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
         setInterval(loadSportsNews, SPORTS_NEWS_REFRESH_INTERVAL);
 
         async function loadLatestNews() {
-            if (newsFetchInProgress) return;
+            if (newsFetchInProgress) { newsReloadRequested = true; return; }
             newsFetchInProgress = true;
+            const requestedLanguage = currentLang === 'ar' ? 'ar' : 'en';
             const refresh = document.getElementById('newsRefreshBtn');
             if (refresh) refresh.disabled = true;
             try {
@@ -3102,13 +3124,29 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                 combined.sort((a, b) => new Date(b.published || 0) - new Date(a.published || 0));
                 combined.forEach(item => { if (!unique.has(item.link)) unique.set(item.link, item); });
                 latestNewsItems = Array.from(unique.values()).slice(0, 18);
-                renderNewsTicker(latestNewsItems);
+                if (requestedLanguage === currentLang) {
+                    try { localStorage.setItem(NEWS_CACHE_PREFIX + requestedLanguage, JSON.stringify({ savedAt: Date.now(), items: latestNewsItems })); } catch (_) {}
+                    renderNewsTicker(latestNewsItems);
+                } else {
+                    newsReloadRequested = true;
+                }
             } catch (error) {
                 console.warn('News ticker could not be refreshed:', error);
-                renderNewsTicker([]);
+                if (requestedLanguage === currentLang) {
+                    let cached = null;
+                    try { cached = JSON.parse(localStorage.getItem(NEWS_CACHE_PREFIX + requestedLanguage) || 'null'); } catch (_) {}
+                    latestNewsItems = cached && Array.isArray(cached.items) ? cached.items : [];
+                    renderNewsTicker(latestNewsItems);
+                } else {
+                    newsReloadRequested = true;
+                }
             } finally {
                 newsFetchInProgress = false;
                 if (refresh) refresh.disabled = false;
+                if (newsReloadRequested) {
+                    newsReloadRequested = false;
+                    Promise.resolve().then(loadLatestNews);
+                }
             }
         }
 
