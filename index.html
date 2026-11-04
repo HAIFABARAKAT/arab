@@ -1511,6 +1511,14 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             }
         };
 
+        async function verifyCurrentAdmin(userId) {
+            if (!userId) return false;
+            const { data, error } = await supabaseClient.from('site_user_roles')
+                .select('role_key').eq('user_id', userId);
+            if (error) throw error;
+            return (data || []).some(r => ['super_admin','admin','editor','moderator'].includes(r.role_key));
+        }
+
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 if (location.hash === '#preview') {
@@ -1522,7 +1530,7 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
                     await loadCloudContent();
                 }
                 const { data: sessionData } = await supabaseClient.auth.getSession();
-                isUserAdminLoggedIn = !!sessionData.session;
+                isUserAdminLoggedIn = !!(sessionData.session && await verifyCurrentAdmin(sessionData.session.user.id));
             } catch (error) {
                 console.error('Supabase initialization:', error);
                 alert('تعذر الاتصال بالخدمة السحابية. سيعرض الموقع البيانات المحلية مؤقتاً.');
@@ -1921,6 +1929,21 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             if (actions) workspace.appendChild(actions);
             if (status) workspace.appendChild(status);
             if (body) workspace.appendChild(body);
+            const moduleNav = document.createElement('button');
+            moduleNav.className = 'premium-overview';
+            moduleNav.type = 'button';
+            moduleNav.innerHTML = '<i class="fa-solid fa-shield-halved"></i><span>إدارة المنصة</span>';
+            moduleNav.onclick = () => openPlatformModules();
+            sidebar.insertBefore(moduleNav, sidebar.querySelector('.premium-sidebar-foot'));
+            const modulePanel = document.createElement('section');
+            modulePanel.id = 'platformModulesPanel';
+            modulePanel.style.cssText = 'display:none;padding:20px;max-width:1200px;margin:auto;width:100%;';
+            modulePanel.innerHTML = `
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><h2 style="margin:0 0 6px">إدارة المنصة</h2><p style="margin:0;color:#64748b">مراجعة واعتماد الأعمال والإعلانات والوظائف والعقارات ومنشورات المجتمع.</p></div><button class="admin-btn" style="width:auto" onclick="refreshPlatformModules()">تحديث البيانات</button></div>
+              <div id="platformModuleTabs" style="display:flex;gap:8px;flex-wrap:wrap;margin:18px 0"></div>
+              <div id="platformModuleStatus" role="status" style="margin:10px 0;color:#475569"></div>
+              <div id="platformModuleRows" style="display:grid;gap:12px"></div>`;
+            workspace.appendChild(modulePanel);
             main.append(topbar, workspace);
             dash.innerHTML = '';
             dash.append(sidebar, main);
@@ -1937,6 +1960,70 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             });
             applyAdminAppearance();
             switchTab('overview');
+        }
+
+        const platformModuleConfig = {
+            businesses: {label:'دليل الأعمال', title:'name_ar', detail:'city', status:'status', approved:'published', rejected:'suspended', extra:"verification_status"},
+            listings: {label:'السوق العربي', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
+            jobs: {label:'الوظائف', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
+            properties: {label:'العقارات', title:'title_ar', detail:'city', status:'status', approved:'published', rejected:'rejected'},
+            community_posts: {label:'المجتمع', title:'title', detail:'city', status:'status', approved:'published', rejected:'rejected'}
+        };
+        let activePlatformModule = 'businesses';
+        function openPlatformModules() {
+            document.querySelectorAll('#dashboardBox .panel-tab').forEach(el => el.style.display='none');
+            document.getElementById('platformModulesPanel').style.display='block';
+            document.querySelectorAll('#dashboardBox .tab-menu').forEach(el => el.style.display='none');
+            document.querySelectorAll('#dashboardBox .admin-workspace-actions').forEach(el => el.style.display='none');
+            const tabs = document.getElementById('platformModuleTabs');
+            tabs.innerHTML = Object.entries(platformModuleConfig).map(([key,c]) => `<button class="admin-btn" style="width:auto;background:${key===activePlatformModule?'#0f766e':'#64748b'}" onclick="selectPlatformModule('${key}')">${c.label}</button>`).join('');
+            refreshPlatformModules();
+        }
+        function selectPlatformModule(key) {
+            if (!platformModuleConfig[key]) return;
+            activePlatformModule = key;
+            document.querySelectorAll('#dashboardBox .panel-tab').forEach(el => el.style.display='none');
+            document.getElementById('platformModulesPanel').style.display='block';
+            document.getElementById('platformModuleTabs').innerHTML = Object.entries(platformModuleConfig).map(([k,c]) => `<button class="admin-btn" style="width:auto;background:${k===key?'#0f766e':'#64748b'}" onclick="selectPlatformModule('${k}')">${c.label}</button>`).join('');
+            refreshPlatformModules();
+        }
+        function safeModuleText(value) {
+            return String(value ?? '—').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+        }
+        async function refreshPlatformModules() {
+            const cfg = platformModuleConfig[activePlatformModule];
+            const host = document.getElementById('platformModuleRows');
+            const status = document.getElementById('platformModuleStatus');
+            if (!host) return;
+            host.innerHTML = '<p>جارٍ تحميل البيانات...</p>';
+            const {data,error} = await supabaseClient.from(activePlatformModule).select('*').order('created_at',{ascending:false}).limit(100);
+            if (error) { host.innerHTML = `<p style="color:#b91c1c">تعذر التحميل: ${safeModuleText(error.message)}</p>`; return; }
+            const pending = (data||[]).filter(row => ['pending','draft'].includes(row[cfg.status]) || (activePlatformModule==='businesses' && row.verification_status==='pending'));
+            status.textContent = `عدد السجلات: ${(data||[]).length} — بانتظار المراجعة: ${pending.length}`;
+            if (!data || !data.length) { host.innerHTML='<div style="padding:20px;background:#f8fafc;border-radius:12px">لا توجد سجلات في هذا القسم حتى الآن.</div>'; return; }
+            host.innerHTML = data.map(row => {
+                const title = safeModuleText(row[cfg.title] || row.title_en || row.name_en || 'بدون عنوان');
+                const detail = safeModuleText(row[cfg.detail]);
+                const state = safeModuleText(row[cfg.status]);
+                const id = safeModuleText(row.id);
+                const canApprove = ['pending','draft'].includes(row[cfg.status]) || (activePlatformModule==='businesses' && row.verification_status==='pending');
+                return `<article style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap"><div style="min-width:180px;flex:1"><b>${title}</b><div style="color:#64748b;font-size:13px;margin-top:5px">${detail} · الحالة: ${state}</div><small style="color:#94a3b8">${id}</small></div><div style="display:flex;gap:7px;flex-wrap:wrap">${canApprove?`<button class="admin-btn" style="width:auto;background:#15803d" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','approve')">اعتماد ونشر</button><button class="admin-btn" style="width:auto;background:#b91c1c" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','reject')">رفض</button>`:''}<button class="admin-btn" style="width:auto;background:#64748b" onclick="moderatePlatformRecord('${activePlatformModule}','${id}','delete')">حذف</button></div></article>`;
+            }).join('');
+        }
+        async function moderatePlatformRecord(table,id,action) {
+            if (!isUserAdminLoggedIn || !platformModuleConfig[table]) return alert('يلزم حساب إداري مصرح.');
+            if (!confirm(action==='delete'?'هل تريد حذف هذا السجل نهائياً؟':'تأكيد تنفيذ قرار المراجعة؟')) return;
+            const cfg=platformModuleConfig[table];
+            let query=supabaseClient.from(table);
+            if (action==='delete') query=query.delete().eq('id',id);
+            else {
+                const values={}; values[cfg.status]=action==='approve'?cfg.approved:cfg.rejected;
+                if (table==='businesses' && action==='approve') values.verification_status='verified';
+                query=query.update(values).eq('id',id);
+            }
+            const {error}=await query;
+            if (error) { alert('تعذر تنفيذ العملية: '+error.message); return; }
+            await refreshPlatformModules();
         }
 
         function openAdminPanelDirectly() {
@@ -1964,7 +2051,8 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             try {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email: userIn, password: passIn });
                 if (error) throw error;
-                isUserAdminLoggedIn = !!data.user;
+                isUserAdminLoggedIn = !!(data.user && await verifyCurrentAdmin(data.user.id));
+                if (!isUserAdminLoggedIn) { await supabaseClient.auth.signOut(); throw new Error('هذا الحساب لا يحمل صلاحية إدارة المنصة.'); }
                 await loadCloudContent();
                 if (!cloudContentExists) {
                     await migrateLegacyDataUrlImages();
@@ -2107,6 +2195,10 @@ body.admin-only #dashboardBox.admin-dashboard-shell {
             if (icon) icon.className = enabled ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
         function switchTab(targetTabId) {
+            const modules = document.getElementById('platformModulesPanel');
+            if (modules) modules.style.display = 'none';
+            document.querySelectorAll('#dashboardBox .tab-menu').forEach(el => el.style.display = '');
+            document.querySelectorAll('#dashboardBox .admin-workspace-actions').forEach(el => el.style.display = '');
             const tabMap = {
                 overview: 'tabOverview', colors: 'tabColors', sections: 'tabSections',
                 images: 'tabImages', settings: 'tabSettings'
