@@ -745,6 +745,20 @@
         .sports-news-content.is-changing .sports-news-image,.sports-news-content.is-changing .sports-news-copy{opacity:.25}
         @media(max-width:768px){.sports-news-section{max-width:92%}.sports-news-content{grid-template-columns:1fr}.sports-news-content{height:auto;min-height:0}.sports-news-image-wrap{height:190px;min-height:190px}.sports-news-image{height:190px;min-height:190px}.sports-news-copy{padding:17px}.sports-news-title{font-size:18px}.sports-news-summary{-webkit-line-clamp:3}.sports-news-heading{padding:13px 15px}.sports-news-heading h2{font-size:17px}}
         @media(prefers-reduced-motion:reduce){.sports-news-image,.sports-news-copy{transition:none!important}}
+    
+        /* Keep the sports news card stable even when a headline or summary is long */
+        .sports-news-copy{box-sizing:border-box;height:300px;min-height:0;overflow:hidden;justify-content:flex-start;align-items:stretch}
+        .sports-news-source{flex:0 0 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .sports-news-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;flex:0 0 auto;line-height:1.4;max-height:4.2em}
+        .sports-news-summary{flex:0 1 auto;-webkit-line-clamp:3;line-height:1.65;max-height:4.95em}
+        .sports-news-actions{flex:0 0 auto;margin-top:auto;padding-top:12px}
+        @media(max-width:768px){
+          .sports-news-copy{height:auto;min-height:0;overflow:visible}
+          .sports-news-title{-webkit-line-clamp:3;max-height:4.2em}
+          .sports-news-summary{-webkit-line-clamp:3;max-height:4.95em}
+          .sports-news-actions{margin-top:16px;padding-top:0}
+        }
+
     </style>
 </head>
 <body>
