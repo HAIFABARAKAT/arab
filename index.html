@@ -874,6 +874,21 @@
 @media(max-width:800px){.amh-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.amh-section{margin:22px 10px;padding:16px;border-radius:16px}.amh-grid{grid-template-columns:1fr}.amh-heading{align-items:stretch}.amh-add{width:100%}.amh-tools select{flex:1;min-width:0}.amh-tab{font-size:12px;padding:8px 11px}}
 
+
+/* Organized admin navigation and independent workspaces */
+.admin-nav-organized{display:flex;flex-direction:column;gap:5px;width:100%;padding:12px 8px;overflow-y:auto;}
+.admin-nav-organized .tab-btn{display:flex;align-items:center;gap:11px;text-align:right;width:100%;min-height:42px;padding:11px 12px;border:0;border-radius:10px;background:transparent;color:#cbd5e1;font-size:12px;cursor:pointer;}
+.admin-nav-organized .tab-btn i{width:18px;text-align:center;flex:0 0 18px}
+.admin-nav-organized .tab-btn:hover{background:#1d2d4b;color:#fff}
+.admin-nav-organized .tab-btn.active{background:linear-gradient(100deg,#2d61cf,#3979ed);color:#fff;box-shadow:0 7px 18px #0a142d55}
+.admin-section-intro{padding:16px 18px;margin:0 0 14px;border:1px solid #dce6f0;border-radius:14px;background:linear-gradient(135deg,#f7fbff,#edf4fb)}
+.admin-section-intro h3{margin:0 0 6px;color:#153e63;font-size:19px}
+.admin-section-intro p{margin:0;color:#61778d;font-size:13px;line-height:1.7}
+.manage-actions .edit-icon-btn{min-width:34px;min-height:32px;border-radius:8px;border:1px solid #dbe4ee;background:#f5f8fc;color:#245b8b;cursor:pointer}
+.manage-actions .delete-icon-btn{min-width:34px;min-height:32px;border-radius:8px;border:1px solid #f3d1d1;background:#fff5f5;color:#b42318;cursor:pointer}
+#tabControl,#tabExperience{display:none!important}
+@media(max-width:760px){.admin-nav-organized{padding:10px 5px}.admin-nav-organized .tab-btn{justify-content:center;padding:12px 4px}.admin-nav-organized .tab-btn span{display:none}.admin-section-intro{padding:13px}.admin-section-intro h3{font-size:16px}}
+
 </style>
 
 <style id="arab-malaysia-mobile-admin-fix">
@@ -1405,10 +1420,10 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                     </div>
                     <h3 class="admin-overview-heading">الوصول السريع</h3>
                     <div class="admin-quick-grid">
-                        <button class="admin-quick-card" onclick="switchTab('sections')"><i class="fa-solid fa-layer-group"></i><b>إدارة الأقسام</b><small>إضافة وترتيب وتعديل المحتوى</small></button>
-                        <button class="admin-quick-card" onclick="switchTab('images')"><i class="fa-regular fa-images"></i><b>مكتبة الصور</b><small>استعراض الصور وإدارة مصادرها</small></button>
-                        <button class="admin-quick-card" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><b>الأخبار والعملات والرياضة</b><small>التحكم في مكونات الصفحة</small></button>
-                        <button class="admin-quick-card" onclick="switchTab('colors')"><i class="fa-solid fa-palette"></i><b>التصميم والألوان</b><small>تخصيص الهوية البصرية</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('sections')"><i class="fa-solid fa-layer-group"></i><b>الأقسام</b><small>إنشاء الأقسام وإدارتها فقط</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('items')"><i class="fa-solid fa-list"></i><b>العناصر</b><small>إدارة البطاقات ومحتواها</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('promo')"><i class="fa-regular fa-images"></i><b>صور الواجهة</b><small>إدارة المستطيل المتحرك</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><b>الأخبار والعملات والرياضة</b><small>إعدادات هذا المكوّن في مكان واحد</small></button>
                     </div>
                 </div>
                 <!-- Tab View Component 1: Theme Personalization Engine Control Panel -->
@@ -1904,6 +1919,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                     <div class="form-group"><label>العنوان بالإنجليزية</label><input type="text" id="promoEn_${index}" value="${escapeHtmlAttribute(slide.titleEn || '')}"></div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
                         <button class="admin-btn" onclick="savePromoSlide(${index})">حفظ التعديل</button>
+                        <button class="admin-btn" style="background:#64748b;" onclick="togglePromoSlideVisibility(${index})">${slide.visible===false?'إظهار الصورة':'إخفاء الصورة'}</button>
                         <button class="admin-btn" style="background:#c62828;" onclick="deletePromoSlide(${index})">حذف الصورة</button>
                     </div>`;
                 host.appendChild(row);
@@ -1960,11 +1976,13 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             alert('تم حذف الصورة.');
         }
 
+        function getVisiblePromoSlides() { return (promoSlides || []).filter(slide => slide.visible !== false); }
         function renderPromoBanners() {
             const container = document.getElementById('slideContainer');
             container.innerHTML = '';
-            if (activePromoIdx >= promoSlides.length) activePromoIdx = 0;
-            promoSlides.filter(slide => slide.visible !== false).forEach(slide => {
+            const visibleSlides = getVisiblePromoSlides();
+            if (activePromoIdx >= visibleSlides.length) activePromoIdx = 0;
+            visibleSlides.forEach(slide => {
                 const title = currentLang === 'ar' ? slide.titleAr : slide.titleEn;
                 const slideDiv = document.createElement('div');
                 slideDiv.className = 'slide';
@@ -1978,21 +1996,23 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
         }
 
         function moveSlide(dir, isManual = true) {
-            if (!promoSlides.length) return;
+            const visibleSlides = getVisiblePromoSlides();
+            if (!visibleSlides.length) return;
             if (isManual) {
                 clearInterval(autoSliderIntervalId);
                 startAutoSliderCycle();
             }
             activePromoIdx += dir;
-            if (activePromoIdx >= promoSlides.length) activePromoIdx = 0;
-            if (activePromoIdx < 0) activePromoIdx = promoSlides.length - 1;
+            if (activePromoIdx >= visibleSlides.length) activePromoIdx = 0;
+            if (activePromoIdx < 0) activePromoIdx = visibleSlides.length - 1;
             updateSliderPosition();
         }
 
         function updateSliderPosition() {
             const container = document.getElementById('slideContainer');
-            if (!promoSlides.length) { container.style.transform = 'translateX(0)'; return; }
-            activePromoIdx = Math.min(activePromoIdx, promoSlides.length - 1);
+            const visibleSlides = getVisiblePromoSlides();
+            if (!visibleSlides.length) { container.style.transform = 'translateX(0)'; return; }
+            activePromoIdx = Math.min(activePromoIdx, visibleSlides.length - 1);
             const shiftFactor = currentLang === 'ar' ? activePromoIdx * 100 : -activePromoIdx * 100;
             container.style.transform = `translateX(${shiftFactor}%)`;
             container.style.transition = 'transform 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -2158,7 +2178,20 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             const sidebar = document.createElement('aside');
             sidebar.className = 'premium-admin-sidebar';
             sidebar.innerHTML = `<div class="premium-brand"><span><i class="fa-solid fa-mosque"></i></span><div><b>عرب ماليزيا</b><small>مركز الإدارة</small></div></div><small class="premium-nav-label">القائمة الرئيسية</small><button class="premium-overview active" onclick="switchTab('overview')"><i class="fa-solid fa-grid-2"></i><span>نظرة عامة</span></button>`;
-            if (tabs) sidebar.appendChild(tabs);
+            if (tabs) tabs.remove();
+            const nav = document.createElement('nav');
+            nav.className = 'tab-menu admin-nav-organized';
+            nav.innerHTML = `
+              <button class="tab-btn" id="tabSectionsBtn" onclick="switchTab('sections')"><i class="fa-solid fa-layer-group"></i><span>إدارة الأقسام</span></button>
+              <button class="tab-btn" id="tabItemsBtn" onclick="switchTab('items')"><i class="fa-solid fa-list"></i><span>إدارة العناصر</span></button>
+              <button class="tab-btn" id="tabPromoBtn" onclick="switchTab('promo')"><i class="fa-regular fa-images"></i><span>صور الواجهة الرئيسية</span></button>
+              <button class="tab-btn" id="tabHomepageBtn" onclick="switchTab('homepage')"><i class="fa-solid fa-house"></i><span>إعدادات الصفحة الرئيسية</span></button>
+              <button class="tab-btn" id="tabServicesBtn" onclick="switchTab('services')"><i class="fa-solid fa-grid-2"></i><span>إدارة الخدمات</span></button>
+              <button class="tab-btn" id="tabCitiesBtn" onclick="switchTab('cities')"><i class="fa-solid fa-city"></i><span>إدارة المدن</span></button>
+              <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><span>الأخبار والعملات والرياضة</span></button>
+              <button class="tab-btn" id="tabImagesBtn" onclick="switchTab('images')"><i class="fa-regular fa-images"></i><span>مكتبة الصور</span></button>
+              <button class="tab-btn" id="tabColorsBtn" onclick="switchTab('colors')"><i class="fa-solid fa-palette"></i><span>التصميم والألوان</span></button>`;
+            sidebar.appendChild(nav);
             sidebar.insertAdjacentHTML('beforeend', `<div class="premium-sidebar-foot"><i class="fa-solid fa-shield-halved"></i><span>وصول آمن للمسؤول</span></div>`);
             const main = document.createElement('section');
             main.className = 'premium-admin-main';
@@ -2179,6 +2212,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             if (body) workspace.appendChild(body);
             const moduleNav = document.createElement('button');
             moduleNav.className = 'premium-overview';
+            moduleNav.setAttribute('aria-label','platform-management');
             moduleNav.type = 'button';
             moduleNav.innerHTML = '<i class="fa-solid fa-shield-halved"></i><span>إدارة المنصة</span>';
             moduleNav.onclick = () => openPlatformModules();
@@ -2195,6 +2229,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             main.append(topbar, workspace);
             dash.innerHTML = '';
             dash.append(sidebar, main);
+            organizeAdminPanels();
             const overviewBtn = sidebar.querySelector('.premium-overview');
             overviewBtn.addEventListener('click', () => {
                 sidebar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
@@ -2210,6 +2245,51 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             switchTab('overview');
         }
 
+        function organizeAdminPanels() {
+            const body = document.querySelector('#dashboardBox .admin-body');
+            const sections = document.getElementById('tabSections');
+            const settings = document.getElementById('tabSettings');
+            const experience = document.getElementById('tabExperience');
+            if (!body || !sections || !experience || body.dataset.organized === '1') return;
+            body.dataset.organized = '1';
+            const makePanel = (id, title, description) => {
+                let panel = document.getElementById(id);
+                if (!panel) { panel = document.createElement('div'); panel.className = 'panel-tab'; panel.id = id; body.appendChild(panel); }
+                panel.innerHTML = `<div class="admin-section-intro"><h3>${title}</h3><p>${description}</p></div>`;
+                return panel;
+            };
+            const sectionNodes = Array.from(sections.children);
+            const promoPanel = makePanel('tabPromo', 'صور الواجهة الرئيسية', 'إدارة صور المستطيل المتحرك: إضافة الصور وتعديلها وحذفها بصورة مستقلة.');
+            if (sectionNodes[0]) promoPanel.appendChild(sectionNodes[0]);
+            const itemPanel = makePanel('tabItems', 'إدارة العناصر والبطاقات', 'إضافة وتعديل وحذف العناصر داخل الأقسام، وإدارة صور كل عنصر.');
+            if (sectionNodes[2]) itemPanel.appendChild(sectionNodes[2]);
+            if (sectionNodes[3]) itemPanel.appendChild(sectionNodes[3]);
+            if (sectionNodes[1]) sections.appendChild(sectionNodes[1]);
+            if (sectionNodes[4]) sections.appendChild(sectionNodes[4]);
+            sections.insertAdjacentHTML('afterbegin', '<div class="admin-section-intro"><h3>إدارة الأقسام</h3><p>هذا المكان مخصص لإنشاء الأقسام وتعديلها وإخفائها وحذفها فقط. إدارة العناصر والصور لها صفحات مستقلة.</p></div>');
+
+            const expNodes = Array.from(experience.children);
+            const homepagePanel = makePanel('tabHomepage', 'إعدادات الصفحة الرئيسية', 'تعديل العنوان والوصف والظهور العام للواجهة والبطاقات التعريفية.');
+            if (expNodes[0]) homepagePanel.appendChild(expNodes[0]);
+            if (expNodes[3]) homepagePanel.appendChild(expNodes[3]);
+            const servicesPanel = makePanel('tabServices', 'إدارة الخدمات', 'كل بطاقة خدمة مستقلة ويمكن تعديلها أو إخفاؤها أو حذفها أو إضافة خدمة جديدة.');
+            if (expNodes[1]) servicesPanel.appendChild(expNodes[1]);
+            servicesPanel.insertAdjacentHTML('beforeend', '<button type="button" class="admin-btn" onclick="saveExperienceEditor()">حفظ تغييرات الخدمات</button>');
+            const citiesPanel = makePanel('tabCities', 'إدارة المدن', 'إدارة أسماء المدن وأوصافها وظهورها بصورة مستقلة.');
+            if (expNodes[2]) citiesPanel.appendChild(expNodes[2]);
+            citiesPanel.insertAdjacentHTML('beforeend', '<button type="button" class="admin-btn" onclick="saveExperienceEditor()">حفظ تغييرات المدن</button>');
+
+            // Keep the old all-in-one control center out of navigation to prevent duplicate actions.
+            const legacyControl = document.getElementById('tabControl');
+            if (legacyControl) legacyControl.style.display = 'none';
+            const legacyExperience = document.getElementById('tabExperience');
+            if (legacyExperience) legacyExperience.style.display = 'none';
+            const legacyTabMenu = document.querySelector('#dashboardBox .tab-menu');
+            if (legacyTabMenu) legacyTabMenu.classList.add('admin-nav-organized');
+            if (typeof buildPromoSlidesAdminList === 'function') buildPromoSlidesAdminList();
+            if (typeof buildExperienceAdminEditor === 'function') buildExperienceAdminEditor();
+        }
+
         const platformModuleConfig = {
             members: {label:'إدارة الأعضاء', title:'display_name', detail:'email', status:'member_status'},
             businesses: {label:'دليل الأعمال', title:'name_ar', detail:'city', status:'status', approved:'published', rejected:'suspended', extra:"verification_status"},
@@ -2223,8 +2303,12 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
         function openPlatformModules() {
             document.querySelectorAll('#dashboardBox .panel-tab').forEach(el => el.style.display='none');
             document.getElementById('platformModulesPanel').style.display='block';
-            document.querySelectorAll('#dashboardBox .tab-menu').forEach(el => el.style.display='none');
+            // Keep the organized sidebar visible so the administrator can return to any workspace.
+            document.querySelectorAll('#dashboardBox .tab-menu').forEach(el => el.style.display='');
             document.querySelectorAll('#dashboardBox .admin-workspace-actions').forEach(el => el.style.display='none');
+            document.querySelectorAll('#dashboardBox .premium-overview').forEach(el => el.classList.remove('active'));
+            const platformNav = document.querySelector('#dashboardBox .premium-admin-sidebar .premium-overview[aria-label="platform-management"]');
+            if (platformNav) platformNav.classList.add('active');
             const tabs = document.getElementById('platformModuleTabs');
             tabs.innerHTML = Object.entries(platformModuleConfig).map(([key,c]) => `<button class="admin-btn" style="width:auto;background:${key===activePlatformModule?'#0f766e':'#64748b'}" onclick="selectPlatformModule('${key}')">${c.label}</button>`).join('');
             refreshPlatformModules();
@@ -2505,8 +2589,9 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             document.querySelectorAll('#dashboardBox .tab-menu').forEach(el => el.style.display = '');
             document.querySelectorAll('#dashboardBox .admin-workspace-actions').forEach(el => el.style.display = '');
             const tabMap = {
-                overview: 'tabOverview', colors: 'tabColors', sections: 'tabSections',
-                images: 'tabImages', settings: 'tabSettings', experience: 'tabExperience', control: 'tabControl'
+                overview: 'tabOverview', colors: 'tabColors', sections: 'tabSections', items: 'tabItems',
+                promo: 'tabPromo', homepage: 'tabHomepage', services: 'tabServices', cities: 'tabCities',
+                images: 'tabImages', settings: 'tabSettings', experience: 'tabHomepage', control: 'tabControl'
             };
             const targetId = tabMap[targetTabId] || 'tabOverview';
             if(targetTabId==='control') renderGranularAdmin();
@@ -2517,16 +2602,17 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                 // Explicit display prevents a hidden panel when dashboard CSS/layout is reflowed.
                 t.style.setProperty('display', active ? 'block' : 'none', 'important');
             });
-            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام والبطاقات', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة', experience: 'إدارة واجهة المنصة', control: 'التحكم بكل عنصر' };
+            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام', items: 'إدارة العناصر', promo: 'صور الواجهة الرئيسية', homepage: 'إعدادات الصفحة الرئيسية', services: 'إدارة الخدمات', cities: 'إدارة المدن', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة', experience: 'إعدادات الصفحة الرئيسية', control: 'مركز التحكم' };
             const heading = document.getElementById('adminPageHeading');
             if (heading) heading.textContent = headings[targetTabId] || 'لوحة التحكم';
             const activeButton = targetTabId === 'overview'
                 ? document.querySelector('.premium-overview')
-                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',images:'tabImagesBtn',settings:'tabSettingsBtn',experience:'tabExperienceBtn',control:'tabControlBtn'})[targetTabId]);
+                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',items:'tabItemsBtn',promo:'tabPromoBtn',homepage:'tabHomepageBtn',services:'tabServicesBtn',cities:'tabCitiesBtn',images:'tabImagesBtn',settings:'tabSettingsBtn',experience:'tabHomepageBtn',control:'tabControlBtn'})[targetTabId]);
             if (activeButton) activeButton.classList.add('active');
             if (targetTabId === 'overview') updateAdminOverviewStats();
             if (targetTabId === 'settings') applySiteSettings();
-            if (targetTabId === 'experience') buildExperienceAdminEditor();
+            if (['experience','homepage','services','cities'].includes(targetTabId)) buildExperienceAdminEditor();
+            if (targetTabId === 'promo') buildPromoSlidesAdminList();
             if (targetTabId === 'images') buildAdminImageLibrary();
             const workspace = document.querySelector('.premium-admin-workspace');
             if (workspace) workspace.scrollTop = 0;
@@ -2630,6 +2716,32 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             }
         }
 
+        function toggleSectionVisibility(id) {
+            const section = webSections.find(item => item.id === id);
+            if (!section) return;
+            section.visible = section.visible === false;
+            renderDynamicSections();
+            commitAndSyncSystemDatastores(false);
+            buildAdminManagementListViewConsole();
+        }
+        function toggleCardVisibility(sectionId, cardId) {
+            const section = webSections.find(item => item.id === sectionId);
+            const card = section?.cards?.find(item => item.id === cardId);
+            if (!card) return;
+            card.visible = card.visible === false;
+            renderDynamicSections();
+            commitAndSyncSystemDatastores(false);
+            buildCardsManagementListViewConsole();
+        }
+        function togglePromoSlideVisibility(index) {
+            const slide = promoSlides[index];
+            if (!slide) return;
+            slide.visible = slide.visible === false;
+            renderPromoBanners();
+            commitAndSyncSystemDatastores(false);
+            buildPromoSlidesAdminList();
+        }
+
         function buildAdminManagementListViewConsole() {
             const container = document.getElementById('adminSectionsManagementList');
             container.innerHTML = '';
@@ -2661,6 +2773,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                     <span>☰ <strong>${labelName}</strong> (${s.cards.length} عناصر) ${s.visible===false?'<small style="color:#b42318"> · مخفي</small>':''}</span>
                     <div class="manage-actions">
                         <button class="edit-icon-btn" onclick="editTargetSectionDataNode('${s.id}')" title="تعديل القسم"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="edit-icon-btn" onclick="toggleSectionVisibility('${s.id}')" title="${s.visible===false?'إظهار القسم':'إخفاء القسم'}"><i class="fa-solid ${s.visible===false?'fa-eye':'fa-eye-slash'}"></i></button>
                         <button class="delete-icon-btn" onclick="deleteTargetSectionDataNode('${s.id}')" title="حذف القسم"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `;
@@ -2699,6 +2812,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                         <span>${cName} ${card.visible===false?'<small style="color:#b42318"> · مخفي</small>':''}</span>
                         <div class="manage-actions">
                             <button class="edit-icon-btn" onclick="editTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="تعديل العنصر"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="edit-icon-btn" onclick="toggleCardVisibility('${selectedSec.id}','${card.id}')" title="${card.visible===false?'إظهار العنصر':'إخفاء العنصر'}"><i class="fa-solid ${card.visible===false?'fa-eye':'fa-eye-slash'}"></i></button>
                             <button class="delete-icon-btn" onclick="deleteTargetCardDataNode('${selectedSec.id}', '${card.id}')" title="حذف هذا العنصر"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     `;
@@ -3038,7 +3152,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
           const a=[];
           const modules=[['heroVisible','الواجهة الرئيسية','Main hero'],['promoVisible','مستطيل الصور المتحرك','Main slideshow'],['servicesVisible','منطقة الخدمات','Services area'],['lifeVisible','بطاقة الحياة والدراسة','Life & study card'],['businessVisible','بطاقة أصحاب الأعمال','Business card'],['citiesVisible','قسم المدن','Cities area']];
           modules.forEach(([key,ar,en])=>a.push({type:'module',id:key,key,title:ar,sub:en,visible:experienceConfig[key]!==false}));
-          [['newsEnabled','شريط الأخبار'],['currencyEnabled','شريط العملات'],['sportsEnabled','قسم الرياضة']].forEach(([key,title])=>a.push({type:'module',id:key,key,title,sub:'مكوّن الصفحة الرئيسية',visible:siteSettings[key]!==false}));
+          // News, currency and sports visibility is managed only in the dedicated News & Rates page.
           (experienceConfig.tiles||[]).forEach(x=>a.push({type:'service',id:x.id,title:x.titleAr||x.titleEn,sub:x.titleEn||'خدمة',visible:x.visible!==false,raw:x}));
           webSections.forEach(sec=>{a.push({type:'section',id:sec.id,title:sec.titleAr||sec.titleEn,sub:`قسم · ${(sec.cards||[]).length} عناصر`,visible:sec.visible!==false,raw:sec});(sec.cards||[]).forEach(card=>a.push({type:'card',id:card.id,secId:sec.id,title:card.nameAr||card.nameEn,sub:`ضمن ${sec.titleAr||sec.titleEn}`,visible:card.visible!==false,raw:card,image:(card.images||[])[0]}));});
           (experienceConfig.cities||[]).forEach(x=>a.push({type:'city',id:x.id,title:x.name,sub:x.titleAr||x.titleEn,visible:x.visible!==false,raw:x}));
@@ -3112,11 +3226,11 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
 
         function openImageLibraryTarget(kind, secId, cardId) {
             if (kind === 'promo') {
-                switchTab('sections');
+                switchTab('promo');
                 document.getElementById('promoSlidesAdminList').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 return;
             }
-            switchTab('sections');
+            switchTab('items');
             document.getElementById('filterSectionSelect').value = secId;
             buildCardsManagementListViewConsole();
             const host = document.getElementById('adminImagesManagement');
