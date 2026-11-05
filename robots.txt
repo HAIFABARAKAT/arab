@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /arab/
+Sitemap: https://haifabarakat.github.io/arab/sitemap.xml
