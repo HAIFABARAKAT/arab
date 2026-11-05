@@ -2607,7 +2607,16 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
           if(isReviewEdit&&next!=='delete'){const rpc=await supabaseClient.rpc('admin_review_business_review_edit',{p_edit_id:id,p_status:next,p_response:note});if(rpc.error)return alert('تعذر مراجعة تعديل التقييم: '+rpc.error.message);await refreshPlatformModules();return;}
           if(isPlatformReviewEdit&&next!=='delete'){const rpc=await supabaseClient.rpc('admin_review_platform_review_edit',{p_edit_id:id,p_status:next,p_response:note});if(rpc.error)return alert('تعذر مراجعة تعديل التقييم: '+rpc.error.message);await refreshPlatformModules();return;}
           if(isRequest&&next!=='delete'){const rpc=await supabaseClient.rpc('admin_review_business_verification',{p_request_id:id,p_status:next,p_response:note});if(rpc.error)return alert('تعذر تحديث طلب التوثيق: '+rpc.error.message);await refreshPlatformModules();return;}
-          const current=(isRequest&&next==='delete')?await supabaseClient.from(table).select('document_paths').eq('id',id).single():((isReview||isPlatformReview)&&next==='delete'?await supabaseClient.from(table).select('image_urls').eq('id',id).single():null);
+          // IMPORTANT: moderation actions must UPDATE status. DELETE is reserved only for an explicit delete action.
+          if(next!=='delete'){
+            const updated=await supabaseClient.from(table).update(patch).eq('id',id).select('id').maybeSingle();
+            if(updated.error)return alert('تعذر تحديث حالة السجل: '+updated.error.message);
+            if(!updated.data)return alert('لم يتم العثور على السجل أو لا تملك صلاحية تحديثه. لم يتم حذف أي شيء.');
+            await refreshPlatformModules();
+            return;
+          }
+          const current=(isRequest)?await supabaseClient.from(table).select('document_paths').eq('id',id).single():((isReview||isPlatformReview)?await supabaseClient.from(table).select('image_urls').eq('id',id).single():null);
+          if(current?.error)return alert('تعذر قراءة بيانات السجل قبل الحذف: '+current.error.message);
           const result=await supabaseClient.from(table).delete().eq('id',id);
           if(result.error)return alert('تعذر حفظ التغيير: '+result.error.message);
           if(isRequest&&next==='delete'&&current?.data?.document_paths?.length)await supabaseClient.storage.from('verification-documents').remove(current.data.document_paths);
