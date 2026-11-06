@@ -1572,6 +1572,86 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 }
 </style>
 
+
+<style id="arab-mobile-admin-icon-rail-35px-fix">
+@media (max-width:760px){
+  /* Keep a 35px icon rail visible on the right when the drawer is closed. */
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{
+    width:238px!important;min-width:238px!important;max-width:238px!important;
+    flex:0 0 238px!important;padding:48px 0 12px!important;
+    transform:translateX(calc(100% - 35px))!important;
+    overflow-x:hidden!important;
+  }
+  body.admin-only.mobile-admin-nav-open #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{
+    transform:translateX(0)!important;padding:52px 8px 12px!important;
+  }
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-main{
+    flex:0 0 calc(100vw - 35px)!important;width:calc(100vw - 35px)!important;
+    max-width:calc(100vw - 35px)!important;min-width:0!important;
+    margin-right:35px!important;box-sizing:border-box!important;
+  }
+  /* In the collapsed state, navigation buttons themselves occupy the visible rail. */
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu{
+    width:35px!important;min-width:35px!important;margin:0 0 0 auto!important;
+    padding:0!important;display:flex!important;flex-direction:column!important;
+    align-items:stretch!important;gap:5px!important;overflow:visible!important;
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview{
+    display:flex!important;width:35px!important;min-width:35px!important;max-width:35px!important;
+    height:36px!important;min-height:36px!important;padding:0!important;margin:0 0 6px auto!important;
+    align-items:center!important;justify-content:center!important;box-sizing:border-box!important;
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn{
+    display:flex!important;width:35px!important;min-width:35px!important;max-width:35px!important;
+    height:36px!important;min-height:36px!important;padding:0!important;margin:0!important;
+    align-items:center!important;justify-content:center!important;gap:0!important;
+    box-sizing:border-box!important;overflow:visible!important;
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview i,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn i{
+    display:inline-flex!important;visibility:visible!important;opacity:1!important;
+    width:20px!important;min-width:20px!important;height:20px!important;
+    align-items:center!important;justify-content:center!important;font-size:16px!important;
+    line-height:1!important;margin:0!important;color:#fff!important;
+    font-family:"Font Awesome 6 Free"!important;font-weight:900!important;
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-nav-label,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot,
+  body.admin-only #dashboardBox .premium-admin-sidebar>.admin-btn{display:none!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>div,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn span{display:none!important}
+  body.admin-only #dashboardBox .mobile-admin-drawer-toggle{
+    position:absolute!important;top:7px!important;right:2px!important;
+    width:30px!important;height:30px!important;min-width:30px!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+  }
+  /* Expanded drawer returns to its full readable width and original labels. */
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand{
+    display:flex!important;justify-content:flex-start!important;align-items:center!important;
+    padding:3px 2px 12px!important;margin:0 0 8px!important;
+  }
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand>div,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-nav-label,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{display:block!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu{
+    width:100%!important;min-width:0!important;margin:0!important;padding:0!important;
+  }
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn{
+    width:100%!important;max-width:none!important;height:auto!important;min-height:38px!important;
+    justify-content:flex-start!important;gap:7px!important;padding:9px 7px!important;
+  }
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn span{
+    font-size:10px!important;line-height:1.35!important;white-space:normal!important;
+  }
+}
+</style>
+
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
