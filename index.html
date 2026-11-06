@@ -1462,159 +1462,89 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 </style>
 <script id="arab-mobile-admin-drawer-controller">
 (function(){
-  if(window.__arabMobileAdminDrawerV2)return;window.__arabMobileAdminDrawerV2=true;
-  const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
-  function closeDrawer(){document.body.classList.remove('mobile-admin-nav-open');}
-  function ensureDrawer(){
-    const side=document.querySelector('#dashboardBox.admin-dashboard-shell>.premium-admin-sidebar');
-    if(!side||!isMobile())return;
-    let overlay=document.querySelector('.mobile-admin-drawer-overlay');
-    if(!overlay){overlay=document.createElement('div');overlay.className='mobile-admin-drawer-overlay';overlay.setAttribute('aria-hidden','true');document.body.appendChild(overlay);overlay.addEventListener('click',closeDrawer);}
-    let toggle=side.querySelector('.mobile-admin-drawer-toggle');
-    if(!toggle){toggle=document.createElement('button');toggle.type='button';toggle.className='mobile-admin-drawer-toggle';toggle.setAttribute('aria-label','فتح القائمة الجانبية');toggle.innerHTML='<i class="fa-solid fa-bars"></i>';side.insertBefore(toggle,side.firstChild);toggle.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();document.body.classList.toggle('mobile-admin-nav-open');toggle.setAttribute('aria-label',document.body.classList.contains('mobile-admin-nav-open')?'إغلاق القائمة الجانبية':'فتح القائمة الجانبية');});}
-    if(!side.dataset.drawerBound){side.dataset.drawerBound='1';side.addEventListener('click',e=>{
-      if(!isMobile())return;
-      if(!document.body.classList.contains('mobile-admin-nav-open')){
-        if(e.target.closest('.mobile-admin-drawer-toggle'))return;
-        if(e.target.closest('.tab-btn,.premium-overview,.admin-btn')){e.preventDefault();e.stopPropagation();document.body.classList.add('mobile-admin-nav-open');return;}
-      }else if(e.target.closest('.tab-btn,.premium-overview,.admin-btn')){setTimeout(closeDrawer,90);}
-    },true);}
+  if(window.__arabMobileAdminDrawerV3)return;
+  window.__arabMobileAdminDrawerV3=true;
+  const mobile=()=>window.matchMedia('(max-width:760px)').matches;
+  const opened=()=>document.body.classList.contains('mobile-admin-nav-open');
+  function setOpen(value){
+    document.body.classList.toggle('mobile-admin-nav-open',!!value);
+    const b=document.querySelector('#dashboardBox .mobile-admin-drawer-toggle');
+    if(b)b.setAttribute('aria-label',value?'إغلاق القائمة الجانبية':'فتح القائمة الجانبية');
   }
-  const obs=new MutationObserver(()=>{if(document.body.classList.contains('admin-only'))ensureDrawer();else closeDrawer();});
-  obs.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
-  document.addEventListener('click',e=>{if(!isMobile()||!document.body.classList.contains('mobile-admin-nav-open'))return;if(e.target.closest('.mobile-admin-drawer-overlay'))closeDrawer();});
-  window.addEventListener('resize',()=>{if(!isMobile())closeDrawer();else ensureDrawer();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
-  if(document.body.classList.contains('admin-only'))ensureDrawer();
+  function ensure(){
+    if(!document.body)return;
+    const side=document.querySelector('#dashboardBox.admin-dashboard-shell>.premium-admin-sidebar');
+    if(!side)return;
+    if(!mobile()){setOpen(false);return;}
+    let overlay=document.querySelector('.mobile-admin-drawer-overlay');
+    if(!overlay){
+      overlay=document.createElement('div');
+      overlay.className='mobile-admin-drawer-overlay';
+      overlay.setAttribute('aria-hidden','true');
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click',()=>setOpen(false));
+    }
+    let toggle=side.querySelector('.mobile-admin-drawer-toggle');
+    if(!toggle){
+      toggle=document.createElement('button');
+      toggle.type='button';toggle.className='mobile-admin-drawer-toggle';
+      toggle.setAttribute('aria-label','فتح القائمة الجانبية');
+      toggle.innerHTML='<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+      side.insertBefore(toggle,side.firstChild);
+      toggle.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setOpen(!opened());});
+    }
+    if(!side.dataset.drawerBound){
+      side.dataset.drawerBound='1';
+      side.addEventListener('click',e=>{
+        if(!mobile())return;
+        if(!opened()){
+          if(e.target.closest('.mobile-admin-drawer-toggle'))return;
+          // The entire visible 35px rail is a reliable opening target.
+          const rect=side.getBoundingClientRect();
+          if(e.clientX>=rect.right-42){e.preventDefault();e.stopPropagation();setOpen(true);}
+        }else if(e.target.closest('.tab-btn,.premium-overview,.admin-btn')){
+          window.setTimeout(()=>setOpen(false),120);
+        }
+      },true);
+    }
+  }
+  const start=()=>{
+    ensure();
+    const observer=new MutationObserver(()=>ensure());
+    observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  window.addEventListener('resize',ensure);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false);});
 })();
 </script>
 
 
-<style id="arab-mobile-admin-drawer-final-polish">
-/* Final mobile rail: compact icon strip, with the workspace beginning beside it. */
+<style id="arab-mobile-admin-sidebar-35px-stable">
 @media (max-width:760px){
-  body.admin-only #dashboardBox.admin-dashboard-shell{display:flex!important;flex-direction:row!important;direction:rtl!important;overflow:hidden!important;width:100vw!important;max-width:100vw!important}
+  body.admin-only #dashboardBox.admin-dashboard-shell{
+    display:flex!important;flex-direction:row!important;direction:rtl!important;
+    position:relative!important;overflow:visible!important;width:100%!important;max-width:100%!important;
+  }
   body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{
     position:fixed!important;top:0!important;right:0!important;bottom:0!important;z-index:10060!important;
-    box-sizing:border-box!important;flex:0 0 238px!important;width:238px!important;min-width:238px!important;max-width:238px!important;
-    height:100dvh!important;max-height:100dvh!important;padding:52px 8px 12px!important;
-    overflow-x:hidden!important;overflow-y:auto!important;direction:rtl!important;
-    transform:translateX(calc(100% - 43px))!important;transition:transform .26s cubic-bezier(.2,.75,.25,1)!important;
-    box-shadow:-7px 0 22px rgba(7,20,42,.18)!important
-  }
-  body.admin-only.mobile-admin-nav-open #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{transform:translateX(0)!important}
-  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-main{
-    flex:0 0 calc(100vw - 43px)!important;width:calc(100vw - 43px)!important;max-width:calc(100vw - 43px)!important;
-    min-width:0!important;margin-right:43px!important;direction:rtl!important;box-sizing:border-box!important
-  }
-  /* Closed state: hide labels, not icons; remove decorative empty header/footer space. */
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand{display:flex!important;justify-content:center!important;align-items:center!important;padding:0!important;margin:0 0 8px!important;border:0!important;min-height:0!important}
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>span{display:none!important}
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>div,
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-nav-label,
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview span,
-  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn span,
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot,
-  body.admin-only #dashboardBox .premium-admin-sidebar>.admin-btn{display:none!important}
-  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu{display:flex!important;flex-direction:column!important;gap:5px!important;margin:0!important;padding:0!important}
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview,
-  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn{
-    display:flex!important;justify-content:center!important;align-items:center!important;gap:0!important;
-    width:100%!important;min-width:0!important;min-height:36px!important;height:36px!important;
-    padding:5px 0!important;margin:0!important;border-radius:8px!important
-  }
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview i,
-  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn i{display:inline-block!important;visibility:visible!important;opacity:1!important;font-size:15px!important;width:20px!important;min-width:20px!important;margin:0!important;text-align:center!important}
-  /* Expanded drawer restores readable labels and the full navigation. */
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand{justify-content:flex-start!important;padding:3px 2px 12px!important;margin:0 0 8px!important;border-bottom:1px solid #293750!important}
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand>span{display:grid!important;width:30px!important;height:30px!important;flex:0 0 30px!important;font-size:14px!important}
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand>div,
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-nav-label,
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn span,
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{display:block!important}
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview,
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn{justify-content:flex-start!important;gap:7px!important;padding:9px 7px!important;min-height:38px!important;height:auto!important}
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn span{font-size:10px!important;line-height:1.35!important;white-space:normal!important}
-  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar>.admin-btn{display:block!important;font-size:10px!important;padding:8px!important}
-  body.admin-only .mobile-admin-drawer-toggle{position:absolute!important;top:7px!important;right:6px!important;z-index:5!important;width:30px!important;height:30px!important;min-width:30px!important;padding:0!important;margin:0!important;border:1px solid #40516b!important;border-radius:8px!important;background:#203653!important;color:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:14px!important;line-height:1!important;box-shadow:0 2px 7px #0002!important}
-  body.admin-only.mobile-admin-nav-open .mobile-admin-drawer-toggle{right:7px!important}
-  body.admin-only #dashboardBox .premium-admin-topbar{padding:0 9px!important;min-height:62px!important;height:62px!important;flex-basis:62px!important;gap:5px!important}
-  body.admin-only #dashboardBox .premium-admin-topbar h2{font-size:14px!important}
-  body.admin-only #dashboardBox .premium-admin-workspace{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;padding:11px 9px 22px!important;overflow-x:hidden!important;overflow-y:auto!important}
-  /* Common dimensions for every management section, following Item Management density. */
-  body.admin-only #dashboardBox .premium-admin-workspace .panel-tab.active,
-  body.admin-only #dashboardBox .premium-admin-workspace .panel-tab.active>*{box-sizing:border-box!important;max-width:100%!important}
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-section-intro{margin:0 0 12px!important;padding:0!important}
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-section-intro h3{font-size:16px!important;line-height:1.4!important;margin:0 0 5px!important}
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-section-intro p{font-size:11px!important;line-height:1.65!important;margin:0!important}
-  body.admin-only #dashboardBox .premium-admin-workspace .manage-list-box,
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-form-card,
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-card,
-  body.admin-only #dashboardBox .premium-admin-workspace .settings-card,
-  body.admin-only #dashboardBox .premium-admin-workspace .section-card{
-    width:100%!important;max-width:100%!important;margin:0 0 12px!important;padding:13px!important;border-radius:11px!important
-  }
-  body.admin-only #dashboardBox .premium-admin-workspace h3{font-size:16px!important;line-height:1.4!important}
-  body.admin-only #dashboardBox .premium-admin-workspace h4{font-size:13px!important;line-height:1.45!important}
-  body.admin-only #dashboardBox .premium-admin-workspace label,
-  body.admin-only #dashboardBox .premium-admin-workspace .form-group label{font-size:11px!important}
-  body.admin-only #dashboardBox .premium-admin-workspace input:not([type=checkbox]):not([type=radio]):not([type=color]),
-  body.admin-only #dashboardBox .premium-admin-workspace select,
-  body.admin-only #dashboardBox .premium-admin-workspace textarea{box-sizing:border-box!important;max-width:100%!important;font-size:12px!important;padding:9px!important}
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-btn{font-size:10px!important;padding:8px 10px!important;max-width:100%!important}
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-workspace-actions{gap:6px!important}
-  body.admin-only #dashboardBox .premium-admin-workspace .admin-workspace-actions .admin-btn{flex:0 1 auto!important;width:auto!important}
-  body.admin-only #dashboardBox .premium-admin-workspace table{font-size:10px!important;max-width:100%!important}
-  body.admin-only #dashboardBox .premium-admin-workspace th,
-  body.admin-only #dashboardBox .premium-admin-workspace td{padding:7px 6px!important}
-}
-</style>
-
-
-<style id="arab-mobile-admin-icon-rail-35px-fix">
-@media (max-width:760px){
-  /* Keep a 35px icon rail visible on the right when the drawer is closed. */
-  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{
-    width:238px!important;min-width:238px!important;max-width:238px!important;
-    flex:0 0 238px!important;padding:48px 0 12px!important;
-    transform:translateX(calc(100% - 35px))!important;
-    overflow-x:hidden!important;
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    box-sizing:border-box!important;width:238px!important;min-width:238px!important;max-width:238px!important;flex:0 0 238px!important;
+    height:100dvh!important;max-height:100dvh!important;min-height:100dvh!important;
+    padding:50px 0 12px!important;gap:7px!important;overflow-x:hidden!important;overflow-y:auto!important;
+    direction:rtl!important;transform:translate3d(calc(100% - 35px),0,0)!important;
+    transition:transform .28s cubic-bezier(.2,.75,.25,1)!important;
+    box-shadow:-7px 0 22px rgba(7,20,42,.2)!important;will-change:transform!important;
   }
   body.admin-only.mobile-admin-nav-open #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{
-    transform:translateX(0)!important;padding:52px 8px 12px!important;
+    transform:translate3d(0,0,0)!important;padding:50px 9px 12px!important;
   }
   body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-main{
-    flex:0 0 calc(100vw - 35px)!important;width:calc(100vw - 35px)!important;
-    max-width:calc(100vw - 35px)!important;min-width:0!important;
-    margin-right:35px!important;box-sizing:border-box!important;
+    position:relative!important;z-index:1!important;flex:0 0 calc(100vw - 35px)!important;
+    width:calc(100vw - 35px)!important;max-width:calc(100vw - 35px)!important;min-width:0!important;
+    margin-right:35px!important;box-sizing:border-box!important;direction:rtl!important;
   }
-  /* In the collapsed state, navigation buttons themselves occupy the visible rail. */
-  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu{
-    width:35px!important;min-width:35px!important;margin:0 0 0 auto!important;
-    padding:0!important;display:flex!important;flex-direction:column!important;
-    align-items:stretch!important;gap:5px!important;overflow:visible!important;
-  }
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview{
-    display:flex!important;width:35px!important;min-width:35px!important;max-width:35px!important;
-    height:36px!important;min-height:36px!important;padding:0!important;margin:0 0 6px auto!important;
-    align-items:center!important;justify-content:center!important;box-sizing:border-box!important;
-  }
-  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn{
-    display:flex!important;width:35px!important;min-width:35px!important;max-width:35px!important;
-    height:36px!important;min-height:36px!important;padding:0!important;margin:0!important;
-    align-items:center!important;justify-content:center!important;gap:0!important;
-    box-sizing:border-box!important;overflow:visible!important;
-  }
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview i,
-  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn i{
-    display:inline-flex!important;visibility:visible!important;opacity:1!important;
-    width:20px!important;min-width:20px!important;height:20px!important;
-    align-items:center!important;justify-content:center!important;font-size:16px!important;
-    line-height:1!important;margin:0!important;color:#fff!important;
-    font-family:"Font Awesome 6 Free"!important;font-weight:900!important;
-  }
+  /* Closed rail: align every icon into the visible right-hand 35px strip. */
   body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand,
   body.admin-only #dashboardBox .premium-admin-sidebar .premium-nav-label,
   body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot,
@@ -1622,33 +1552,63 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
   body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>div,
   body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview span,
   body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn span{display:none!important}
-  body.admin-only #dashboardBox .mobile-admin-drawer-toggle{
-    position:absolute!important;top:7px!important;right:2px!important;
-    width:30px!important;height:30px!important;min-width:30px!important;
-    display:flex!important;align-items:center!important;justify-content:center!important;
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu{
+    display:flex!important;flex:0 0 auto!important;flex-direction:column!important;align-items:flex-end!important;
+    width:35px!important;min-width:35px!important;max-width:35px!important;margin:0 0 0 auto!important;
+    padding:0!important;gap:5px!important;border:0!important;overflow:visible!important;
   }
-  /* Expanded drawer returns to its full readable width and original labels. */
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn{
+    display:flex!important;flex:0 0 36px!important;width:35px!important;min-width:35px!important;max-width:35px!important;
+    height:36px!important;min-height:36px!important;max-height:36px!important;margin:0!important;padding:0!important;
+    align-items:center!important;justify-content:center!important;gap:0!important;box-sizing:border-box!important;
+    border-radius:8px!important;overflow:visible!important;text-align:center!important;
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview i,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn i{
+    display:inline-block!important;flex:0 0 20px!important;width:20px!important;min-width:20px!important;
+    height:auto!important;visibility:visible!important;opacity:1!important;text-align:center!important;
+    font-size:16px!important;line-height:1.2!important;margin:0!important;color:#eaf0ff!important;
+  }
+  body.admin-only #dashboardBox .mobile-admin-drawer-toggle{
+    position:absolute!important;display:flex!important;top:7px!important;right:2px!important;left:auto!important;
+    z-index:10070!important;width:30px!important;min-width:30px!important;max-width:30px!important;
+    height:30px!important;min-height:30px!important;margin:0!important;padding:0!important;
+    align-items:center!important;justify-content:center!important;border:1px solid #40516b!important;
+    border-radius:8px!important;background:#203653!important;color:#fff!important;font-size:14px!important;
+    line-height:1!important;box-shadow:0 2px 7px #0002!important;cursor:pointer!important;
+  }
+  body.admin-only .mobile-admin-drawer-overlay{
+    display:none;position:fixed;inset:0;z-index:10050;background:rgba(5,16,32,.42);touch-action:manipulation;
+  }
+  body.admin-only.mobile-admin-nav-open .mobile-admin-drawer-overlay{display:block!important}
+  /* Expanded drawer: restore labels and full-width menu rows. */
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand{
-    display:flex!important;justify-content:flex-start!important;align-items:center!important;
-    padding:3px 2px 12px!important;margin:0 0 8px!important;
+    display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:7px!important;
+    padding:3px 2px 12px!important;margin:0 0 4px!important;
   }
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand>div,
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-nav-label,
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn span,
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{display:block!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{display:flex!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar>.admin-btn{display:block!important}
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu{
-    width:100%!important;min-width:0!important;margin:0!important;padding:0!important;
+    width:100%!important;min-width:0!important;max-width:none!important;align-items:stretch!important;margin:0!important;gap:5px!important;
   }
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview,
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn{
-    width:100%!important;max-width:none!important;height:auto!important;min-height:38px!important;
-    justify-content:flex-start!important;gap:7px!important;padding:9px 7px!important;
+    flex:0 0 auto!important;width:100%!important;min-width:0!important;max-width:none!important;height:auto!important;
+    min-height:38px!important;max-height:none!important;justify-content:flex-start!important;gap:8px!important;
+    padding:9px 7px!important;text-align:right!important;
   }
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
   body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn span{
-    font-size:10px!important;line-height:1.35!important;white-space:normal!important;
+    font-size:10px!important;line-height:1.4!important;white-space:normal!important;
   }
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview i,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-menu .tab-btn i{font-size:14px!important;flex-basis:18px!important;width:18px!important;min-width:18px!important}
 }
 </style>
 
