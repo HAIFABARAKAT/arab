@@ -1515,6 +1515,29 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     max-width:100%!important;font-size:12px!important;padding:8px 9px!important;
   }
   body.admin-only #dashboardBox .premium-admin-workspace button{max-width:100%;font-size:11px}
+
+  /* Collapsed 28px rail: move existing navigation icons into the visible edge.
+     Expanded sidebar and drawer controller remain unchanged. */
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-brand{
+    justify-content:flex-end!important;padding-left:0!important;padding-right:0!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-brand>span{
+    margin-left:0!important;margin-right:0!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn{
+    justify-content:flex-end!important;padding-left:4px!important;padding-right:0!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview i,
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn i,
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-sidebar-foot>i{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    flex:0 0 18px!important;width:18px!important;min-width:18px!important;
+    margin:0!important;visibility:visible!important;opacity:1!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{
+    justify-content:flex-end!important;padding-left:4px!important;padding-right:0!important;
+  }
 }
 </style>
 <script id="arab-mobile-admin-drawer-controller">
