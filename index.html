@@ -1564,6 +1564,12 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     transform:translateY(-50%)!important;margin:0!important;
   }
 }
+  /* One-icon alignment test: shift only the Sections icon 4px toward page-left. */
+  @media(max-width:760px){
+    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar #tabSectionsBtn>i{
+      transform:translate(-4px,-50%)!important;
+    }
+  }
 </style>
 <script id="arab-mobile-admin-drawer-controller">
 (function(){
@@ -1594,31 +1600,6 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 })();
 </script>
 
-
-<style id="one-icon-exact-hamburger-test">
-/* Test only: give the Sections icon the same 26px centered icon-box geometry
-   as the visible hamburger toggle, while preserving the tab button action. */
-@media (max-width: 760px) {
-  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar #tabSectionsBtn > i {
-    position: absolute !important;
-    top: 50% !important;
-    left: 1px !important;
-    right: auto !important;
-    transform: translateY(-50%) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex: 0 0 26px !important;
-    width: 26px !important;
-    min-width: 26px !important;
-    height: 26px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 12px !important;
-    line-height: 1 !important;
-  }
-}
-</style>
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
