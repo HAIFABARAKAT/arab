@@ -1563,6 +1563,12 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     position:absolute!important;left:5px!important;right:auto!important;top:50%!important;
     transform:translateY(-50%)!important;margin:0!important;
   }
+
+  /* ONE-ICON TEST: compensate only for the sidebar + nav left padding,
+     so this icon aligns with the hamburger toggle in the visible 28px rail. */
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar #tabSectionsBtn>i{
+    left:-3px!important;right:auto!important;
+  }
 }
 </style>
 <script id="arab-mobile-admin-drawer-controller">
