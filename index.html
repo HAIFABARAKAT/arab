@@ -1489,6 +1489,89 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 })();
 </script>
 
+
+<style id="arab-mobile-admin-drawer-final-polish">
+/* Final mobile rail: compact icon strip, with the workspace beginning beside it. */
+@media (max-width:760px){
+  body.admin-only #dashboardBox.admin-dashboard-shell{display:flex!important;flex-direction:row!important;direction:rtl!important;overflow:hidden!important;width:100vw!important;max-width:100vw!important}
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{
+    position:fixed!important;top:0!important;right:0!important;bottom:0!important;z-index:10060!important;
+    box-sizing:border-box!important;flex:0 0 238px!important;width:238px!important;min-width:238px!important;max-width:238px!important;
+    height:100dvh!important;max-height:100dvh!important;padding:52px 8px 12px!important;
+    overflow-x:hidden!important;overflow-y:auto!important;direction:rtl!important;
+    transform:translateX(calc(100% - 43px))!important;transition:transform .26s cubic-bezier(.2,.75,.25,1)!important;
+    box-shadow:-7px 0 22px rgba(7,20,42,.18)!important
+  }
+  body.admin-only.mobile-admin-nav-open #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{transform:translateX(0)!important}
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-main{
+    flex:0 0 calc(100vw - 43px)!important;width:calc(100vw - 43px)!important;max-width:calc(100vw - 43px)!important;
+    min-width:0!important;margin-right:43px!important;direction:rtl!important;box-sizing:border-box!important
+  }
+  /* Closed state: hide labels, not icons; remove decorative empty header/footer space. */
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand{display:flex!important;justify-content:center!important;align-items:center!important;padding:0!important;margin:0 0 8px!important;border:0!important;min-height:0!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>span{display:none!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>div,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-nav-label,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn span,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot,
+  body.admin-only #dashboardBox .premium-admin-sidebar>.admin-btn{display:none!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu{display:flex!important;flex-direction:column!important;gap:5px!important;margin:0!important;padding:0!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn{
+    display:flex!important;justify-content:center!important;align-items:center!important;gap:0!important;
+    width:100%!important;min-width:0!important;min-height:36px!important;height:36px!important;
+    padding:5px 0!important;margin:0!important;border-radius:8px!important
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview i,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn i{display:inline-block!important;visibility:visible!important;opacity:1!important;font-size:15px!important;width:20px!important;min-width:20px!important;margin:0!important;text-align:center!important}
+  /* Expanded drawer restores readable labels and the full navigation. */
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand{justify-content:flex-start!important;padding:3px 2px 12px!important;margin:0 0 8px!important;border-bottom:1px solid #293750!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand>span{display:grid!important;width:30px!important;height:30px!important;flex:0 0 30px!important;font-size:14px!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand>div,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-nav-label,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{display:block!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn{justify-content:flex-start!important;gap:7px!important;padding:9px 7px!important;min-height:38px!important;height:auto!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn span{font-size:10px!important;line-height:1.35!important;white-space:normal!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar>.admin-btn{display:block!important;font-size:10px!important;padding:8px!important}
+  body.admin-only .mobile-admin-drawer-toggle{position:absolute!important;top:7px!important;right:6px!important;z-index:5!important;width:30px!important;height:30px!important;min-width:30px!important;padding:0!important;margin:0!important;border:1px solid #40516b!important;border-radius:8px!important;background:#203653!important;color:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:14px!important;line-height:1!important;box-shadow:0 2px 7px #0002!important}
+  body.admin-only.mobile-admin-nav-open .mobile-admin-drawer-toggle{right:7px!important}
+  body.admin-only #dashboardBox .premium-admin-topbar{padding:0 9px!important;min-height:62px!important;height:62px!important;flex-basis:62px!important;gap:5px!important}
+  body.admin-only #dashboardBox .premium-admin-topbar h2{font-size:14px!important}
+  body.admin-only #dashboardBox .premium-admin-workspace{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;padding:11px 9px 22px!important;overflow-x:hidden!important;overflow-y:auto!important}
+  /* Common dimensions for every management section, following Item Management density. */
+  body.admin-only #dashboardBox .premium-admin-workspace .panel-tab.active,
+  body.admin-only #dashboardBox .premium-admin-workspace .panel-tab.active>*{box-sizing:border-box!important;max-width:100%!important}
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-section-intro{margin:0 0 12px!important;padding:0!important}
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-section-intro h3{font-size:16px!important;line-height:1.4!important;margin:0 0 5px!important}
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-section-intro p{font-size:11px!important;line-height:1.65!important;margin:0!important}
+  body.admin-only #dashboardBox .premium-admin-workspace .manage-list-box,
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-form-card,
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-card,
+  body.admin-only #dashboardBox .premium-admin-workspace .settings-card,
+  body.admin-only #dashboardBox .premium-admin-workspace .section-card{
+    width:100%!important;max-width:100%!important;margin:0 0 12px!important;padding:13px!important;border-radius:11px!important
+  }
+  body.admin-only #dashboardBox .premium-admin-workspace h3{font-size:16px!important;line-height:1.4!important}
+  body.admin-only #dashboardBox .premium-admin-workspace h4{font-size:13px!important;line-height:1.45!important}
+  body.admin-only #dashboardBox .premium-admin-workspace label,
+  body.admin-only #dashboardBox .premium-admin-workspace .form-group label{font-size:11px!important}
+  body.admin-only #dashboardBox .premium-admin-workspace input:not([type=checkbox]):not([type=radio]):not([type=color]),
+  body.admin-only #dashboardBox .premium-admin-workspace select,
+  body.admin-only #dashboardBox .premium-admin-workspace textarea{box-sizing:border-box!important;max-width:100%!important;font-size:12px!important;padding:9px!important}
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-btn{font-size:10px!important;padding:8px 10px!important;max-width:100%!important}
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-workspace-actions{gap:6px!important}
+  body.admin-only #dashboardBox .premium-admin-workspace .admin-workspace-actions .admin-btn{flex:0 1 auto!important;width:auto!important}
+  body.admin-only #dashboardBox .premium-admin-workspace table{font-size:10px!important;max-width:100%!important}
+  body.admin-only #dashboardBox .premium-admin-workspace th,
+  body.admin-only #dashboardBox .premium-admin-workspace td{padding:7px 6px!important}
+}
+</style>
+
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
