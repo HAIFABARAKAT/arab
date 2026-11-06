@@ -1594,19 +1594,6 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 })();
 </script>
 
-
-<style id="adminDashboardLanguageStyles">
-#dashboardBox .admin-language-toggle{width:auto!important;min-width:44px!important;height:36px!important;padding:0 9px!important;border-radius:9px!important;font-size:11px!important;font-weight:800!important;letter-spacing:.2px}
-#dashboardBox[dir="ltr"] .premium-admin-sidebar{text-align:left}
-#dashboardBox[dir="ltr"] .premium-admin-sidebar .premium-brand,#dashboardBox[dir="ltr"] .premium-admin-sidebar .premium-overview,#dashboardBox[dir="ltr"] .premium-admin-sidebar .tab-btn,#dashboardBox[dir="ltr"] .premium-sidebar-foot{direction:ltr;text-align:left;justify-content:flex-start}
-#dashboardBox[dir="ltr"] .premium-admin-sidebar .premium-nav-label{text-align:left}
-#dashboardBox[dir="ltr"] .premium-admin-workspace,#dashboardBox[dir="ltr"] .premium-admin-workspace .admin-body{text-align:left}
-#dashboardBox[dir="ltr"] .premium-admin-workspace .admin-section-intro,#dashboardBox[dir="ltr"] .premium-admin-workspace .admin-form-card,#dashboardBox[dir="ltr"] .premium-admin-workspace .form-group{text-align:left}
-#dashboardBox[dir="ltr"] .admin-welcome,#dashboardBox[dir="ltr"] .admin-stat-card,#dashboardBox[dir="ltr"] .admin-quick-card{text-align:left}
-#dashboardBox[dir="ltr"] .admin-welcome{direction:ltr}
-#dashboardBox[dir="ltr"] .premium-admin-topbar{direction:ltr}
-#dashboardBox[dir="rtl"] .premium-admin-topbar{direction:rtl}
-</style>
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
@@ -2353,7 +2340,6 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             if (typeof loadLatestNews === 'function') loadLatestNews();
             if (typeof renderCurrencyTicker === 'function') renderCurrencyTicker();
             if (typeof renderSportsNews === 'function') renderSportsNews();
-            if (typeof applyAdminLanguage === 'function') applyAdminLanguage(lang);
         }
 
         document.getElementById('langToggleBtn').addEventListener('click', () => {
@@ -2704,52 +2690,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             document.getElementById('visitorCount').textContent = activeVisitsCount.toLocaleString();
         }
 
-        const adminDashboardTranslations = {
-  'عرب ماليزيا':'Arab Malaysia','مركز الإدارة':'Administration Center','القائمة الرئيسية':'Main Menu','نظرة عامة':'Overview','إدارة الأقسام':'Manage Sections','إدارة العناصر':'Manage Items','صور الواجهة الرئيسية':'Homepage Slides','إعدادات الصفحة الرئيسية':'Homepage Settings','إدارة الخدمات':'Manage Services','إدارة المدن':'Manage Cities','إدارة الصفحة والظهور':'Page & Visibility','الأخبار والعملات والرياضة':'News, Currency & Sports','مكتبة الصور':'Image Library','استوديو التصميم':'Design Studio','وصول آمن للمسؤول':'Secure Administrator Access','إدارة المنصة':'Platform Management','لوحة الإدارة':'Admin Dashboard','تسجيل الخروج':'Log Out','لوحة التحكم':'Dashboard','التصميم والألوان':'Design & Colors','الأقسام والبطاقات':'Sections & Cards','الأخبار والعملات والرياضة':'News, Currency & Sports','معاينة الموقع':'Preview Website','حفظ ونشر التغييرات':'Save & Publish Changes','استعادة آخر نسخة منشورة':'Restore Last Published Version','فتح اللوحة في تبويب مستقل':'Open Dashboard in New Tab','التعديلات تحفظ كمسودة على هذا الجهاز حتى تضغط «حفظ ونشر التغييرات».':'Changes are saved as a draft on this device until you select “Save & Publish Changes”.','إدارة موقع عرب ماليزيا':'Manage Arab Malaysia Website','كل أدوات إدارة محتوى موقعك في مكان واحد.':'All your website content management tools in one place.','الأقسام':'Sections','العناصر':'Items','الصور':'Images','الأقسام الموجودة بالموقع':'Sections currently on the website','البطاقات داخل الأقسام':'Cards inside sections','الصور والبنرات المسجلة':'Saved images and banners','مركز إدارة المنصة الشاملة':'Central Platform Management','الأقسام والمحتوى':'Sections & Content','إضافة الأقسام والبطاقات وتعديلها وترتيبها.':'Add, edit, and arrange sections and cards.','فتح إدارة الأقسام':'Open Section Management','الصور والبنرات':'Images & Banners','إدارة صور المربع المتحرك ومكتبة الصور.':'Manage slideshow images and the image library.','فتح مكتبة الصور':'Open Image Library','تحديث مكونات الأخبار وأسعار الصرف.':'Update news components and exchange rates.','فتح إعدادات الصفحة':'Open Page Settings','تعديل وإضافة وحذف وإخفاء جميع إضافات الواجهة الجديدة.':'Edit, add, delete, and hide all new interface components.','فتح إدارة الواجهة':'Open Interface Management','الوصول السريع':'Quick Access','إنشاء الأقسام وإدارتها فقط':'Create and manage sections','إدارة البطاقات ومحتواها':'Manage cards and their content','صور الواجهة':'Homepage Images','إدارة المستطيل المتحرك':'Manage the main slideshow','إدارة الصفحة والظهور':'Page & Visibility','إظهار وإخفاء كل مكونات الصفحة':'Show or hide page components','القوالب والمظهر والمعاينة':'Templates, appearance, and preview','فتح إدارة الأقسام':'Open Section Management','فتح مكتبة الصور':'Open Image Library','الألوان والتنسيق':'Colors & Styling','مكتبة الصور':'Image Library','الرجاء ملء جميع خانات انشاء القسم الجديد!':'Please complete all fields for the new section!','تم إنشاء القسم بنجاح!':'Section created successfully!','الرجاء إدخال الأسماء المطلوبة للعنصر!':'Please enter the required item names!','تعذر رفع الصور.':'Could not upload images.','إدارة وحذف الأقسام الكاملة':'Manage and delete sections','إدارة وحذف العناصر الحالية':'Manage and delete current items','اختر القسم لاستعراض وعزل عناصره:':'Select a section to view and filter its items:','إضافة قسم جديد للموقع':'Add a New Website Section','إضافة عنصر جديد لـ قسم':'Add a New Item to a Section','إنشاء وحفظ القسم الجديد':'Create and Save New Section','إضافة العنصر للمعرض':'Add Item to Gallery','عرض التفاصيل والتواصل':'View Details & Contact','حفظ':'Save','إلغاء':'Cancel','إضافة':'Add','تعديل':'Edit','حذف':'Delete','إخفاء':'Hide','إظهار':'Show','تحديث':'Refresh','بحث':'Search','الاسم':'Name','الوصف':'Description','الحالة':'Status','الإجراءات':'Actions','إعدادات':'Settings','إدارة':'Management','الصفحة الرئيسية':'Homepage','العودة':'Back','التالي':'Next','السابق':'Previous','نعم':'Yes','لا':'No','نشط':'Active','متوقف':'Inactive','مفعل':'Enabled','معطل':'Disabled','الرجاء الانتظار...':'Please wait...','حدث خطأ':'An error occurred','تم الحفظ بنجاح':'Saved successfully','تم التحديث بنجاح':'Updated successfully','هل أنت متأكد من الحذف؟':'Are you sure you want to delete?'
-};
-function applyAdminLanguage(lang) {
-  const dash = document.getElementById('dashboardBox');
-  if (!dash || !dash.classList.contains('admin-dashboard-shell')) return;
-  const isEn = lang === 'en';
-  dash.setAttribute('dir', isEn ? 'ltr' : 'rtl');
-  dash.setAttribute('lang', isEn ? 'en' : 'ar');
-  const reverse = Object.fromEntries(Object.entries(adminDashboardTranslations).map(([ar,en])=>[en,ar]));
-  const dict = isEn ? adminDashboardTranslations : reverse;
-  const translateRoot = root => {
-    if (!root) return;
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-    const nodes=[];
-    while(walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(node=>{
-      const raw=node.nodeValue;
-      const trimmed=raw.trim();
-      if(!trimmed || !dict[trimmed]) return;
-      const start=raw.indexOf(trimmed);
-      node.nodeValue=raw.slice(0,start)+dict[trimmed]+raw.slice(start+trimmed.length);
-    });
-    root.querySelectorAll('[placeholder],[title],[aria-label]').forEach(el=>{
-      ['placeholder','title','aria-label'].forEach(attr=>{
-        const value=el.getAttribute(attr);
-        if(value && dict[value]) el.setAttribute(attr,dict[value]);
-      });
-    });
-  };
-  translateRoot(dash);
-  const btn=document.getElementById('adminLanguageToggle');
-  if(btn){btn.textContent=isEn?'عربي':'EN';btn.title=isEn?'Switch dashboard to Arabic':'Switch dashboard to English';btn.setAttribute('aria-label',btn.title);}
-  if(!dash.dataset.languageObserver){
-    const observer=new MutationObserver(()=>{applyAdminLanguage(currentLang);});
-    observer.observe(dash,{childList:true,subtree:true});
-    dash.dataset.languageObserver='1';
-  }
-}
-function toggleAdminLanguage(){
-  const next=currentLang==='ar'?'en':'ar';
-  if(typeof applyLanguageSettings==='function') applyLanguageSettings(next);
-  else applyAdminLanguage(next);
-}
-
-function buildPremiumAdminShell() {
+        function buildPremiumAdminShell() {
             const dash = document.getElementById('dashboardBox');
             if (!dash || dash.dataset.premiumBuilt === '1') return;
             dash.dataset.premiumBuilt = '1';
@@ -2784,7 +2725,7 @@ function buildPremiumAdminShell() {
             main.className = 'premium-admin-main';
             const topbar = document.createElement('div');
             topbar.className = 'premium-admin-topbar';
-            topbar.innerHTML = `<div><small>ARAB MALAYSIA / ADMIN</small><h2 id="adminPageHeading">نظرة عامة</h2></div><div class="premium-top-actions"><span class="premium-online"><i></i> لوحة الإدارة</span><button type="button" id="adminLanguageToggle" class="admin-language-toggle" onclick="toggleAdminLanguage()" title="Switch dashboard language">EN</button><button type="button" onclick="toggleAdminDarkMode()" title="تبديل المظهر"><i id="adminThemeIcon" class="fa-solid fa-moon"></i></button></div>`;
+            topbar.innerHTML = `<div><small>ARAB MALAYSIA / ADMIN</small><h2 id="adminPageHeading">نظرة عامة</h2></div><div class="premium-top-actions"><span class="premium-online"><i></i> لوحة الإدارة</span><button type="button" onclick="toggleAdminDarkMode()" title="تبديل المظهر"><i id="adminThemeIcon" class="fa-solid fa-moon"></i></button></div>`;
             if (header) {
                 const logout = header.querySelector('button[onclick="handleLogout()"]');
                 if (logout) sidebar.appendChild(logout);
@@ -2830,7 +2771,6 @@ function buildPremiumAdminShell() {
             });
             applyAdminAppearance();
             switchTab('overview');
-            applyAdminLanguage(currentLang);
         }
 
         function organizeAdminPanels() {
@@ -3517,7 +3457,6 @@ function buildPremiumAdminShell() {
             if (targetTabId === 'designStudio') renderDesignStudio();
             const workspace = document.querySelector('.premium-admin-workspace');
             if (workspace) workspace.scrollTop = 0;
-            if (typeof applyAdminLanguage === 'function') applyAdminLanguage(currentLang);
         }
 
         function addNewSectionItem() {
