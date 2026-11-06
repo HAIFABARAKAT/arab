@@ -1388,6 +1388,42 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 @media(max-width:760px){.studio-template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.design-studio-panel .color-pickers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-preview{grid-template-columns:1fr}.studio-preview-phone{max-width:170px}.premium-admin-sidebar{max-height:34vh}.premium-admin-workspace{padding:12px!important}.premium-admin-topbar{padding:0 14px!important;height:68px;min-height:68px}.admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-quick-grid{grid-template-columns:1fr}}
 </style>
 
+
+<style id="arab-admin-accordion-and-mobile-navigation">
+/* Blue accordion navigation for the platform administration workspaces */
+.platform-module-accordion{display:grid;gap:10px;margin:18px 0!important;width:100%}
+.platform-module-group{border:1px solid #d7e3f0;border-radius:13px;overflow:hidden;background:#fff;box-shadow:0 3px 12px #17365b0a}
+.platform-module-heading{width:100%;min-height:49px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border:0;background:linear-gradient(100deg,#0756a5,#2876d2);color:#fff;text-align:right;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.platform-module-heading>span{display:flex;align-items:center;gap:10px}.platform-module-heading>span>i{width:19px;text-align:center}
+.platform-module-chevron{transition:transform .2s ease}.platform-module-heading.expanded .platform-module-chevron{transform:rotate(180deg)}
+.platform-module-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;padding:12px;background:#f5f8fc}
+.platform-module-items[hidden]{display:none!important}
+.platform-module-item{min-height:40px;padding:9px 12px;border:1px solid #dce5f0;border-radius:9px;background:#fff;color:#29445f;text-align:right;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.platform-module-item:hover{border-color:#80a9df;background:#edf5ff}.platform-module-item.active{background:#e3efff;border-color:#2c6fca;color:#124e98;box-shadow:inset -3px 0 #2d70d1}
+@media(max-width:760px){
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{flex:0 0 126px!important;width:126px!important;min-width:126px!important;max-width:126px!important;height:100%!important;max-height:100vh!important;padding:10px 7px!important;}
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-main{width:calc(100% - 126px)!important;max-width:calc(100vw - 126px)!important;}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand{justify-content:flex-start!important;padding:3px 2px 12px!important;gap:6px!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>span{width:30px;height:30px;flex:0 0 30px;font-size:14px}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>div{display:block!important;min-width:0}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand b{font-size:11px}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand small{font-size:8px}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-nav-label{display:block!important;font-size:8px;padding:7px 3px}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn span,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot span{display:inline!important;white-space:normal!important;line-height:1.35;font-size:9px;overflow-wrap:anywhere}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn{justify-content:flex-start!important;gap:6px!important;text-align:right!important;padding:9px 6px!important;min-height:38px!important;border-radius:8px!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview i,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn i{width:15px!important;min-width:15px!important;font-size:12px!important;margin:0!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-menu{gap:4px!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .admin-btn{font-size:9px!important;padding:8px 5px!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .admin-btn::after{content:none!important}
+  .platform-module-items{grid-template-columns:1fr;padding:9px}
+  .platform-module-heading{font-size:12px;padding:11px 12px}
+  .platform-module-item{font-size:11px}
+}
+</style>
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
@@ -2544,7 +2580,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             modulePanel.style.cssText = 'display:none;padding:20px;max-width:1200px;margin:auto;width:100%;';
             modulePanel.innerHTML = `
               <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><h2 style="margin:0 0 6px">إدارة المنصة</h2><p style="margin:0;color:#64748b">مراجعة واعتماد الأعمال والإعلانات والوظائف والعقارات ومنشورات المجتمع.</p></div><button class="admin-btn" style="width:auto" onclick="refreshPlatformModules()">تحديث البيانات</button></div>
-              <div id="platformModuleTabs" style="display:flex;gap:8px;flex-wrap:wrap;margin:18px 0"></div>
+              <div id="platformModuleTabs" class="platform-module-accordion"></div>
               <div id="platformModuleStatus" role="status" style="margin:10px 0;color:#475569"></div>
               <div id="platformModuleRows" style="display:grid;gap:12px"></div>`;
             workspace.appendChild(modulePanel);
@@ -2653,16 +2689,40 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             document.querySelectorAll('#dashboardBox .premium-overview').forEach(el => el.classList.remove('active'));
             const platformNav = document.querySelector('#dashboardBox .premium-admin-sidebar .premium-overview[aria-label="platform-management"]');
             if (platformNav) platformNav.classList.add('active');
-            const tabs = document.getElementById('platformModuleTabs');
-            tabs.innerHTML = Object.entries(platformModuleConfig).map(([key,c]) => `<button class="admin-btn" style="width:auto;background:${key===activePlatformModule?'#0f766e':'#64748b'}" onclick="selectPlatformModule('${key}')">${c.label}</button>`).join('');
+            renderPlatformModuleAccordion();
             refreshPlatformModules();
+        }
+        const platformModuleGroups = [
+            {id:'members', title:'إدارة الأعضاء', icon:'fa-users', keys:['members','member_requests','moderation_actions']},
+            {id:'content', title:'إدارة المحتوى والمجتمع', icon:'fa-comments', keys:['community_posts','community_groups','community_group_actions','comments','reports']},
+            {id:'services', title:'إدارة الخدمات والأعمال', icon:'fa-briefcase', keys:['businesses','listings','jobs','properties','business_verification_requests']},
+            {id:'reviews', title:'التقييمات والمراجعات', icon:'fa-star', keys:['business_reviews','platform_reviews','business_review_edits','platform_review_edits','platform_review_limits','business_review_responses']},
+            {id:'logs', title:'السجلات والمؤشرات', icon:'fa-clipboard-list', keys:['audit_logs','growth']}
+        ];
+        const openPlatformModuleGroups = new Set(['members','services']);
+        function renderPlatformModuleAccordion() {
+            const host = document.getElementById('platformModuleTabs');
+            if (!host) return;
+            host.className = 'platform-module-accordion';
+            host.innerHTML = platformModuleGroups.map(group => {
+                const keys = group.keys.filter(key => platformModuleConfig[key]);
+                const expanded = openPlatformModuleGroups.has(group.id);
+                return `<section class="platform-module-group"><button type="button" class="platform-module-heading${expanded?' expanded':''}" aria-expanded="${expanded}" onclick="togglePlatformModuleGroup('${group.id}')"><span><i class="fa-solid ${group.icon}"></i>${group.title}</span><i class="fa-solid fa-chevron-down platform-module-chevron"></i></button><div class="platform-module-items" ${expanded?'':'hidden'}>${keys.map(key => `<button type="button" class="platform-module-item${key===activePlatformModule?' active':''}" onclick="selectPlatformModule('${key}')">${platformModuleConfig[key].label}</button>`).join('')}</div></section>`;
+            }).join('');
+        }
+        function togglePlatformModuleGroup(groupId) {
+            if (openPlatformModuleGroups.has(groupId)) openPlatformModuleGroups.delete(groupId);
+            else openPlatformModuleGroups.add(groupId);
+            renderPlatformModuleAccordion();
         }
         function selectPlatformModule(key) {
             if (!platformModuleConfig[key]) return;
             activePlatformModule = key;
+            const group = platformModuleGroups.find(g => g.keys.includes(key));
+            if (group) openPlatformModuleGroups.add(group.id);
             document.querySelectorAll('#dashboardBox .panel-tab').forEach(el => el.style.display='none');
             document.getElementById('platformModulesPanel').style.display='block';
-            document.getElementById('platformModuleTabs').innerHTML = Object.entries(platformModuleConfig).map(([k,c]) => `<button class="admin-btn" style="width:auto;background:${k===key?'#0f766e':'#64748b'}" onclick="selectPlatformModule('${k}')">${c.label}</button>`).join('');
+            renderPlatformModuleAccordion();
             refreshPlatformModules();
         }
         async function refreshCommunityGroupsPanel(host,status) {
