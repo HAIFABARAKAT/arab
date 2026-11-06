@@ -1333,6 +1333,61 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
 #memberPortal .mp-feed-tools select{max-width:220px}
 @media(max-width:480px){#memberPortal .mp-stats-grid{grid-template-columns:1fr 1fr}#memberPortal .mp-feed-actions .mp-action{font-size:12px;padding:8px}}
 </style>
+
+<style id="arabMalaysiaDesignStudioStyles">
+:root{--am-radius:18px;--am-shadow:0 14px 36px rgba(18,38,63,.10);--am-motion:all .32s cubic-bezier(.2,.75,.25,1)}
+body{transition:background-color .35s ease,color .35s ease}
+.amx-tile,.amx-feature,.amx-city,.amh-live-feature,.sports-news-section,.promo-banner,.amh-tab,.amh-live-stage{transition:var(--am-motion)}
+.amx-tile:hover,.amx-feature:hover,.amx-city:hover{transform:translateY(-5px);box-shadow:0 18px 36px rgba(15,35,65,.15)}
+/* Six design identities: current + five optional layouts */
+body.am-template-community .amx-hero{border-radius:0 0 34px 34px;background:radial-gradient(circle at 12% 18%,#2dd4bf55,transparent 32%),linear-gradient(125deg,#082f49,#0f766e 58%,#164e63);}
+body.am-template-community .amx-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+body.am-template-community .amx-tile{border-radius:22px;box-shadow:0 12px 26px #073b4b18}
+body.am-template-community .amx-feature-row{gap:22px}
+body.am-template-magazine .amx-hero{border-radius:0;background:linear-gradient(110deg,#101827,#27364d 58%,#7c3f24);min-height:330px}
+body.am-template-magazine .amx-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.am-template-magazine .amx-tile:first-child{grid-column:span 2;grid-row:span 2;min-height:230px}
+body.am-template-magazine .news-strip{border-radius:12px;margin:18px auto;max-width:1200px}
+body.am-template-minimal .amx-hero{background:#f8fafc;color:#172033;border:1px solid #e2e8f0;border-radius:20px;box-shadow:none}
+body.am-template-minimal .amx-hero p,body.am-template-minimal .amx-trustline{color:#475569}
+body.am-template-minimal .amx-tile,body.am-template-minimal .amx-feature,body.am-template-minimal .amx-city{box-shadow:none;border:1px solid #e5eaf1;border-radius:12px}
+body.am-template-minimal .amx-tile:hover,body.am-template-minimal .amx-feature:hover,body.am-template-minimal .amx-city:hover{transform:translateY(-2px);box-shadow:0 8px 18px #0f172a0c}
+body.am-template-luxury{background:#f3efe7}
+body.am-template-luxury .amx-hero{background:radial-gradient(circle at 80% 20%,#b99a5a55,transparent 32%),linear-gradient(120deg,#171717,#393126);border:1px solid #a98a4d;border-radius:28px}
+body.am-template-luxury .amx-tile,body.am-template-luxury .amx-feature,body.am-template-luxury .amx-city{border:1px solid #c6ae7d;border-radius:20px;box-shadow:0 16px 35px #33281718}
+body.am-template-luxury .amx-tile-icon{background:linear-gradient(145deg,#b89b60,#6f5730);color:#fff}
+body.am-template-digital{background:linear-gradient(180deg,#eef2ff,#f8fafc 42%)}
+body.am-template-digital .amx-hero{background:radial-gradient(circle at 18% 30%,#22d3ee55,transparent 28%),radial-gradient(circle at 85% 20%,#8b5cf655,transparent 30%),linear-gradient(120deg,#111827,#172554);border-radius:26px;box-shadow:0 22px 55px #312e8133}
+body.am-template-digital .amx-tile,body.am-template-digital .amx-feature,body.am-template-digital .amx-city{border:1px solid #c7d2fe;border-radius:20px;box-shadow:0 14px 30px #3730a315}
+body.am-template-digital .amx-tile:hover{transform:translateY(-7px) perspective(700px) rotateX(2deg);box-shadow:0 24px 42px #3730a32b}
+
+body.am-template-community .section-container{padding:22px;border-radius:24px;background:linear-gradient(135deg,#ecfeff,#f0fdfa);border:1px solid #99f6e4}
+body.am-template-community .card{border-radius:22px;box-shadow:0 15px 28px #0f766e18}
+body.am-template-magazine .section-container{max-width:94%;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+body.am-template-magazine .cards-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+body.am-template-magazine .card{border-radius:8px;box-shadow:0 8px 24px #0f172a12}
+body.am-template-magazine .card-gallery{height:225px}
+body.am-template-minimal .section-container{margin:32px auto}
+body.am-template-minimal .card{border:1px solid #e2e8f0;border-radius:12px;box-shadow:none}
+body.am-template-minimal .card:hover{transform:translateY(-3px);box-shadow:0 10px 20px #0f172a0b}
+body.am-template-luxury .section-container{padding:20px;border:1px solid #c6ae7d;border-radius:20px;background:#fbf8f1}
+body.am-template-luxury .card{border:1px solid #d7c49e;border-radius:16px;box-shadow:0 16px 32px #46351a17}
+body.am-template-luxury .card-info{background:linear-gradient(180deg,#fffdf8,#f4eddf)}
+body.am-template-digital .section-container{padding:20px;border-radius:24px;background:#ffffff9c;border:1px solid #c7d2fe;box-shadow:0 12px 32px #4338ca0c}
+body.am-template-digital .card{border:1px solid #c7d2fe;border-radius:18px;box-shadow:0 14px 30px #3730a315}
+body.am-template-digital .card:hover{box-shadow:0 24px 42px #3730a32b}
+/* Shared premium interactions */
+.amx-tile,.amh-live-feature,.sports-news-section,.news-strip,.currency-strip{border-radius:var(--am-radius)}
+.amx-tile,.amx-feature,.amx-city,.amh-live-feature,.sports-news-section{box-shadow:var(--am-shadow)}
+body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,sans-serif)}
+.amx-tile:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #38bdf8;outline-offset:3px}
+@media(max-width:760px){body.am-template-community .amx-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.am-template-magazine .amx-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.am-template-magazine .amx-tile:first-child{grid-column:span 2;grid-row:auto}body.am-template-minimal .amx-hero,body.am-template-luxury .amx-hero,body.am-template-digital .amx-hero{border-radius:0 0 20px 20px}.amx-tile:hover,.amx-feature:hover,.amx-city:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+/* Admin studio */
+.design-studio{display:grid;gap:18px}.studio-intro{padding:22px;border-radius:20px;background:radial-gradient(circle at 90% 0,#5eead455,transparent 35%),linear-gradient(120deg,#10233f,#1e4978);color:white;box-shadow:0 16px 36px #10233f25}.studio-intro h3{font-size:22px;margin:0 0 8px}.studio-intro p{margin:0;color:#dbeafe;line-height:1.8}.studio-template-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.studio-template{border:1px solid #e2e8f0;background:#fff;border-radius:16px;padding:12px;text-align:right;cursor:pointer;transition:var(--am-motion);color:#1e293b}.studio-template:hover{transform:translateY(-4px);box-shadow:0 14px 28px #1e293b16;border-color:#93c5fd}.studio-template.active{border:2px solid #0f766e;box-shadow:0 0 0 4px #0f766e18}.studio-swatch{height:88px;border-radius:11px;margin-bottom:10px;overflow:hidden;display:flex;gap:5px;padding:8px;background:linear-gradient(135deg,var(--sw1),var(--sw2))}.studio-swatch i{display:block;flex:1;border-radius:7px;background:#ffffff35;border:1px solid #ffffff40}.studio-template b{display:block;font-size:13px}.studio-template small{display:block;color:#64748b;font-size:11px;margin-top:4px;line-height:1.5}.studio-toolbar{display:flex;gap:9px;flex-wrap:wrap}.studio-toolbar button{border:0;border-radius:10px;padding:11px 15px;background:#0f766e;color:white;font-weight:700;cursor:pointer}.studio-toolbar button.secondary{background:#475569}.studio-status{padding:12px;border-radius:11px;background:#f0fdfa;color:#115e59;font-size:12px}.design-studio-panel .color-pickers-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.design-studio-panel .color-item,.design-studio-panel .form-group{padding:13px;border:1px solid #e2e8f0;border-radius:13px;background:#fff}.design-studio-panel .color-item input[type=color]{width:100%;height:40px;border:0;background:transparent}.design-studio-panel #cfgHeaderFooterColor{max-width:100%;height:40px!important}.studio-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.studio-control{padding:13px;border:1px solid #e2e8f0;border-radius:13px;background:#fff}.studio-control label{display:block;font-size:12px;color:#475569;margin-bottom:8px}.studio-control input[type=color]{width:100%;height:40px;border:0;background:transparent;cursor:pointer}.studio-control input[type=range]{width:100%;accent-color:#0f766e}.studio-control select{width:100%;min-height:40px;border:1px solid #dbe4ee;border-radius:9px;padding:7px;background:#fff;color:#1e293b}.studio-options{margin-top:18px;padding:16px;border:1px solid #e2e8f0;border-radius:15px;background:#f8fafc}.studio-options h3{margin:0 0 12px;color:#1e293b}.studio-preview{border:1px solid #dbe4ee;background:#f8fafc;border-radius:16px;padding:14px;display:grid;grid-template-columns:1fr 280px;gap:14px}.studio-preview-screen{border-radius:12px;min-height:170px;padding:16px;background:linear-gradient(130deg,#10233f,#256d83);color:#fff;display:grid;align-content:center;gap:8px}.studio-preview-phone{width:100%;max-width:220px;min-height:170px;margin:auto;border:7px solid #1e293b;border-radius:25px;background:white;padding:10px;box-shadow:0 10px 24px #0f172a20}.studio-preview-phone div{height:18px;border-radius:6px;background:#dbeafe;margin-bottom:7px}.studio-preview-phone div:nth-child(2){height:65px;background:linear-gradient(135deg,#0f766e,#2563eb)}
+@media(max-width:760px){.studio-template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.design-studio-panel .color-pickers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-preview{grid-template-columns:1fr}.studio-preview-phone{max-width:170px}.premium-admin-sidebar{max-height:34vh}.premium-admin-workspace{padding:12px!important}.premium-admin-topbar{padding:0 14px!important;height:68px;min-height:68px}.admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-quick-grid{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
@@ -1620,7 +1675,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                         <button class="admin-quick-card" onclick="switchTab('sections')"><i class="fa-solid fa-layer-group"></i><b>الأقسام</b><small>إنشاء الأقسام وإدارتها فقط</small></button>
                         <button class="admin-quick-card" onclick="switchTab('items')"><i class="fa-solid fa-list"></i><b>العناصر</b><small>إدارة البطاقات ومحتواها</small></button>
                         <button class="admin-quick-card" onclick="switchTab('promo')"><i class="fa-regular fa-images"></i><b>صور الواجهة</b><small>إدارة المستطيل المتحرك</small></button>
-                        <button class="admin-quick-card" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><b>الأخبار والعملات والرياضة</b><small>إعدادات هذا المكوّن في مكان واحد</small></button>
+                        <button class="admin-quick-card" onclick="switchTab('control')"><i class="fa-solid fa-eye"></i><b>إدارة الصفحة والظهور</b><small>إظهار وإخفاء كل مكونات الصفحة</small></button><button class="admin-quick-card" onclick="switchTab('designStudio')"><i class="fa-solid fa-wand-magic-sparkles"></i><b>استوديو التصميم</b><small>القوالب والمظهر والمعاينة</small></button>
                     </div>
                 </div>
                 <!-- Tab View Component 1: Theme Personalization Engine Control Panel -->
@@ -1886,6 +1941,10 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
         let currentLang = localStorage.getItem('siteLang') || 'ar';
         let webSections = JSON.parse(localStorage.getItem('webSectionsData')) || defaultSectionsData;
         let siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
+        const designTemplates = {current:{name:'الهوية العربية العصرية',className:'',colors:{bg:'#f4f7f6',text:'#333333',btn:'#2196f3',hover:'#00bcd4',headerFooter:'#1a237e'}},community:{name:'المجتمع الحيوي',className:'am-template-community',colors:{bg:'#f0fdfa',text:'#123047',btn:'#0f766e',hover:'#2dd4bf',headerFooter:'#082f49'}},magazine:{name:'المجلة الاحترافية',className:'am-template-magazine',colors:{bg:'#f7f5f1',text:'#202938',btn:'#9a4d2e',hover:'#d6a36a',headerFooter:'#101827'}},minimal:{name:'البساطة الذكية',className:'am-template-minimal',colors:{bg:'#f8fafc',text:'#263244',btn:'#334155',hover:'#64748b',headerFooter:'#e2e8f0'}},luxury:{name:'الهوية الفاخرة',className:'am-template-luxury',colors:{bg:'#f3efe7',text:'#30291f',btn:'#92733e',hover:'#c5a66a',headerFooter:'#171717'}},digital:{name:'المستقبل الرقمي',className:'am-template-digital',colors:{bg:'#eef2ff',text:'#172554',btn:'#4f46e5',hover:'#06b6d4',headerFooter:'#111827'}}};
+        let activeDesignTemplate = localStorage.getItem('arabMalaysiaActiveDesign') || 'current';
+        let designSettings = JSON.parse(localStorage.getItem('arabMalaysiaDesignSettings') || 'null') || {radius:18,shadow:12,motion:320,font:'system'};
+        let designDraft = JSON.parse(localStorage.getItem('arabMalaysiaDesignDraft') || 'null') || {template:activeDesignTemplate,theme:siteTheme,settings:designSettings};
         let activePromoIdx = 0;
         let isUserAdminLoggedIn = false;
         let autoSliderIntervalId = null;
@@ -1986,6 +2045,9 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                     siteTheme = JSON.parse(localStorage.getItem('siteThemeColors')) || defaultTheme;
                     promoSlides = JSON.parse(localStorage.getItem('promoSlidesData')) || promoSlides;
                     siteSettings = { ...defaultSiteSettings, ...(JSON.parse(localStorage.getItem('arabMalaysiaSiteSettings') || 'null') || {}) };
+                    experienceConfig = { ...defaultExperienceConfig, ...(JSON.parse(localStorage.getItem('arabMalaysiaExperienceConfig') || 'null') || {}) };
+                    const localDesignDraft=JSON.parse(localStorage.getItem('arabMalaysiaDesignDraft')||'null');
+                    if(localDesignDraft && designTemplates[localDesignDraft.template]){activeDesignTemplate=localDesignDraft.template;siteTheme=localDesignDraft.theme||siteTheme;}
                 } else {
                     await loadCloudContent();
                 }
@@ -1995,9 +2057,12 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                 console.error('Supabase initialization:', error);
                 alert('تعذر الاتصال بالخدمة السحابية. سيعرض الموقع البيانات المحلية مؤقتاً.');
             }
+            applyDesignTemplate(activeDesignTemplate,false);
+            applyDesignSettings();
             applyLanguageSettings(currentLang);
             applyThemeStyles(siteTheme);
             applySiteSettings();
+            if (typeof applyExperienceConfig === 'function') applyExperienceConfig();
             if (location.hash === '#admin') {
                 document.body.classList.add('admin-only');
                 document.getElementById('adminDialog').classList.add('active');
@@ -2067,11 +2132,11 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             root.setProperty('--text-hover-color', theme.hover);
             root.setProperty('--banner-footer-color', theme.headerFooter);
 
-            document.getElementById('cfgBgColor').value = theme.bg;
-            document.getElementById('cfgTextColor').value = theme.text;
-            document.getElementById('cfgBtnColor').value = theme.btn;
-            document.getElementById('cfgHoverColor').value = theme.hover;
-            document.getElementById('cfgHeaderFooterColor').value = theme.headerFooter;
+            if(document.getElementById('cfgBgColor')) document.getElementById('cfgBgColor').value = theme.bg;
+            if(document.getElementById('cfgTextColor')) document.getElementById('cfgTextColor').value = theme.text;
+            if(document.getElementById('cfgBtnColor')) document.getElementById('cfgBtnColor').value = theme.btn;
+            if(document.getElementById('cfgHoverColor')) document.getElementById('cfgHoverColor').value = theme.hover;
+            if(document.getElementById('cfgHeaderFooterColor')) document.getElementById('cfgHeaderFooterColor').value = theme.headerFooter;
         }
 
         function updateThemeLive() {
@@ -2084,6 +2149,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             };
             siteTheme = liveTheme;
             localStorage.setItem('siteThemeColors', JSON.stringify(liveTheme));
+            designDraft={template:activeDesignTemplate,theme:{...liveTheme},settings:{...designSettings}};localStorage.setItem('arabMalaysiaDesignDraft',JSON.stringify(designDraft));
             applyThemeStyles(liveTheme);
             if (isUserAdminLoggedIn) commitAndSyncSystemDatastores();
         }
@@ -2091,9 +2157,51 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
         function resetThemeDefault() {
             siteTheme = { ...defaultTheme };
             localStorage.setItem('siteThemeColors', JSON.stringify(siteTheme));
+            designDraft={template:activeDesignTemplate,theme:{...siteTheme},settings:{...designSettings}};localStorage.setItem('arabMalaysiaDesignDraft',JSON.stringify(designDraft));
             applyThemeStyles(siteTheme);
             if (isUserAdminLoggedIn) commitAndSyncSystemDatastores();
         }
+
+
+        function applyDesignSettings(){
+          const r=Math.max(6,Math.min(30,Number(designSettings.radius)||18));
+          const sh=Math.max(0,Math.min(30,Number(designSettings.shadow)||0));
+          const m=Math.max(0,Math.min(800,Number(designSettings.motion)||0));
+          const root=document.documentElement.style;
+          root.setProperty('--am-radius',r+'px');root.setProperty('--am-shadow',`0 14px 36px rgba(18,38,63,${sh/100})`);root.setProperty('--am-motion',`all ${m}ms cubic-bezier(.2,.75,.25,1)`);
+          const fonts={system:"system-ui,-apple-system,'Segoe UI',Tahoma,Arial,sans-serif",tahoma:'Tahoma,Arial,sans-serif',arial:'Arial,sans-serif',georgia:'Georgia,serif'};
+          root.setProperty('--am-font',fonts[designSettings.font]||fonts.system);
+          const fields={studioRadius:r,studioShadow:sh,studioMotion:m,studioFont:designSettings.font||'system'};
+          Object.entries(fields).forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.value=v;});
+          const rv=document.getElementById('studioRadiusValue');if(rv)rv.textContent=r+'px';const sv=document.getElementById('studioShadowValue');if(sv)sv.textContent=sh+'%';
+        }
+        function updateDesignSetting(key,value){
+          if(key==='radius'||key==='shadow'||key==='motion')designSettings[key]=Number(value);else if(key==='font'&&['system','tahoma','arial','georgia'].includes(value))designSettings.font=value;
+          applyDesignSettings();designDraft={template:activeDesignTemplate,theme:{...siteTheme},settings:{...designSettings}};localStorage.setItem('arabMalaysiaDesignDraft',JSON.stringify(designDraft));localStorage.setItem('arabMalaysiaDesignSettings',JSON.stringify(designSettings));
+          const st=document.getElementById('studioDraftStatus');if(st)st.textContent='تم تحديث تفاصيل المظهر والحركة في المعاينة والمسودة المحلية.';
+        }
+
+        function applyDesignTemplate(id, updateTheme=true){
+          const chosen=designTemplates[id]||designTemplates.current; activeDesignTemplate=id in designTemplates?id:'current';
+          document.body.classList.remove(...Object.values(designTemplates).map(x=>x.className).filter(Boolean));
+          if(chosen.className)document.body.classList.add(chosen.className);
+          if(updateTheme){siteTheme={...chosen.colors};applyThemeStyles(siteTheme);}
+          localStorage.setItem('arabMalaysiaActiveDesign',activeDesignTemplate);
+          designDraft={template:activeDesignTemplate,theme:{...siteTheme},settings:{...designSettings}};
+          localStorage.setItem('arabMalaysiaDesignDraft',JSON.stringify(designDraft));
+          if(document.getElementById('studioTemplateGrid'))renderDesignStudio();
+        }
+        function renderDesignStudio(){
+          const host=document.getElementById('studioTemplateGrid');if(!host)return;
+          host.innerHTML=Object.entries(designTemplates).map(([id,t])=>`<button type="button" class="studio-template ${id===activeDesignTemplate?'active':''}" onclick="selectDesignTemplate('${id}')"><span class="studio-swatch" style="--sw1:${t.colors.headerFooter};--sw2:${t.colors.btn}"><i></i><i></i><i></i></span><b>${t.name}</b><small>${id==='current'?'القالب الأصلي المحفوظ':id==='community'?'تخطيط حيوي ومساحات مجتمعية':'هوية بصرية وتخطيط مختلف'}</small></button>`).join('');
+          const keys={bg:'cfgBgColor',text:'cfgTextColor',btn:'cfgBtnColor',hover:'cfgHoverColor',headerFooter:'cfgHeaderFooterColor'};Object.entries(keys).forEach(([k,id])=>{const el=document.getElementById(id);if(el)el.value=siteTheme[k]||defaultTheme[k];});applyDesignSettings();
+        }
+        function selectDesignTemplate(id){if(!designTemplates[id])return;applyDesignTemplate(id,true);const st=document.getElementById('studioDraftStatus');if(st)st.textContent='تم تطبيق '+designTemplates[id].name+' كمعاينة ومسودة محلية. احفظ المسودة ثم انشر عند الانتهاء.';commitAndSyncSystemDatastores(false);}
+        function updateStudioColor(key,value){if(!['bg','text','btn','hover','headerFooter'].includes(key))return;siteTheme={...siteTheme,[key]:value};applyThemeStyles(siteTheme);designDraft={template:activeDesignTemplate,theme:{...siteTheme},settings:{...designSettings}};localStorage.setItem('arabMalaysiaDesignDraft',JSON.stringify(designDraft));localStorage.setItem('siteThemeColors',JSON.stringify(siteTheme));const st=document.getElementById('studioDraftStatus');if(st)st.textContent='تم تحديث المعاينة. التغييرات محفوظة كمسودة محلية فقط.';}
+        function saveDesignDraft(){designDraft={template:activeDesignTemplate,theme:{...siteTheme},settings:{...designSettings}};localStorage.setItem('arabMalaysiaDesignDraft',JSON.stringify(designDraft));localStorage.setItem('arabMalaysiaActiveDesign',activeDesignTemplate);localStorage.setItem('siteThemeColors',JSON.stringify(siteTheme));commitAndSyncSystemDatastores(false);const st=document.getElementById('studioDraftStatus');if(st)st.textContent='تم حفظ مسودة التصميم على هذا الجهاز. لن تظهر للزوار حتى النشر.';}
+        function previewDesignStudio(){saveDesignDraft();previewWebsite();}
+        function resetStudioColors(){const t=designTemplates[activeDesignTemplate]||designTemplates.current;siteTheme={...t.colors};applyThemeStyles(siteTheme);renderDesignStudio();saveDesignDraft();}
+        function restoreDesignPrevious(){const previous=lastPublishedSnapshot?.design?.template||'current';if(!confirm('استعادة آخر قالب منشور كمسودة؟'))return;applyDesignTemplate(previous,false);siteTheme={...(lastPublishedSnapshot?.design?.theme||lastPublishedSnapshot?.theme||designTemplates[previous].colors)};designSettings={...(lastPublishedSnapshot?.design?.settings||designSettings)};applyDesignSettings();applyThemeStyles(siteTheme);saveDesignDraft();}
 
         function buildPromoSlidesAdminList() {
             const host = document.getElementById('promoSlidesAdminList');
@@ -2385,9 +2493,10 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
               <button class="tab-btn" id="tabHomepageBtn" onclick="switchTab('homepage')"><i class="fa-solid fa-house"></i><span>إعدادات الصفحة الرئيسية</span></button>
               <button class="tab-btn" id="tabServicesBtn" onclick="switchTab('services')"><i class="fa-solid fa-grid-2"></i><span>إدارة الخدمات</span></button>
               <button class="tab-btn" id="tabCitiesBtn" onclick="switchTab('cities')"><i class="fa-solid fa-city"></i><span>إدارة المدن</span></button>
+              <button class="tab-btn" id="tabPageControlBtn" onclick="switchTab('control')"><i class="fa-solid fa-eye"></i><span>إدارة الصفحة والظهور</span></button>
               <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settings')"><i class="fa-regular fa-newspaper"></i><span>الأخبار والعملات والرياضة</span></button>
               <button class="tab-btn" id="tabImagesBtn" onclick="switchTab('images')"><i class="fa-regular fa-images"></i><span>مكتبة الصور</span></button>
-              <button class="tab-btn" id="tabColorsBtn" onclick="switchTab('colors')"><i class="fa-solid fa-palette"></i><span>التصميم والألوان</span></button>`;
+              <button class="tab-btn" id="tabDesignStudioBtn" onclick="switchTab('designStudio')"><i class="fa-solid fa-wand-magic-sparkles"></i><span>استوديو التصميم</span></button>`;
             sidebar.appendChild(nav);
             sidebar.insertAdjacentHTML('beforeend', `<div class="premium-sidebar-foot"><i class="fa-solid fa-shield-halved"></i><span>وصول آمن للمسؤول</span></div>`);
             const main = document.createElement('section');
@@ -2446,6 +2555,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             const body = document.querySelector('#dashboardBox .admin-body');
             const sections = document.getElementById('tabSections');
             const settings = document.getElementById('tabSettings');
+            const colors = document.getElementById('tabColors');
             const experience = document.getElementById('tabExperience');
             if (!body || !sections || !experience || body.dataset.organized === '1') return;
             body.dataset.organized = '1';
@@ -2455,6 +2565,13 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                 panel.innerHTML = `<div class="admin-section-intro"><h3>${title}</h3><p>${description}</p></div>`;
                 return panel;
             };
+            const studioPanel = makePanel('tabDesignStudio','استوديو التصميم','مركز موحد للقوالب والمظهر والمعاينة. التغييرات تبقى مسودة حتى تعتمد النشر.');
+            studioPanel.classList.add('design-studio-panel');
+            if (colors) { const oldColorContent=Array.from(colors.children); oldColorContent.forEach(node=>studioPanel.appendChild(node)); colors.remove(); }
+            studioPanel.insertAdjacentHTML('afterbegin', `<div class="studio-intro"><h3>استوديو التصميم · Arab Malaysia</h3><p>اختر هوية الموقع، جرّب الألوان، وعاين تجربة الكمبيوتر والهاتف. القالب الحالي محفوظ ويمكن الرجوع إليه في أي وقت.</p></div><div id="studioTemplateGrid" class="studio-template-grid"></div><div class="studio-toolbar"><button type="button" onclick="saveDesignDraft()"><i class="fa-solid fa-floppy-disk"></i> حفظ كمسودة</button><button type="button" class="secondary" onclick="previewDesignStudio()"><i class="fa-solid fa-eye"></i> معاينة التصميم</button><button type="button" class="secondary" onclick="restoreDesignPrevious()"><i class="fa-solid fa-rotate-left"></i> استعادة القالب السابق</button><button type="button" onclick="publishWebsiteChanges()"><i class="fa-solid fa-cloud-arrow-up"></i> اعتماد ونشر التصميم</button></div><div id="studioDraftStatus" class="studio-status">اختر قالباً لبدء التخصيص. لن يرى الزوار التغييرات قبل النشر.</div><div class="studio-preview"><div class="studio-preview-screen"><b>عرب ماليزيا</b><strong>كل ما يحتاجه العربي في ماليزيا… في مكان واحد</strong><span>معاينة مصغرة لتخطيط الصفحة الرئيسية</span></div><div class="studio-preview-phone"><div></div><div></div><div></div><div></div><small style="color:#475569">معاينة الهاتف</small></div></div><h3>تخصيص الألوان</h3>`);
+
+            studioPanel.insertAdjacentHTML('beforeend', `<div class="studio-options"><h3>تفاصيل المظهر والحركة</h3><div class="studio-controls"><div class="studio-control"><label>استدارة الحواف <span id="studioRadiusValue">18px</span></label><input id="studioRadius" type="range" min="6" max="30" value="18" oninput="updateDesignSetting('radius',this.value)"></div><div class="studio-control"><label>قوة الظلال <span id="studioShadowValue">12%</span></label><input id="studioShadow" type="range" min="0" max="30" value="12" oninput="updateDesignSetting('shadow',this.value)"></div><div class="studio-control"><label>سرعة الحركة</label><select id="studioMotion" onchange="updateDesignSetting('motion',this.value)"><option value="180">سريعة ومرنة</option><option value="320" selected>متوازنة وناعمة</option><option value="520">هادئة وبطيئة</option><option value="0">بدون حركة انتقالية</option></select></div><div class="studio-control"><label>نوع الخط</label><select id="studioFont" onchange="updateDesignSetting('font',this.value)"><option value="system">خط النظام العصري</option><option value="tahoma">Tahoma</option><option value="arial">Arial</option><option value="georgia">Georgia</option></select></div></div></div>`);
+            renderDesignStudio();
             const sectionNodes = Array.from(sections.children);
             const promoPanel = makePanel('tabPromo', 'صور الواجهة الرئيسية', 'إدارة صور المستطيل المتحرك: إضافة الصور وتعديلها وحذفها بصورة مستقلة.');
             if (sectionNodes[0]) promoPanel.appendChild(sectionNodes[0]);
@@ -2478,7 +2595,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
 
             // Keep the old all-in-one control center out of navigation to prevent duplicate actions.
             const legacyControl = document.getElementById('tabControl');
-            if (legacyControl) legacyControl.style.display = 'none';
+            if (legacyControl) { legacyControl.style.display = ''; legacyControl.querySelector('.admin-section-intro')?.remove(); legacyControl.insertAdjacentHTML('afterbegin','<div class="admin-section-intro"><h3>إدارة الصفحة والظهور</h3><p>تحكم من مكان واحد في إظهار وإخفاء مكونات الصفحة الرئيسية والأقسام والخدمات والعناصر والأخبار والعملات والرياضة.</p></div>'); }
             const legacyExperience = document.getElementById('tabExperience');
             if (legacyExperience) legacyExperience.style.display = 'none';
             const legacyTabMenu = document.querySelector('#dashboardBox .tab-menu');
@@ -2903,6 +3020,8 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                 if (Array.isArray(data.content.sections)) webSections = data.content.sections;
                 if (Array.isArray(data.content.promoSlides)) promoSlides = data.content.promoSlides;
                 if (data.content.theme) siteTheme = data.content.theme;
+                if (data.content.design && designTemplates[data.content.design.template]) { activeDesignTemplate=data.content.design.template; designDraft={template:activeDesignTemplate,theme:data.content.design.theme||siteTheme,settings:data.content.design.settings||designSettings}; designSettings={...designSettings,...(data.content.design.settings||{})}; applyDesignSettings(); } else { activeDesignTemplate='current'; designSettings={radius:18,shadow:12,motion:320,font:'system'}; designDraft={template:'current',theme:siteTheme,settings:designSettings}; applyDesignSettings(); }
+                applyDesignTemplate(activeDesignTemplate,false);
                 if (data.content.settings) siteSettings = { ...defaultSiteSettings, ...data.content.settings };
                 if (data.content.experience) experienceConfig = { ...defaultExperienceConfig, ...data.content.experience };
                 localStorage.setItem('arabMalaysiaExperienceConfig', JSON.stringify(experienceConfig));
@@ -2917,8 +3036,20 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             }
             localStorage.setItem('promoSlidesData', JSON.stringify(promoSlides));
             lastPublishedSnapshot = makeSiteSnapshot();
+            if (location.hash === '#preview') {
+                webSections = JSON.parse(localStorage.getItem('webSectionsData') || 'null') || webSections;
+                promoSlides = JSON.parse(localStorage.getItem('promoSlidesData') || 'null') || promoSlides;
+                siteSettings = { ...defaultSiteSettings, ...(JSON.parse(localStorage.getItem('arabMalaysiaSiteSettings') || 'null') || siteSettings) };
+                experienceConfig = { ...defaultExperienceConfig, ...(JSON.parse(localStorage.getItem('arabMalaysiaExperienceConfig') || 'null') || experienceConfig) };
+                const draft = JSON.parse(localStorage.getItem('arabMalaysiaDesignDraft') || 'null');
+                if (draft && designTemplates[draft.template]) { activeDesignTemplate=draft.template; siteTheme=draft.theme||siteTheme; designSettings={...designSettings,...(draft.settings||{})}; applyDesignSettings(); }
+                applyDesignTemplate(activeDesignTemplate,false); applyThemeStyles(siteTheme);
+            }
             if (typeof applyExperienceConfig === 'function') applyExperienceConfig();
             cloudContentReady = true;
+            applyDesignTemplate(activeDesignTemplate,false);
+            applyDesignSettings();
+            applyThemeStyles(siteTheme);
         }
 
         async function uploadBlobToCloud(blob, secId, cardId) {
@@ -3010,7 +3141,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             document.querySelectorAll('#dashboardBox .tab-menu').forEach(el => el.style.display = '');
             document.querySelectorAll('#dashboardBox .admin-workspace-actions').forEach(el => el.style.display = '');
             const tabMap = {
-                overview: 'tabOverview', colors: 'tabColors', sections: 'tabSections', items: 'tabItems',
+                overview: 'tabOverview', colors: 'tabDesignStudio', designStudio:'tabDesignStudio', sections: 'tabSections', items: 'tabItems',
                 promo: 'tabPromo', homepage: 'tabHomepage', services: 'tabServices', cities: 'tabCities',
                 images: 'tabImages', settings: 'tabSettings', experience: 'tabHomepage', control: 'tabControl'
             };
@@ -3023,18 +3154,19 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
                 // Explicit display prevents a hidden panel when dashboard CSS/layout is reflowed.
                 t.style.setProperty('display', active ? 'block' : 'none', 'important');
             });
-            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام', items: 'إدارة العناصر', promo: 'صور الواجهة الرئيسية', homepage: 'إعدادات الصفحة الرئيسية', services: 'إدارة الخدمات', cities: 'إدارة المدن', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة', experience: 'إعدادات الصفحة الرئيسية', control: 'مركز التحكم' };
+            const headings = { overview: 'نظرة عامة', colors: 'التصميم والألوان', sections: 'إدارة الأقسام', items: 'إدارة العناصر', promo: 'صور الواجهة الرئيسية', homepage: 'إعدادات الصفحة الرئيسية', services: 'إدارة الخدمات', cities: 'إدارة المدن', images: 'مكتبة الصور', settings: 'الأخبار والعملات والرياضة', experience: 'إعدادات الصفحة الرئيسية', control: 'إدارة الصفحة والظهور', designStudio:'استوديو التصميم' };
             const heading = document.getElementById('adminPageHeading');
             if (heading) heading.textContent = headings[targetTabId] || 'لوحة التحكم';
             const activeButton = targetTabId === 'overview'
                 ? document.querySelector('.premium-overview')
-                : document.getElementById(({colors:'tabColorsBtn',sections:'tabSectionsBtn',items:'tabItemsBtn',promo:'tabPromoBtn',homepage:'tabHomepageBtn',services:'tabServicesBtn',cities:'tabCitiesBtn',images:'tabImagesBtn',settings:'tabSettingsBtn',experience:'tabHomepageBtn',control:'tabControlBtn'})[targetTabId]);
+                : document.getElementById(({colors:'tabDesignStudioBtn',designStudio:'tabDesignStudioBtn',control:'tabPageControlBtn',sections:'tabSectionsBtn',items:'tabItemsBtn',promo:'tabPromoBtn',homepage:'tabHomepageBtn',services:'tabServicesBtn',cities:'tabCitiesBtn',images:'tabImagesBtn',settings:'tabSettingsBtn',experience:'tabHomepageBtn'})[targetTabId]);
             if (activeButton) activeButton.classList.add('active');
             if (targetTabId === 'overview') updateAdminOverviewStats();
             if (targetTabId === 'settings') applySiteSettings();
             if (['experience','homepage','services','cities'].includes(targetTabId)) buildExperienceAdminEditor();
             if (targetTabId === 'promo') buildPromoSlidesAdminList();
             if (targetTabId === 'images') buildAdminImageLibrary();
+            if (targetTabId === 'designStudio') renderDesignStudio();
             const workspace = document.querySelector('.premium-admin-workspace');
             if (workspace) workspace.scrollTop = 0;
         }
@@ -3448,7 +3580,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
         }
 
         function makeSiteSnapshot() {
-            return JSON.parse(JSON.stringify({ sections: webSections, theme: siteTheme, promoSlides, settings: siteSettings, experience: experienceConfig }));
+            return JSON.parse(JSON.stringify({ sections: webSections, theme: siteTheme, promoSlides, settings: siteSettings, experience: experienceConfig, design:{template:activeDesignTemplate,theme:siteTheme,settings:designSettings} }));
         }
 
         async function commitAndSyncSystemDatastores(publish = false) {
@@ -3477,7 +3609,7 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             }
             const { error } = await supabaseClient.from('site_content').upsert({
                 id: 1,
-                content: { sections: webSections, theme: siteTheme, promoSlides: promoSlides, settings: siteSettings, experience: experienceConfig },
+                content: { sections: webSections, theme: siteTheme, promoSlides: promoSlides, settings: siteSettings, experience: experienceConfig, design:{template:activeDesignTemplate,theme:siteTheme,settings:designSettings} },
                 updated_at: new Date().toISOString()
             }, { onConflict: 'id' });
             if (error) {
@@ -3511,6 +3643,9 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
             promoSlides = JSON.parse(JSON.stringify(lastPublishedSnapshot.promoSlides));
             siteSettings = JSON.parse(JSON.stringify(lastPublishedSnapshot.settings || defaultSiteSettings));
             experienceConfig = JSON.parse(JSON.stringify(lastPublishedSnapshot.experience || defaultExperienceConfig));
+            activeDesignTemplate = lastPublishedSnapshot.design?.template || 'current';
+            designSettings = {...(lastPublishedSnapshot.design?.settings||{radius:18,shadow:12,motion:320,font:'system'})}; applyDesignSettings();
+            applyDesignTemplate(activeDesignTemplate,false);
             applyThemeStyles(siteTheme);
             applySiteSettings();
             commitAndSyncSystemDatastores(false);
@@ -3572,9 +3707,9 @@ html[dir="ltr"] #memberPortal .mp-card{direction:ltr}
         // Granular control center: independent visibility and CRUD for each homepage object.
         function granularItems(){
           const a=[];
-          const modules=[['heroVisible','الواجهة الرئيسية','Main hero'],['promoVisible','مستطيل الصور المتحرك','Main slideshow'],['servicesVisible','منطقة الخدمات','Services area'],['lifeVisible','بطاقة الحياة والدراسة','Life & study card'],['businessVisible','بطاقة أصحاب الأعمال','Business card'],['citiesVisible','قسم المدن','Cities area'],['trustVisible','مركز الثقة والتوثيق','Trust center']];
-          modules.forEach(([key,ar,en])=>a.push({type:'module',id:key,key,title:ar,sub:en,visible:experienceConfig[key]!==false}));
-          // News, currency and sports visibility is managed only in the dedicated News & Rates page.
+          const modules=[['heroVisible','الواجهة الرئيسية','Main hero'],['promoVisible','مستطيل الصور المتحرك','Main slideshow'],['newsEnabled','شريط الأخبار','News ticker'],['currencyEnabled','شريط العملات','Currency ticker'],['sportsEnabled','الأخبار الرياضية','Sports news'],['servicesVisible','منطقة الخدمات','Services area'],['lifeVisible','بطاقة الحياة والدراسة','Life & study card'],['businessVisible','بطاقة أصحاب الأعمال','Business card'],['citiesVisible','قسم المدن','Cities area'],['trustVisible','مركز الثقة والتوثيق','Trust center']];
+          modules.forEach(([key,ar,en])=>a.push({type:'module',id:key,key,title:ar,sub:en,visible:['newsEnabled','currencyEnabled','sportsEnabled'].includes(key)?siteSettings[key]!==false:experienceConfig[key]!==false}));
+          // News, currency and sports visibility is also exposed here for one-stop homepage control.
           (experienceConfig.tiles||[]).forEach(x=>a.push({type:'service',id:x.id,title:x.titleAr||x.titleEn,sub:x.titleEn||'خدمة',visible:x.visible!==false,raw:x}));
           webSections.forEach(sec=>{a.push({type:'section',id:sec.id,title:sec.titleAr||sec.titleEn,sub:`قسم · ${(sec.cards||[]).length} عناصر`,visible:sec.visible!==false,raw:sec});(sec.cards||[]).forEach(card=>a.push({type:'card',id:card.id,secId:sec.id,title:card.nameAr||card.nameEn,sub:`ضمن ${sec.titleAr||sec.titleEn}`,visible:card.visible!==false,raw:card,image:(card.images||[])[0]}));});
           (experienceConfig.cities||[]).forEach(x=>a.push({type:'city',id:x.id,title:x.name,sub:x.titleAr||x.titleEn,visible:x.visible!==false,raw:x}));
