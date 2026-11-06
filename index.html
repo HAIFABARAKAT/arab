@@ -1519,14 +1519,14 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
   /* Collapsed 28px rail: move existing navigation icons into the visible edge.
      Expanded sidebar and drawer controller remain unchanged. */
   body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-brand{
-    justify-content:flex-start!important;padding-left:0!important;padding-right:0!important;
+    justify-content:flex-end!important;padding-left:0!important;padding-right:0!important;
   }
   body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-brand>span{
     margin-left:0!important;margin-right:0!important;
   }
   body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview,
   body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn{
-    justify-content:flex-start!important;padding-left:4px!important;padding-right:0!important;
+    justify-content:flex-end!important;padding-left:4px!important;padding-right:0!important;
   }
   body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview i,
   body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn i,
@@ -1536,7 +1536,32 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     margin:0!important;visibility:visible!important;opacity:1!important;
   }
   body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{
-    justify-content:flex-start!important;padding-left:4px!important;padding-right:0!important;
+    justify-content:flex-end!important;padding-left:4px!important;padding-right:0!important;
+  }
+
+  /* Pin the existing icons to the visible 28px edge of the collapsed drawer.
+     This changes icon placement only; drawer width, motion and behavior stay intact. */
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-brand{
+    position:relative!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-brand>span{
+    position:absolute!important;left:4px!important;right:auto!important;top:2px!important;margin:0!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn{
+    position:relative!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview>i,
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn>i{
+    position:absolute!important;left:5px!important;right:auto!important;top:50%!important;
+    transform:translateY(-50%)!important;margin:0!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{
+    position:relative!important;min-height:24px!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-sidebar-foot>i{
+    position:absolute!important;left:5px!important;right:auto!important;top:50%!important;
+    transform:translateY(-50%)!important;margin:0!important;
   }
 }
 </style>
