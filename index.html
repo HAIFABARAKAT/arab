@@ -1469,7 +1469,19 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     justify-content:center!important;gap:0!important;padding:2px 0 9px!important;
   }
   body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>span{
+    display:grid!important;place-items:center!important;visibility:visible!important;opacity:1!important;
     width:20px!important;height:20px!important;min-width:20px!important;border-radius:6px!important;font-size:11px!important;
+  }
+  /* Keep every navigation icon visible and centered inside the 28px collapsed rail */
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview>i,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn>i,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot>i{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    visibility:visible!important;opacity:1!important;width:18px!important;min-width:18px!important;
+    margin:0!important;font-size:14px!important;line-height:1!important;
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot{
+    justify-content:center!important;gap:0!important;padding:12px 0 4px!important;
   }
   body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview,
   body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn{
@@ -1481,9 +1493,11 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     width:18px!important;min-width:18px!important;font-size:14px!important;margin:0!important;
   }
   body.admin-only .mobile-admin-drawer-toggle{
-    top:7px!important;left:1px!important;right:auto!important;width:26px!important;height:26px!important;
-    min-width:26px!important;padding:0!important;border-radius:7px!important;font-size:12px!important;
+    top:7px!important;left:1px!important;right:auto!important;width:24px!important;height:24px!important;
+    min-width:24px!important;padding:0!important;border-radius:7px!important;font-size:12px!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
   }
+  body.admin-only .mobile-admin-drawer-toggle i{display:block!important;line-height:1!important}
   body.admin-only.mobile-admin-nav-open .mobile-admin-drawer-toggle{left:auto!important;right:7px!important;width:30px!important;height:30px!important}
 
   /* Slightly tighter dashboard spacing and typography on phones */
@@ -1521,14 +1535,23 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 (function(){
   if(window.__arabMobileAdminDrawerV2)return;window.__arabMobileAdminDrawerV2=true;
   const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
-  function closeDrawer(){document.body.classList.remove('mobile-admin-nav-open');}
+  function syncDrawerToggle(toggle){
+    if(!toggle)return;
+    const isOpen=document.body.classList.contains('mobile-admin-nav-open');
+    toggle.innerHTML=isOpen?'<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>':'<i class="fa-solid fa-chevron-left" aria-hidden="true"></i>';
+    toggle.setAttribute('aria-label',isOpen?'تصغير القائمة الجانبية':'تكبير القائمة الجانبية');
+    toggle.setAttribute('aria-expanded',isOpen?'true':'false');
+    toggle.setAttribute('title',isOpen?'تصغير القائمة':'تكبير القائمة');
+  }
+  function closeDrawer(){document.body.classList.remove('mobile-admin-nav-open');const t=document.querySelector('.mobile-admin-drawer-toggle');syncDrawerToggle(t);}
   function ensureDrawer(){
     const side=document.querySelector('#dashboardBox.admin-dashboard-shell>.premium-admin-sidebar');
     if(!side||!isMobile())return;
     let overlay=document.querySelector('.mobile-admin-drawer-overlay');
     if(!overlay){overlay=document.createElement('div');overlay.className='mobile-admin-drawer-overlay';overlay.setAttribute('aria-hidden','true');document.body.appendChild(overlay);overlay.addEventListener('click',closeDrawer);}
     let toggle=side.querySelector('.mobile-admin-drawer-toggle');
-    if(!toggle){toggle=document.createElement('button');toggle.type='button';toggle.className='mobile-admin-drawer-toggle';toggle.setAttribute('aria-label','فتح القائمة الجانبية');toggle.innerHTML='<i class="fa-solid fa-bars"></i>';side.insertBefore(toggle,side.firstChild);toggle.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();document.body.classList.toggle('mobile-admin-nav-open');toggle.setAttribute('aria-label',document.body.classList.contains('mobile-admin-nav-open')?'إغلاق القائمة الجانبية':'فتح القائمة الجانبية');});}
+    if(!toggle){toggle=document.createElement('button');toggle.type='button';toggle.className='mobile-admin-drawer-toggle';side.insertBefore(toggle,side.firstChild);toggle.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();document.body.classList.toggle('mobile-admin-nav-open');syncDrawerToggle(toggle);});}
+    syncDrawerToggle(toggle);
     if(!side.dataset.drawerBound){side.dataset.drawerBound='1';side.addEventListener('click',e=>{
       if(!isMobile())return;
       if(!document.body.classList.contains('mobile-admin-nav-open')){
