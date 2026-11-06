@@ -4687,12 +4687,12 @@ function renderGroups(){
 }
 async function loadGroups(){
  say(T().loading);$('amhGroupsGrid').innerHTML='';
- try{await user();const r=await db().from('community_groups').select('id,name_ar,name_en,description_ar,description_en,city,category,visibility,status,created_by,created_at,image_url,approval_status,moderation_status,moderation_until,moderation_reason').order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;S.groups=r.data||[];renderGroups();say('');}
+ try{await user();const r=await db().from('community_groups').select('id,name_ar,name_en,description_ar,description_en,city,category,visibility,status,created_by,created_at,image_url,approval_status,moderation_status,moderation_until,moderation_reason').order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;S.groups=(r.data||[]).filter(g=>g.moderation_status!=='deleted');renderGroups();say('');}
  catch(e){console.error(e);say(T().error+e.message,true);$('amhGroupsGrid').innerHTML=`<div class="amh-group-empty">${esc(e.message)}</div>`;}
 }
 async function openGroup(id){
  try{
-  say(T().loading);const d=db(),g=await d.from('community_groups').select('*').eq('id',id).single();if(g.error)throw g.error;S.active=g.data;S.membership=null;
+  say(T().loading);const d=db(),g=await d.from('community_groups').select('*').eq('id',id).single();if(g.error)throw g.error;if(g.data?.moderation_status==='deleted'){S.active=null;S.groups=S.groups.filter(x=>x.id!==id);renderGroups();say(en()?'This group is no longer available.':'هذه المجموعة لم تعد متاحة.');return;}S.active=g.data;S.membership=null;
   if(S.user){const m=await d.from('community_group_members').select('group_id,user_id,role,status').eq('group_id',id).eq('user_id',S.user.id).maybeSingle();if(!m.error)S.membership=m.data;}
   const [mr,pr]=await Promise.all([d.from('community_group_members').select('user_id,role,status,joined_at').eq('group_id',id).in('status',['approved','pending']).order('joined_at').limit(100),d.from('community_group_posts').select('id,group_id,author_id,body,status,created_at').eq('group_id',id).eq('status','published').order('created_at',{ascending:false}).limit(80)]);
   if(mr.error)throw mr.error;if(pr.error)throw pr.error;S.members=mr.data||[];S.posts=pr.data||[];
