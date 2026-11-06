@@ -1424,6 +1424,71 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
   .platform-module-item{font-size:11px}
 }
 </style>
+
+<style id="arab-mobile-admin-drawer-v2">
+@media(max-width:760px){
+  body.admin-only #dashboardBox.admin-dashboard-shell{position:relative!important;overflow:hidden!important}
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{
+    position:fixed!important;top:0!important;right:0!important;bottom:0!important;z-index:10060!important;
+    box-sizing:border-box!important;flex:0 0 54px!important;width:238px!important;min-width:238px!important;max-width:238px!important;
+    height:100dvh!important;max-height:100dvh!important;padding:58px 9px 14px!important;
+    overflow-x:hidden!important;overflow-y:auto!important;direction:rtl!important;
+    transform:translateX(calc(100% - 54px))!important;transition:transform .28s cubic-bezier(.2,.75,.25,1)!important;
+    box-shadow:-8px 0 24px rgba(7,20,42,.18)!important;
+  }
+  body.admin-only.mobile-admin-nav-open #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{transform:translateX(0)!important}
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-main{width:100%!important;max-width:100%!important;min-width:0!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand{display:flex!important;justify-content:flex-start!important;gap:7px!important;padding:3px 2px 12px!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-brand>div,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-nav-label,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn span,
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-sidebar-foot span{display:none!important}
+  body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn{justify-content:center!important;gap:8px!important;padding:11px 5px!important;min-height:42px!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-brand>div,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-nav-label,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn span,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-sidebar-foot span{display:block!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-overview,
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .tab-btn{justify-content:flex-start!important;text-align:right!important;padding:10px 8px!important}
+  body.admin-only .mobile-admin-drawer-toggle{position:absolute!important;top:9px!important;right:8px!important;z-index:4!important;width:38px!important;height:38px!important;border:1px solid #40516b!important;border-radius:10px!important;background:#203653!important;color:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:16px!important;cursor:pointer!important;box-shadow:0 3px 10px #0002!important}
+  body.admin-only.mobile-admin-nav-open .mobile-admin-drawer-toggle{right:9px!important}
+  body.admin-only .mobile-admin-drawer-overlay{display:none;position:fixed;inset:0;z-index:10050;background:rgba(5,16,32,.42);touch-action:manipulation}
+  body.admin-only.mobile-admin-nav-open .mobile-admin-drawer-overlay{display:block}
+  body.admin-only #dashboardBox.admin-dashboard-shell>.premium-admin-sidebar{z-index:10060!important}
+}
+</style>
+<script id="arab-mobile-admin-drawer-controller">
+(function(){
+  if(window.__arabMobileAdminDrawerV2)return;window.__arabMobileAdminDrawerV2=true;
+  const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
+  function closeDrawer(){document.body.classList.remove('mobile-admin-nav-open');}
+  function ensureDrawer(){
+    const side=document.querySelector('#dashboardBox.admin-dashboard-shell>.premium-admin-sidebar');
+    if(!side||!isMobile())return;
+    let overlay=document.querySelector('.mobile-admin-drawer-overlay');
+    if(!overlay){overlay=document.createElement('div');overlay.className='mobile-admin-drawer-overlay';overlay.setAttribute('aria-hidden','true');document.body.appendChild(overlay);overlay.addEventListener('click',closeDrawer);}
+    let toggle=side.querySelector('.mobile-admin-drawer-toggle');
+    if(!toggle){toggle=document.createElement('button');toggle.type='button';toggle.className='mobile-admin-drawer-toggle';toggle.setAttribute('aria-label','فتح القائمة الجانبية');toggle.innerHTML='<i class="fa-solid fa-bars"></i>';side.insertBefore(toggle,side.firstChild);toggle.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();document.body.classList.toggle('mobile-admin-nav-open');toggle.setAttribute('aria-label',document.body.classList.contains('mobile-admin-nav-open')?'إغلاق القائمة الجانبية':'فتح القائمة الجانبية');});}
+    if(!side.dataset.drawerBound){side.dataset.drawerBound='1';side.addEventListener('click',e=>{
+      if(!isMobile())return;
+      if(!document.body.classList.contains('mobile-admin-nav-open')){
+        if(e.target.closest('.mobile-admin-drawer-toggle'))return;
+        if(e.target.closest('.tab-btn,.premium-overview,.admin-btn')){e.preventDefault();e.stopPropagation();document.body.classList.add('mobile-admin-nav-open');return;}
+      }else if(e.target.closest('.tab-btn,.premium-overview,.admin-btn')){setTimeout(closeDrawer,90);}
+    },true);}
+  }
+  const obs=new MutationObserver(()=>{if(document.body.classList.contains('admin-only'))ensureDrawer();else closeDrawer();});
+  obs.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+  document.addEventListener('click',e=>{if(!isMobile()||!document.body.classList.contains('mobile-admin-nav-open'))return;if(e.target.closest('.mobile-admin-drawer-overlay'))closeDrawer();});
+  window.addEventListener('resize',()=>{if(!isMobile())closeDrawer();else ensureDrawer();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+  if(document.body.classList.contains('admin-only'))ensureDrawer();
+})();
+</script>
+
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
