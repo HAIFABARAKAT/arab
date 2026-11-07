@@ -1683,6 +1683,26 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 })();
 </script>
 
+
+  /* Match the logout icon to the Platform Management icon on mobile only. */
+  @media(max-width:760px){
+    body.admin-only #dashboardBox .premium-admin-sidebar > .admin-btn[onclick="handleLogout()"] > i{
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      flex:0 0 18px!important;
+      width:18px!important;
+      min-width:18px!important;
+      text-align:center!important;
+      font-size:17px!important;
+    }
+    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar > .admin-btn[onclick="handleLogout()"] > i{
+      position:absolute!important;
+      right:5px!important;
+      top:50%!important;
+      transform:translate(-5px,-50%)!important;
+    }
+  }
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
