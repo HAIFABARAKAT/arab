@@ -1564,9 +1564,13 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     transform:translateY(-50%)!important;margin:0!important;
   }
 }
-  /* One-icon alignment test: shift only the Sections icon 4px toward page-left. */
+  /* Uniform icon alignment in the collapsed 28px rail.
+     Apply the proven 4px page-left correction to every navigation icon,
+     not only the Sections icon. Expanded navigation remains untouched. */
   @media(max-width:760px){
-    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar #tabSectionsBtn>i{
+    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview>i,
+    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn>i,
+    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-sidebar-foot>i{
       transform:translate(-4px,-50%)!important;
     }
   }
