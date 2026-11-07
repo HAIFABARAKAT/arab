@@ -2800,7 +2800,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
           dash.setAttribute('lang', adminPanelLang);
           dash.setAttribute('dir', adminPanelLang === 'ar' ? 'rtl' : 'ltr');
           const button = dash.querySelector('#adminLanguageToggle');
-          if (button) { button.textContent = adminPanelLang === 'ar' ? 'English' : 'العربية'; button.setAttribute('aria-label', adminPanelLang === 'ar' ? 'Switch admin panel to English' : 'تغيير لغة لوحة التحكم إلى العربية'); button.title = button.getAttribute('aria-label'); }
+          if (button) { const buttonLabel = adminPanelLang === 'ar' ? 'English' : 'العربية'; if (button.textContent !== buttonLabel) button.textContent = buttonLabel; button.setAttribute('aria-label', adminPanelLang === 'ar' ? 'Switch admin panel to English' : 'تغيير لغة لوحة التحكم إلى العربية'); button.title = button.getAttribute('aria-label'); }
           const walker = document.createTreeWalker(dash, NodeFilter.SHOW_TEXT);
           let node;
           while ((node = walker.nextNode())) {
@@ -2822,7 +2822,8 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             const map = {'نظرة عامة':'Overview','إدارة الأقسام':'Manage Sections','إدارة العناصر':'Manage Items','صور الواجهة الرئيسية':'Homepage Slides','إعدادات الصفحة الرئيسية':'Homepage Settings','إدارة الخدمات':'Manage Services','إدارة المدن':'Manage Cities','إدارة الصفحة والظهور':'Page & Visibility','الأخبار والعملات والرياضة':'News, Currency & Sports','مكتبة الصور':'Image Library','استوديو التصميم':'Design Studio'};
             const ar = heading.dataset.adminAr || heading.textContent;
             heading.dataset.adminAr = ar;
-            heading.textContent = adminPanelLang === 'en' ? (map[ar] || ar) : ar;
+            const headingText = adminPanelLang === 'en' ? (map[ar] || ar) : ar;
+            if (heading.textContent !== headingText) heading.textContent = headingText;
           }
         }
         function toggleAdminPanelLanguage() { applyAdminPanelLanguage(adminPanelLang === 'ar' ? 'en' : 'ar'); if (typeof renderGranularAdmin === 'function') renderGranularAdmin(); }
