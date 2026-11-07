@@ -5086,7 +5086,7 @@ $('amhGroupsSearch')?.addEventListener('input',renderGroups);$('amhGroupsCity')?
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>setTimeout(()=>{translate();if(S.active)openGroup(S.active.id);else if(!$('amhGroupsPanel').hidden)renderGroups();},25));
 })();
 </script></script>
-<script id="am-admin-language-toggle-v1">
+<script id="am-admin-language-toggle-v2">
 (function(){
   const root=document.getElementById('dashboardBox'); if(!root || root.dataset.amLangReady==='1') return;
   root.dataset.amLangReady='1';
@@ -5097,28 +5097,44 @@ document.getElementById('langToggleBtn')?.addEventListener('click',()=>setTimeou
   let lang='ar';
   try{lang=localStorage.getItem('amAdminPanelLanguage')==='en'?'en':'ar';}catch(e){}
   const norm=s=>String(s||'').replace(/\s+/g,' ').trim();
+  function translateString(value){
+    if(value==null) return value;
+    const original=String(value), key=norm(original); if(!key) return value;
+    const dict=lang==='en'?arToEn:enToAr;
+    if(Object.prototype.hasOwnProperty.call(dict,key)) return original.replace(key,dict[key]);
+    let out=original;
+    // Translate known phrases anywhere in a text node, not only when the whole node matches.
+    // Longest-first prevents a short phrase from consuming part of a more specific label.
+    const pairs=Object.entries(dict).sort((a,b)=>b[0].length-a[0].length);
+    for(const [from,to] of pairs){
+      if(!from || !out.includes(from)) continue;
+      out=out.split(from).join(to);
+    }
+    if(lang==='en'){
+      out=out.replace(/(\d+)\s*من\s*(\d+)\s*عنصر/g,'$1 of $2 items')
+             .replace(/(\d+)\s*عناصر?/g,'$1 items');
+    }else{
+      out=out.replace(/(\d+)\s*of\s*(\d+)\s*items/gi,'$1 من $2 عنصر')
+             .replace(/(\d+)\s*items?/gi,'$1 عناصر');
+    }
+    return out;
+  }
   function translateTextNode(node){
     if(!node || node.nodeType!==3) return;
-    const raw=node.nodeValue, key=norm(raw); if(!key) return;
-    const lead=(raw.match(/^\s*/)||[''])[0], trail=(raw.match(/\s*$/)||[''])[0];
-    let translated=null;
-    if(lang==='en' && Object.prototype.hasOwnProperty.call(arToEn,key)) translated=arToEn[key];
-    else if(lang==='ar' && Object.prototype.hasOwnProperty.call(enToAr,key)) translated=enToAr[key];
-    else if(lang==='en') { const m=key.match(/^(\d+) من (\d+) عنصر$/); if(m) translated=`${m[1]} of ${m[2]} items`; }
-    else { const m=key.match(/^(\d+) of (\d+) items$/); if(m) translated=`${m[1]} من ${m[2]} عنصر`; }
-    if(translated!==null) node.nodeValue=lead+translated+trail;
+    const raw=node.nodeValue; if(!norm(raw)) return;
+    const next=translateString(raw); if(next!==raw) node.nodeValue=next;
   }
   function translateElement(el){
     if(!el || el.nodeType!==1) return;
-    if(el.matches('input,textarea,select')) {
-      ['placeholder','title','aria-label'].forEach(a=>translateAttribute(el,a));
-      return;
-    }
-    el.querySelectorAll('input,textarea,select').forEach(x=>['placeholder','title','aria-label'].forEach(a=>translateAttribute(x,a)));
+    const attrs=['placeholder','title','aria-label','alt','data-tooltip','data-original-title'];
+    const all=[el,...el.querySelectorAll('*')];
+    all.forEach(x=>{
+      attrs.forEach(a=>translateAttribute(x,a));
+      // Translate only UI button values; never rewrite values typed or stored by an administrator.
+      if(x.matches('input[type="button"],input[type="submit"],input[type="reset"]')) translateAttribute(x,'value');
+    });
     const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let n; while((n=walker.nextNode())) translateTextNode(n);
-    [el,...el.querySelectorAll('*')].forEach(x=>['placeholder','title','aria-label'].forEach(a=>translateAttribute(x,a)));
   }
-  function translateString(value){const k=norm(value);if(lang==='en'&&arToEn[k])return String(value).replace(k,arToEn[k]);if(lang==='ar'&&enToAr[k])return String(value).replace(k,enToAr[k]);for(const [a,e] of Object.entries(arToEn)){if(lang==='en'&&k.startsWith(a))return String(value).replace(a,e);if(lang==='ar'&&k.startsWith(e))return String(value).replace(e,a);}return value;}
   function translateAttribute(el,a){const v=el.getAttribute(a);if(!v)return;const t=translateString(v);if(t!==v)el.setAttribute(a,t);}
   function apply(){
     root.setAttribute('lang',lang);root.setAttribute('dir',lang==='en'?'ltr':'rtl');root.classList.toggle('am-admin-ltr',lang==='en');
@@ -5135,10 +5151,11 @@ document.getElementById('langToggleBtn')?.addEventListener('click',()=>setTimeou
     for(const r of records){
       if(r.type==='childList') r.addedNodes.forEach(n=>{if(n.nodeType===1)translateElement(n);else if(n.nodeType===3)translateTextNode(n);});
       else if(r.type==='characterData') translateTextNode(r.target);
+      else if(r.type==='attributes') translateAttribute(r.target,r.attributeName);
     }
   });
-  observer.observe(root,{subtree:true,childList:true,characterData:true});
-  const style=document.createElement('style');style.id='am-admin-language-style-v1';style.textContent=`#dashboardBox.am-admin-ltr{direction:ltr;text-align:left}#dashboardBox.am-admin-ltr .admin-header,#dashboardBox.am-admin-ltr .tab-menu,#dashboardBox.am-admin-ltr .admin-workspace-actions{direction:ltr}#dashboardBox.am-admin-ltr input,#dashboardBox.am-admin-ltr textarea,#dashboardBox.am-admin-ltr select{direction:ltr;text-align:left}#dashboardBox.am-admin-ltr .admin-body{direction:ltr}#dashboardBox #amAdminLangToggle{white-space:nowrap;min-width:76px}`;document.head.appendChild(style);
+  observer.observe(root,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','title','aria-label','alt','data-tooltip','data-original-title','value']});
+  const style=document.createElement('style');style.id='am-admin-language-style-v2';style.textContent=`#dashboardBox.am-admin-ltr{direction:ltr;text-align:left}#dashboardBox.am-admin-ltr .admin-header,#dashboardBox.am-admin-ltr .tab-menu,#dashboardBox.am-admin-ltr .admin-workspace-actions{direction:ltr}#dashboardBox.am-admin-ltr input,#dashboardBox.am-admin-ltr textarea,#dashboardBox.am-admin-ltr select,#dashboardBox.am-admin-ltr option{direction:ltr;text-align:left}#dashboardBox.am-admin-ltr .modal,#dashboardBox.am-admin-ltr [role=dialog]{direction:ltr;text-align:left}#dashboardBox.am-admin-ltr .admin-body{direction:ltr}#dashboardBox #amAdminLangToggle{white-space:nowrap;min-width:76px}`;document.head.appendChild(style);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
 })();
 </script>
