@@ -2779,9 +2779,9 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             document.getElementById('visitorCount').textContent = activeVisitsCount.toLocaleString();
         }
 
-        // لوحة التحكم لها لغة مستقلة عن لغة واجهة الزوار.
-        let adminPanelLang = localStorage.getItem('adminPanelLang') || 'ar';
-        const adminPanelTranslations = {
+        // لغة لوحة التحكم مستقلة تماماً عن لغة الموقع للزوار.
+        let adminPanelLang = (() => { try { return localStorage.getItem('adminPanelLang') === 'en' ? 'en' : 'ar'; } catch(e) { return 'ar'; } })();
+const adminPanelTranslations = {
           'عرب ماليزيا':'Arab Malaysia','مركز الإدارة':'Administration Center','القائمة الرئيسية':'MAIN MENU','نظرة عامة':'Overview','إدارة الأقسام':'Manage Sections','إدارة العناصر':'Manage Items','صور الواجهة الرئيسية':'Homepage Slides','إعدادات الصفحة الرئيسية':'Homepage Settings','إدارة الخدمات':'Manage Services','إدارة المدن':'Manage Cities','إدارة الصفحة والظهور':'Page & Visibility','الأخبار والعملات والرياضة':'News, Currency & Sports','مكتبة الصور':'Image Library','استوديو التصميم':'Design Studio','وصول آمن للمسؤول':'Secure Admin Access','إدارة المنصة':'Platform Management','لوحة الإدارة':'Admin Dashboard','تبديل المظهر':'Toggle Theme',
           'لوحة الإدارة الاحترافية':'Professional Admin Dashboard','تسجيل الخروج':'Log out','التصميم والألوان':'Design & Colors','الأقسام والبطاقات':'Sections & Cards','التحكم بكل عنصر':'Individual Controls','معاينة الموقع':'Preview Website','حفظ ونشر التغييرات':'Save & Publish Changes','استعادة آخر نسخة منشورة':'Restore Last Published Version','فتح اللوحة في تبويب مستقل':'Open Dashboard in New Tab','التعديلات تحفظ كمسودة على هذا الجهاز حتى تضغط «حفظ ونشر التغييرات».':'Changes are saved as a draft on this device until you click “Save & Publish Changes”.',
           'إدارة موقع عرب ماليزيا':'Manage Arab Malaysia Website','كل أدوات إدارة محتوى موقعك في مكان واحد.':'All your website content management tools in one place.','الأقسام الموجودة بالموقع':'Website Sections','البطاقات داخل الأقسام':'Cards in Sections','الصور':'Images','الصور والبنرات المسجلة':'Saved Images & Banners','مركز إدارة المنصة الشاملة':'Comprehensive Platform Management','الأقسام والمحتوى':'Sections & Content','إضافة الأقسام والبطاقات وتعديلها وترتيبها.':'Add, edit, and arrange sections and cards.','فتح إدارة الأقسام':'Open Section Management','الصور والبنرات':'Images & Banners','إدارة صور المربع المتحرك ومكتبة الصور.':'Manage the slideshow and image library.','فتح مكتبة الصور':'Open Image Library','تحديث مكونات الأخبار وأسعار الصرف.':'Update news and exchange-rate components.','فتح إعدادات الصفحة':'Open Page Settings','تعديل وإضافة وحذف وإخفاء جميع إضافات الواجهة الجديدة.':'Edit, add, delete, and hide all new interface components.','فتح إدارة الواجهة':'Open Interface Management','الوصول السريع':'Quick Access','إنشاء الأقسام وإدارتها فقط':'Create and manage sections','إدارة البطاقات ومحتواها':'Manage cards and their content','إدارة المستطيل المتحرك':'Manage slideshow','إدارة الصفحة والظهور':'Page & Visibility','إظهار وإخفاء كل مكونات الصفحة':'Show or hide page components','القوالب والمظهر والمعاينة':'Layouts, Appearance & Preview','تخصيص ألوان الهوية البصرية للموقع':'Customize website brand colors','خلفية الموقع':'Website Background','لون النصوص':'Text Color','لون الأزرار':'Button Color','نصوص الحوم/اللمس':'Hover / Touch Text','لون البانر العلوي والفوتر':'Header Banner & Footer Color','إعادة الألوان الافتراضية':'Reset Default Colors',
@@ -2789,50 +2789,238 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
           'التحكم الكامل بإضافات الصفحة الرئيسية':'Full Control of Homepage Components','من هنا يمكنك تعديل النصوص، إظهار أو إخفاء أي جزء، إضافة وحذف بطاقات الخدمات والمدن، ثم معاينة التغييرات ونشرها لجميع الزوار.':'Edit text, show or hide any component, add or remove service cards and cities, then preview and publish changes for all visitors.','العنوان الرئيسي بالعربية':'Main Heading in Arabic','الوصف الرئيسي بالعربية':'Main Description in Arabic','إظهار الواجهة الرئيسية المطوّرة':'Show Enhanced Homepage','إظهار مستطيل الصور المتحرك الرئيسي':'Show Main Slideshow','إظهار شبكة الخدمات':'Show Services Grid','إظهار بطاقة دليل الحياة والدراسة':'Show Life & Study Guide Card','إظهار بطاقة أصحاب الأعمال':'Show Business Owners Card','إظهار قسم المدن':'Show Cities Section','بطاقات الخدمات':'Service Cards','＋ إضافة بطاقة':'+ Add Card','المدن الماليزية':'Malaysian Cities','＋ إضافة مدينة':'+ Add City','بطاقات المحتوى التعريفي':'Information Cards','عنوان دليل الحياة والدراسة بالعربية':'Life & Study Guide Title (Arabic)','وصف دليل الحياة والدراسة بالعربية':'Life & Study Guide Description (Arabic)','عنوان بطاقة أصحاب الأعمال بالعربية':'Business Owners Card Title (Arabic)','وصف بطاقة أصحاب الأعمال بالعربية':'Business Owners Card Description (Arabic)','حفظ التعديلات كمسودة':'Save Changes as Draft',
           'مركز التحكم الفردي':'Individual Item Control Center','كل خدمة وقسم وبطاقة ومدينة وبانر عنصر مستقل. إخفاء عنصر واحد لا يخفي بقية العناصر.':'Each service, section, card, city, and banner is managed independently. Hiding one item does not hide the others.','— عنصر':'— items','كل الأنواع':'All Types','مكونات الصفحة':'Page Components','الخدمات':'Services','عناصر الأقسام':'Section Items','＋ خدمة جديدة':'+ New Service','＋ مدينة':'+ City','＋ قسم':'+ Section','＋ عنصر داخل قسم':'+ Item in Section','طريقة العمل':'How It Works','زر «إخفاء» يوقف ظهور العنصر للزوار دون حذفه. زر «تعديل» يغيّر بيانات العنصر. زر «حذف» نهائي ويطلب تأكيداً. بعد الانتهاء استخدم «حفظ ونشر التغييرات» أعلى اللوحة ليظهر التغيير لجميع الزوار.':'“Hide” removes an item from visitor view without deleting it. “Edit” changes its details. “Delete” permanently removes it after confirmation. When finished, use “Save & Publish Changes” at the top so visitors can see the update.','مكتبة صور الموقع':'Website Image Library','استعراض الصور المستخدمة في الأقسام والبطاقات. لإضافة الصور أو استبدالها أو حذفها، اختر القسم والعنصر من أدوات الإدارة أدناه.':'Browse images used in sections and cards. To add, replace, or delete images, select the section and item from the management tools below.',
           'إخفاء':'Hide','إظهار':'Show','تعديل':'Edit','حذف':'Delete','ظاهر':'Visible','مخفي':'Hidden','لا توجد عناصر تطابق البحث.':'No items match your search.','لا توجد صور في المكتبة حالياً.':'There are no images in the library yet.','إدارة الصورة':'Manage Image','تحديث البيانات':'Refresh Data','كل الأنواع':'All Types','مكوّن':'Component','خدمة':'Service','قسم':'Section','عنصر':'Item','مدينة':'City','صورة واجهة':'Homepage Image','عنصر بلا اسم':'Unnamed Item','هل تريد حذف هذا العنصر نهائياً؟ يمكنك استخدام «إخفاء» بدلاً من الحذف إذا أردت الاحتفاظ به.':'Do you want to permanently delete this item? You can use “Hide” instead if you want to keep it.','أنشئ قسماً أولاً.':'Create a section first.','اسم الخدمة بالعربية':'Service Name (Arabic)','اسم الخدمة بالإنجليزية':'Service Name (English)','وصف الخدمة بالعربية':'Service Description (Arabic)','وصف الخدمة بالإنجليزية':'Service Description (English)','رابط الخدمة أو القسم':'Service or Section Link','اسم المدينة':'City Name','وصف المدينة بالعربية':'City Description (Arabic)','وصف المدينة بالإنجليزية':'City Description (English)','عنوان الصورة بالعربية':'Image Title (Arabic)','عنوان الصورة بالإنجليزية':'Image Title (English)','اسم القسم بالعربية':'Section Name (Arabic)','اسم القسم بالإنجليزية':'Section Name (English)','اسم مجلد الصور':'Image Folder Name','اسم العنصر بالعربية':'Item Name (Arabic)','اسم العنصر بالإنجليزية':'Item Name (English)','اكتب رقم القسم الذي تريد إضافة العنصر إليه:':'Enter the number of the section where you want to add the item:','خدمة جديدة':'New Service','مدينة جديدة':'New City','قسم جديد':'New Section','عنصر جديد':'New Item'
+        ,
+          "إدارة واجهة المنصة":"Manage Platform Interface",
+          "الواجهة الرئيسية":"Main Homepage",
+          "مستطيل الصور المتحرك":"Main Slideshow",
+          "شريط الأخبار":"News Ticker",
+          "شريط العملات":"Currency Ticker",
+          "الأخبار الرياضية":"Sports News",
+          "منطقة الخدمات":"Services Area",
+          "بطاقة الحياة والدراسة":"Life & Study Card",
+          "بطاقة أصحاب الأعمال":"Business Owners Card",
+          "قسم المدن":"Cities Section",
+          "مركز الثقة والتوثيق":"Trust & Verification Center",
+          "مكوّن في الصفحة الرئيسية":"Homepage Component",
+          "صورة متحركة":"Slideshow Image",
+          "قسم":"Section",
+          "ضمن":"In",
+          "عناصر":"items",
+          "عدد الزوار:":"Visitor count:",
+          "إدارة الأقسام والبطاقات":"Manage Sections & Cards",
+          "إدارة صور المستطيل المتحرك":"Manage Slideshow Images",
+          "إدارة مكونات الصفحة الرئيسية":"Manage Homepage Components",
+          "إدارة صور المستطيل المتحرك: إضافة الصور وتعديلها وحذفها بصورة مستقلة.":"Manage slideshow images: add, edit, and delete images independently.",
+          "إدارة صور المستطيل المتحرك أعلى الموقع":"Manage the Homepage Slideshow",
+          "تعديل العنوان والوصف والظهور العام للواجهة والبطاقات التعريفية.":"Edit the heading, description, and visibility of the homepage and information cards.",
+          "كل بطاقة خدمة مستقلة ويمكن تعديلها أو إخفاؤها أو حذفها أو إضافة خدمة جديدة.":"Each service card can be edited, hidden, deleted, or supplemented with a new service.",
+          "إدارة صور المربع المتحرك أعلى الموقع":"Manage Homepage Slideshow Images",
+          "إدارة الصور":"Manage Images",
+          "حفظ تغييرات الخدمات":"Save Service Changes",
+          "حفظ تغييرات المدن":"Save City Changes",
+          "إدارة العناصر والبطاقات":"Manage Items & Cards",
+          "لا توجد عناصر حالياً.":"There are no items currently.",
+          "لا توجد أقسام حالياً.":"There are no sections currently.",
+          "اختر صورة واكتب العنوان بالعربية والإنجليزية.":"Choose an image and enter its title in Arabic and English.",
+          "تم حفظ تعديل الصورة بنجاح.":"Image changes saved successfully.",
+          "تعذر حفظ الصورة:":"Could not save image:",
+          "تمت إضافة الصورة بنجاح.":"Image added successfully.",
+          "تعذر إضافة الصورة:":"Could not add image:",
+          "حفظ التعديل":"Save Changes",
+          "الوصف الرئيسي بالعربية":"Main Description (Arabic)",
+          "العنوان الرئيسي بالعربية":"Main Heading (Arabic)",
+          "العنوان الرئيسي بالإنجليزية":"Main Heading (English)",
+          "الوصف الرئيسي بالإنجليزية":"Main Description (English)",
+          "اختر هوية الموقع، جرّب الألوان، وعاين تجربة الكمبيوتر والهاتف. القالب الحالي محفوظ ويمكن الرجوع إليه في أي وقت.":"Choose the website identity, try colors, and preview desktop and mobile. The current template is saved and can be restored at any time.",
+          "حفظ كمسودة":"Save as Draft",
+          "معاينة التصميم":"Preview Design",
+          "استعادة القالب السابق":"Restore Previous Template",
+          "اعتماد ونشر التصميم":"Approve & Publish Design",
+          "اختر قالباً لبدء التخصيص. لن يرى الزوار التغييرات قبل النشر.":"Choose a template to start customizing. Visitors will not see changes until they are published.",
+          "تخصيص الألوان":"Customize Colors",
+          "معاينة الهاتف":"Mobile Preview",
+          "معاينة مصغرة لتخطيط الصفحة الرئيسية":"Mini preview of the homepage layout",
+          "كل ما يحتاجه العربي في ماليزيا… في مكان واحد":"Everything Arabs need in Malaysia… in one place",
+          "البريد الإلكتروني للعضو":"Member email",
+          "ابحث باسم الجهة":"Search by organization name",
+          "اختر الجهة بعد البحث":"Choose an organization after searching",
+          "الحد الإجمالي":"Maximum total",
+          "سبب الاستثناء (اختياري)":"Reason for exception (optional)",
+          "بحث":"Search",
+          "منح استثناء لعضو":"Grant an Exception to a Member",
+          "الحد الطبيعي تقييم واحد. أدخل البريد الإلكتروني ومعرّف الجهة، ثم حدد إجمالي التقييمات المسموح بها لهذا العضو على هذه الجهة.":"The normal limit is one review. Enter the email and organization, then set the total reviews allowed for this member for that organization.",
+          "ظاهرة":"Visible",
+          "اسم المدينة بالإنجليزية":"City Name (English)",
+          "الوصف بالعربية":"Description (Arabic)",
+          "Description in English":"Description in English",
+          "أيقونة Font Awesome (مثال fa-star)":"Font Awesome Icon (e.g. fa-star)",
+          "جارٍ تحميل":"Loading",
+          "جارٍ تجهيز المحتوى ورفع الصور إن وجدت...":"Preparing content and uploading images, if any...",
+          "تم حفظ التعديلات كمسودة. اضغط «حفظ ونشر التغييرات» لتظهر لجميع الزوار.":"Changes saved as a draft. Click “Save & Publish Changes” to make them visible to visitors.",
+          "تم تطبيق":"Applied",
+          "كمعاينة ومسودة محلية. احفظ المسودة ثم انشر عند الانتهاء.":"as a local preview and draft. Save the draft, then publish when finished.",
+          "تم حفظ مسودة التصميم على هذا الجهاز. لن تظهر للزوار حتى النشر.":"The design draft has been saved on this device. Visitors will not see it until it is published.",
+          "حذف التعليق نهائياً؟":"Permanently delete this comment?",
+          "إخفاء التعليق عن الزوار؟":"Hide this comment from visitors?",
+          "إعادة إظهار التعليق؟":"Show this comment again?",
+          "دخول":"Sign In",
+          "كلمة المرور":"Password",
+          "التصميم والألوان":"Design & Colors",
+          "الأقسام والبطاقات":"Sections & Cards",
+          "التحكم بكل عنصر":"Individual Item Controls",
+          "معاينة الموقع":"Preview Website",
+          "حفظ ونشر التغييرات":"Save & Publish Changes",
+          "استعادة آخر نسخة منشورة":"Restore Last Published Version",
+          "فتح اللوحة في تبويب مستقل":"Open Dashboard in New Tab",
+          "إدارة موقع عرب ماليزيا":"Manage Arab Malaysia Website",
+          "كل أدوات إدارة محتوى موقعك في مكان واحد.":"All your website content management tools in one place.",
+          "الأقسام":"Sections",
+          "العناصر":"Items",
+          "الأقسام الموجودة بالموقع":"Website Sections",
+          "البطاقات داخل الأقسام":"Cards in Sections",
+          "الصور والبنرات المسجلة":"Saved Images & Banners",
+          "مركز إدارة المنصة الشاملة":"Comprehensive Platform Management",
+          "الأقسام والمحتوى":"Sections & Content",
+          "إضافة الأقسام والبطاقات وتعديلها وترتيبها.":"Add, edit, and arrange sections and cards.",
+          "فتح إدارة الأقسام":"Open Section Management",
+          "الصور والبنرات":"Images & Banners",
+          "إدارة صور المربع المتحرك ومكتبة الصور.":"Manage the slideshow and image library.",
+          "فتح مكتبة الصور":"Open Image Library",
+          "تحديث مكونات الأخبار وأسعار الصرف.":"Update news and exchange-rate components.",
+          "فتح إعدادات الصفحة":"Open Page Settings",
+          "تعديل وإضافة وحذف وإخفاء جميع إضافات الواجهة الجديدة.":"Edit, add, delete, and hide all new interface components.",
+          "فتح إدارة الواجهة":"Open Interface Management",
+          "الوصول السريع":"Quick Access",
+          "إنشاء الأقسام وإدارتها فقط":"Create and manage sections",
+          "إدارة البطاقات ومحتواها":"Manage cards and their content",
+          "إدارة المستطيل المتحرك":"Manage slideshow",
+          "إظهار وإخفاء كل مكونات الصفحة":"Show or hide all page components",
+          "القوالب والمظهر والمعاينة":"Templates, Appearance & Preview",
+          "تخصيص ألوان الهوية البصرية للموقع":"Customize Website Brand Colors",
+          "خلفية الموقع":"Website Background",
+          "لون النصوص":"Text Color",
+          "لون الأزرار":"Button Color",
+          "نصوص الحوم/اللمس":"Hover / Touch Text",
+          "لون البانر العلوي والفوتر":"Header Banner & Footer Color",
+          "إعادة الألوان الافتراضية":"Reset Default Colors",
+          "الصورة من الجهاز":"Image from Device",
+          "اكتب العنوان بالعربية":"Enter the title in Arabic",
+          "اكتب العنوان بالإنجليزية":"Enter the title in English",
+          "اسم القسم بالعربي (مثال: مكاتب السياحة)":"Section name in Arabic (e.g. travel agencies)",
+          "اسم القسم بالإنجليزي":"Section name in English",
+          "اسم العنصر بالعربي":"Item name in Arabic",
+          "اسم العنصر بالإنجليزي":"Item name in English",
+          "روابط ألبوم الصور (افصل بين الروابط بفاصلة ,)":"Image album URLs (separate links with commas ,)",
+          "أو ارفع الصور من جهازك (يمكن اختيار أكثر من صورة)":"Or upload images from your device (you can select multiple images)",
+          "إدارة وحذف العناصر الحالية":"Manage and Delete Existing Items",
+          "إدارة وحذف الأقسام الكاملة":"Manage and Delete Entire Sections",
+          "إظهار شريط آخر الأخبار":"Show Latest News Ticker",
+          "إظهار شريط أسعار العملات":"Show Currency Rates Ticker",
+          "إظهار بطاقة الأخبار الرياضية":"Show Sports News Card",
+          "التحكم الكامل بإضافات الصفحة الرئيسية":"Full Control of Homepage Components",
+          "من هنا يمكنك تعديل النصوص، إظهار أو إخفاء أي جزء، إضافة وحذف بطاقات الخدمات والمدن، ثم معاينة التغييرات ونشرها لجميع الزوار.":"Here you can edit text, show or hide any component, add or delete service cards and cities, then preview and publish changes for all visitors.",
+          "إظهار الواجهة الرئيسية المطوّرة":"Show Enhanced Homepage",
+          "إظهار مستطيل الصور المتحرك الرئيسي":"Show Main Slideshow",
+          "إظهار شبكة الخدمات":"Show Services Grid",
+          "إظهار بطاقة دليل الحياة والدراسة":"Show Life & Study Guide Card",
+          "إظهار بطاقة أصحاب الأعمال":"Show Business Owners Card",
+          "إظهار قسم المدن":"Show Cities Section",
+          "بطاقات الخدمات":"Service Cards",
+          "المدن الماليزية":"Malaysian Cities",
+          "بطاقات المحتوى التعريفي":"Information Cards",
+          "عنوان دليل الحياة والدراسة بالعربية":"Life & Study Guide Title (Arabic)",
+          "وصف دليل الحياة والدراسة بالعربية":"Life & Study Guide Description (Arabic)",
+          "عنوان بطاقة أصحاب الأعمال بالعربية":"Business Owners Card Title (Arabic)",
+          "وصف بطاقة أصحاب الأعمال بالعربية":"Business Owners Card Description (Arabic)",
+          "مركز التحكم الفردي":"Individual Control Center",
+          "كل خدمة وقسم وبطاقة ومدينة وبانر عنصر مستقل. إخفاء عنصر واحد لا يخفي بقية العناصر.":"Each service, section, card, city, and banner is independent. Hiding one item does not hide the others.",
+          "ابحث عن خدمة أو قسم أو عنصر...":"Search for a service, section, or item...",
+          "مكونات الصفحة":"Page Components",
+          "صور الواجهة":"Homepage Images",
+          "＋ إضافة بطاقة":"+ Add Card",
+          "＋ إضافة مدينة":"+ Add City",
+          "＋ خدمة جديدة":"+ New Service",
+          "＋ مدينة":"+ City",
+          "＋ قسم":"+ Section",
+          "＋ عنصر داخل قسم":"+ Item in Section",
+          "طريقة العمل":"How It Works",
+          "مكتبة صور الموقع":"Website Image Library",
+          "استعراض الصور المستخدمة في الأقسام والبطاقات. لإضافة الصور أو استبدالها أو حذفها، اختر القسم والعنصر من أدوات الإدارة أدناه.":"Browse images used in sections and cards. To add, replace, or delete images, select the section and item from the management tools below."
         };
         const adminOriginalTextNodes = new WeakMap();
         const adminOriginalAttributes = new WeakMap();
+        let adminLanguageObserver = null;
+        let adminApplyingLanguage = false;
+
         function applyAdminPanelLanguage(lang) {
           adminPanelLang = lang === 'en' ? 'en' : 'ar';
           try { localStorage.setItem('adminPanelLang', adminPanelLang); } catch(e) {}
           const dash = document.getElementById('dashboardBox');
           if (!dash) return;
-          dash.setAttribute('lang', adminPanelLang);
-          dash.setAttribute('dir', adminPanelLang === 'ar' ? 'rtl' : 'ltr');
-          const button = dash.querySelector('#adminLanguageToggle');
-          if (button) { const buttonLabel = adminPanelLang === 'ar' ? 'English' : 'العربية'; if (button.textContent !== buttonLabel) button.textContent = buttonLabel; button.setAttribute('aria-label', adminPanelLang === 'ar' ? 'Switch admin panel to English' : 'تغيير لغة لوحة التحكم إلى العربية'); button.title = button.getAttribute('aria-label'); }
-          const walker = document.createTreeWalker(dash, NodeFilter.SHOW_TEXT);
-          let node;
-          while ((node = walker.nextNode())) {
-            if (!adminOriginalTextNodes.has(node)) adminOriginalTextNodes.set(node, node.nodeValue);
-            const original = adminOriginalTextNodes.get(node);
-            const trimmed = original.trim();
-            if (!trimmed) continue;
-            const translated = adminPanelTranslations[trimmed];
-            if (translated) node.nodeValue = original.replace(trimmed, adminPanelLang === 'en' ? translated : trimmed);
-            else if (adminPanelLang === 'ar') node.nodeValue = original;
-          }
-          dash.querySelectorAll('[placeholder],[title],[aria-label]').forEach(el => {
-            let saved = adminOriginalAttributes.get(el);
-            if (!saved) { saved = {}; ['placeholder','title','aria-label'].forEach(a => { if (el.hasAttribute(a)) saved[a] = el.getAttribute(a); }); adminOriginalAttributes.set(el, saved); }
-            ['placeholder','title','aria-label'].forEach(a => { if (saved[a]) el.setAttribute(a, adminPanelLang === 'en' ? (adminPanelTranslations[saved[a]] || saved[a]) : saved[a]); });
-          });
-          const heading = dash.querySelector('#adminPageHeading');
-          if (heading) {
-            const map = {'نظرة عامة':'Overview','إدارة الأقسام':'Manage Sections','إدارة العناصر':'Manage Items','صور الواجهة الرئيسية':'Homepage Slides','إعدادات الصفحة الرئيسية':'Homepage Settings','إدارة الخدمات':'Manage Services','إدارة المدن':'Manage Cities','إدارة الصفحة والظهور':'Page & Visibility','الأخبار والعملات والرياضة':'News, Currency & Sports','مكتبة الصور':'Image Library','استوديو التصميم':'Design Studio'};
-            const ar = heading.dataset.adminAr || heading.textContent;
-            heading.dataset.adminAr = ar;
-            const headingText = adminPanelLang === 'en' ? (map[ar] || ar) : ar;
-            if (heading.textContent !== headingText) heading.textContent = headingText;
+          adminApplyingLanguage = true;
+          try {
+            dash.setAttribute('lang', adminPanelLang);
+            dash.setAttribute('dir', adminPanelLang === 'ar' ? 'rtl' : 'ltr');
+            const button = dash.querySelector('#adminLanguageToggle');
+            if (button) {
+              const label = adminPanelLang === 'ar' ? 'English' : 'العربية';
+              if (button.textContent !== label) button.textContent = label;
+              button.setAttribute('aria-label', adminPanelLang === 'ar' ? 'Switch admin panel to English' : 'تغيير لغة لوحة التحكم إلى العربية');
+              button.title = button.getAttribute('aria-label');
+            }
+            const walker = document.createTreeWalker(dash, NodeFilter.SHOW_TEXT);
+            let node;
+            while ((node = walker.nextNode())) {
+              if (!adminOriginalTextNodes.has(node)) adminOriginalTextNodes.set(node, node.nodeValue);
+              const original = adminOriginalTextNodes.get(node);
+              const trimmed = original.trim();
+              if (!trimmed) continue;
+              const translated = adminPanelTranslations[trimmed];
+              const next = adminPanelLang === 'en' && translated ? original.replace(trimmed, translated) : original;
+              if (node.nodeValue !== next) node.nodeValue = next;
+            }
+            dash.querySelectorAll('[placeholder],[title],[aria-label]').forEach(el => {
+              let saved = adminOriginalAttributes.get(el);
+              if (!saved) {
+                saved = {};
+                ['placeholder','title','aria-label'].forEach(a => { if (el.hasAttribute(a)) saved[a] = el.getAttribute(a); });
+                adminOriginalAttributes.set(el, saved);
+              }
+              ['placeholder','title','aria-label'].forEach(a => {
+                if (Object.prototype.hasOwnProperty.call(saved, a)) {
+                  const original = saved[a];
+                  const next = adminPanelLang === 'en' ? (adminPanelTranslations[original] || original) : original;
+                  if (el.getAttribute(a) !== next) el.setAttribute(a, next);
+                }
+              });
+            });
+            const heading = dash.querySelector('#adminPageHeading');
+            if (heading) {
+              if (!heading.dataset.adminAr) heading.dataset.adminAr = heading.textContent.trim();
+              const ar = heading.dataset.adminAr;
+              const next = adminPanelLang === 'en' ? (adminPanelTranslations[ar] || ar) : ar;
+              if (heading.textContent !== next) heading.textContent = next;
+            }
+          } finally {
+            adminApplyingLanguage = false;
           }
         }
-        function toggleAdminPanelLanguage() { applyAdminPanelLanguage(adminPanelLang === 'ar' ? 'en' : 'ar'); if (typeof renderGranularAdmin === 'function') renderGranularAdmin(); }
-        let adminLanguageObserver = null;
+
+        function toggleAdminPanelLanguage() {
+          applyAdminPanelLanguage(adminPanelLang === 'ar' ? 'en' : 'ar');
+          // Refresh only the list whose records have bilingual fields; do not rebuild the dashboard.
+          if (document.getElementById('tabControl')?.classList.contains('active')) renderGranularAdmin();
+        }
+
         function observeAdminPanelLanguage() {
           const dash = document.getElementById('dashboardBox');
           if (!dash || adminLanguageObserver) return;
-          adminLanguageObserver = new MutationObserver(() => { if (adminPanelLang === 'en') applyAdminPanelLanguage('en'); });
-          adminLanguageObserver.observe(dash, {childList:true,subtree:true});
+          adminLanguageObserver = new MutationObserver(records => {
+            if (adminApplyingLanguage || adminPanelLang !== 'en') return;
+            // New UI nodes only. Text/attribute changes made by translation are not observed.
+            if (records.some(record => record.addedNodes && record.addedNodes.length)) applyAdminPanelLanguage('en');
+          });
+          adminLanguageObserver.observe(dash, { childList: true, subtree: true });
         }
 
         function buildPremiumAdminShell() {
@@ -4154,7 +4342,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
           const modules=[['heroVisible','الواجهة الرئيسية','Main hero'],['promoVisible','مستطيل الصور المتحرك','Main slideshow'],['newsEnabled','شريط الأخبار','News ticker'],['currencyEnabled','شريط العملات','Currency ticker'],['sportsEnabled','الأخبار الرياضية','Sports news'],['servicesVisible','منطقة الخدمات','Services area'],['lifeVisible','بطاقة الحياة والدراسة','Life & study card'],['businessVisible','بطاقة أصحاب الأعمال','Business card'],['citiesVisible','قسم المدن','Cities area'],['trustVisible','مركز الثقة والتوثيق','Trust center']];
           modules.forEach(([key,ar,en])=>a.push({type:'module',id:key,key,title:adminPanelLang==='en'?en:ar,sub:adminPanelLang==='en'?'Homepage component':'مكوّن في الصفحة الرئيسية',visible:['newsEnabled','currencyEnabled','sportsEnabled'].includes(key)?siteSettings[key]!==false:experienceConfig[key]!==false}));
           // News, currency and sports visibility is also exposed here for one-stop homepage control.
-          (experienceConfig.tiles||[]).forEach(x=>a.push({type:'service',id:x.id,title:(adminPanelLang==='en'?(x.titleEn||x.titleAr):(x.titleAr||x.titleEn)),sub:(adminPanelLang==='en'?(x.descEn||x.descAr||'Service'):(x.descAr||x.descEn||'خدمة')),visible:x.visible!==false,raw:x}));
+          (experienceConfig.tiles||[]).forEach(x=>a.push({type:'service',id:x.id,title:adminPanelLang==='en'?(x.titleEn||x.titleAr):(x.titleAr||x.titleEn),sub:adminPanelLang==='en'?(x.descEn||x.descAr||'Service'):(x.descAr||x.descEn||'خدمة'),visible:x.visible!==false,raw:x}));
           webSections.forEach(sec=>{const secTitle=adminPanelLang==='en'?(sec.titleEn||sec.titleAr):(sec.titleAr||sec.titleEn);a.push({type:'section',id:sec.id,title:secTitle,sub:adminPanelLang==='en'?`Section · ${(sec.cards||[]).length} items`:`قسم · ${(sec.cards||[]).length} عناصر`,visible:sec.visible!==false,raw:sec});(sec.cards||[]).forEach(card=>a.push({type:'card',id:card.id,secId:sec.id,title:adminPanelLang==='en'?(card.nameEn||card.nameAr):(card.nameAr||card.nameEn),sub:adminPanelLang==='en'?`In ${secTitle}`:`ضمن ${secTitle}`,visible:card.visible!==false,raw:card,image:(card.images||[])[0]}));});
           (experienceConfig.cities||[]).forEach(x=>a.push({type:'city',id:x.id,title:x.name,sub:adminPanelLang==='en'?(x.titleEn||x.titleAr):(x.titleAr||x.titleEn),visible:x.visible!==false,raw:x}));
           promoSlides.forEach((x,i)=>a.push({type:'promo',id:String(i),title:adminPanelLang==='en'?(x.titleEn||x.titleAr||`Homepage image ${i+1}`):(x.titleAr||x.titleEn||`صورة الواجهة ${i+1}`),sub:adminPanelLang==='en'?'Slideshow image':'صورة متحركة',visible:x.visible!==false,image:x.img,raw:x}));
@@ -4166,7 +4354,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
           const all=granularItems();const rows=all.filter(x=>(type==='all'||x.type===type)&&(!q||(x.title+' '+x.sub).toLowerCase().includes(q)));
           const count=document.getElementById('amcCount');if(count)count.textContent=adminPanelLang==='en'?`${rows.length} of ${all.length} items`:`${rows.length} من ${all.length} عنصر`;
           const names=adminPanelLang==='en'?{module:'Component',service:'Service',section:'Section',card:'Item',city:'City',promo:'Homepage Image'}:{module:'مكوّن',service:'خدمة',section:'قسم',card:'عنصر',city:'مدينة',promo:'صورة واجهة'};
-          host.innerHTML=rows.length?rows.map(x=>`<article class="amc-item ${x.visible?'':'is-hidden'}"><div class="amc-item-top">${x.image?`<img class="amc-thumb" src="${escapeAdminText(x.image)}" alt="">`:'<div class="amc-thumb" style="display:grid;place-items:center;color:#64748b"><i class="fa-solid fa-cube"></i></div>'}<div class="amc-meta"><b>${escapeAdminText(x.title||'عنصر بلا اسم')}</b><small>${names[x.type]} · ${escapeAdminText(x.sub||'')}</small></div><span class="amc-state ${x.visible?'':'off'}">${x.visible?'ظاهر':'مخفي'}</span></div><div class="amc-actions"><button class="amc-toggle" onclick="granularToggle('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">${x.visible?'إخفاء':'إظهار'}</button>${x.type!=='module'?`<button class="amc-edit" onclick="granularEdit('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">تعديل</button>`:''}${['service','section','card','city','promo'].includes(x.type)?`<button class="amc-delete" onclick="granularDelete('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">حذف</button>`:''}</div></article>`).join(''):'<div class="amc-empty">لا توجد عناصر تطابق البحث.</div>';
+          host.innerHTML=rows.length?rows.map(x=>`<article class="amc-item ${x.visible?'':'is-hidden'}"><div class="amc-item-top">${x.image?`<img class="amc-thumb" src="${escapeAdminText(x.image)}" alt="">`:'<div class="amc-thumb" style="display:grid;place-items:center;color:#64748b"><i class="fa-solid fa-cube"></i></div>'}<div class="amc-meta"><b>${escapeAdminText(x.title||'عنصر بلا اسم')}</b><small>${names[x.type]} · ${escapeAdminText(x.sub||'')}</small></div><span class="amc-state ${x.visible?'':'off'}">${x.visible?(adminPanelLang==='en'?'Visible':'ظاهر'):(adminPanelLang==='en'?'Hidden':'مخفي')}</span></div><div class="amc-actions"><button class="amc-toggle" onclick="granularToggle('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">${x.visible?(adminPanelLang==='en'?'Hide':'إخفاء'):(adminPanelLang==='en'?'Show':'إظهار')}</button>${x.type!=='module'?`<button class="amc-edit" onclick="granularEdit('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">تعديل</button>`:''}${['service','section','card','city','promo'].includes(x.type)?`<button class="amc-delete" onclick="granularDelete('${x.type}','${escapeAdminText(x.id)}','${escapeAdminText(x.secId||'')}')">حذف</button>`:''}</div></article>`).join(''):`<div class="amc-empty">${adminPanelLang==='en'?'No items match your search.':'لا توجد عناصر تطابق البحث.'}</div>`;
         }
         function granularToggle(type,id,secId){
           if(type==='module'){if(Object.prototype.hasOwnProperty.call(experienceConfig,id))experienceConfig[id]=!experienceConfig[id];else siteSettings[id]=!siteSettings[id];applySiteSettings();applyExperienceConfig();}
