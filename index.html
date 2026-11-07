@@ -910,15 +910,6 @@
 
 
 .amh-author-line{display:flex;align-items:center;gap:9px;padding:8px 10px;margin:2px 0 8px;border-radius:12px;background:#f5f8fb;color:#29465d}.amh-author-avatar{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;background:#dcecf4;color:#15536e;font-weight:900}.amh-author-line>span:last-child{display:grid;gap:2px}.amh-author-line small{font-size:11px;color:#718096}.am-secondary.is-following{background:#e7f4ee!important;border-color:#b9dfcb!important;color:#176b46!important}.mp-follow-stats{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}.mp-follow-stats>div{min-width:100px;padding:10px 14px;border:1px solid #dce5ed;border-radius:12px;background:#f8fbfd;display:grid;gap:3px}.mp-follow-stats b{font-size:20px;color:#123e66}.mp-follow-stats span{font-size:12px;color:#64748b}
-
-        #dashboardBox.admin-ui-english { direction:ltr; text-align:left; }
-        #dashboardBox.admin-ui-english .premium-admin-sidebar { direction:ltr; text-align:left; }
-        #dashboardBox.admin-ui-english .admin-nav-organized .tab-btn { text-align:left; direction:ltr; }
-        #dashboardBox.admin-ui-english .premium-admin-main { direction:ltr; text-align:left; }
-        #dashboardBox.admin-ui-english .admin-section-intro, #dashboardBox.admin-ui-english .manage-list-box { text-align:left; }
-        #dashboardBox.admin-ui-english .form-group label { text-align:left; }
-        #dashboardBox.admin-ui-english .premium-top-actions { direction:ltr; }
-        #dashboardBox #adminUiLanguageToggle { border:1px solid #cbd5e1; border-radius:8px; padding:7px 11px; background:#fff; color:#1e3a5f; font-weight:700; cursor:pointer; min-width:76px; }
 </style>
 
 <style id="arab-malaysia-mobile-admin-fix">
@@ -2797,111 +2788,6 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             document.getElementById('visitorCount').textContent = activeVisitsCount.toLocaleString();
         }
 
-        /* Independent, reversible language layer for the complete administrator workspace. */
-        let adminUiLang = (() => { try { return localStorage.getItem('arabMalaysiaAdminUiLang') === 'en' ? 'en' : 'ar'; } catch (_) { return 'ar'; } })();
-        const adminUiOriginalText = new WeakMap();
-        const adminUiOriginalAttrs = new WeakMap();
-        const adminUiLastRenderedText = new WeakMap();
-        const adminUiTrackedTextNodes = new Set();
-        const adminUiTrackedAttrElements = new Set();
-        const adminUiDict = {
-          'نظرة عامة':'Overview','مركز الإدارة':'Administration Center','القائمة الرئيسية':'Main Menu','وصول آمن للمسؤول':'Secure Administrator Access','إدارة المنصة':'Platform Management','لوحة الإدارة':'Admin Dashboard','تسجيل الخروج':'Log out','تبديل المظهر':'Toggle appearance',
-          'إدارة الأقسام':'Manage Sections','إدارة العناصر':'Manage Items','صور الواجهة الرئيسية':'Homepage Slides','إعدادات الصفحة الرئيسية':'Homepage Settings','إدارة الخدمات':'Manage Services','إدارة المدن':'Manage Cities','إدارة الصفحة والظهور':'Page & Visibility','الأخبار والعملات والرياضة':'News, Currency & Sports','مكتبة الصور':'Image Library','استوديو التصميم':'Design Studio','التصميم والألوان':'Design & Colors','الأقسام والبطاقات':'Sections & Cards','التحكم بكل عنصر':'Control Every Element',
-          'إدارة موقع عرب ماليزيا':'Manage Arab Malaysia','كل أدوات إدارة محتوى موقعك في مكان واحد.':'All your website content management tools in one place.','الأقسام':'Sections','العناصر':'Items','الصور':'Images','الأقسام الموجودة بالموقع':'Sections on the website','البطاقات داخل الأقسام':'Cards within sections','الصور والبنرات المسجلة':'Registered images and banners','مركز إدارة المنصة الشاملة':'Platform Management Center','الأقسام والمحتوى':'Sections & Content','إضافة الأقسام والبطاقات وتعديلها وترتيبها.':'Add, edit, and organize sections and cards.','الصور والبنرات':'Images & Banners','إدارة صور المربع المتحرك ومكتبة الصور.':'Manage the slideshow and image library.','تحديث مكونات الأخبار وأسعار الصرف.':'Update news components and exchange rates.','تعديل وإضافة وحذف وإخفاء جميع إضافات الواجهة الجديدة.':'Edit, add, delete, and hide all new interface components.','الوصول السريع':'Quick Access','إنشاء الأقسام وإدارتها فقط':'Create and manage sections','إدارة البطاقات ومحتواها':'Manage cards and their content','صور الواجهة':'Homepage Images','إدارة المستطيل المتحرك':'Manage the slideshow','إظهار وإخفاء كل مكونات الصفحة':'Show or hide all page components','القوالب والمظهر والمعاينة':'Templates, appearance, and preview',
-          'معاينة الموقع':'Preview Website','حفظ ونشر التغييرات':'Save & Publish Changes','استعادة آخر نسخة منشورة':'Restore Last Published Version','فتح اللوحة في تبويب مستقل':'Open Dashboard in Separate Tab','التعديلات تحفظ كمسودة على هذا الجهاز حتى تضغط «حفظ ونشر التغييرات».':'Changes are saved as a draft on this device until you select “Save & Publish Changes”.',
-          'تخصيص ألوان الهوية البصرية للموقع':'Customize Website Brand Colors','خلفية الموقع':'Website Background','لون النصوص':'Text Color','لون الأزرار':'Button Color','نصوص الحوم/اللمس':'Hover Text','لون البانر العلوي والفوتر':'Header Banner & Footer Color','إعادة الألوان الافتراضية':'Reset Default Colors',
-          'إدارة صور المربع المتحرك أعلى الموقع':'Manage the Main Homepage Slideshow','أضف الصور أو عدّل العناوين أو احذف الصور. يتم حفظ التغييرات سحابياً لتظهر لجميع الزوار.':'Add images, edit titles, or delete images. Changes are saved to the cloud and shown to all visitors.','إضافة صورة جديدة':'Add New Image','الصورة من الجهاز':'Image from Device','العنوان بالعربية':'Title in Arabic','العنوان بالإنجليزية':'Title in English','حفظ التعديل':'Save Changes','حذف الصورة':'Delete Image','إدارة وحذف العناصر الحالية':'Manage and Delete Current Items','اختر القسم لاستعراض وعزل عناصره:':'Select a section to view its items:','إدارة وحذف الأقسام الكاملة':'Manage and Delete Entire Sections','إدارة مكونات الصفحة الرئيسية':'Manage Homepage Components','يمكن إظهار أو إخفاء أشرطة الأخبار والعملات وبطاقة الأخبار الرياضية. التغييرات تحفظ كمسودة حتى النشر.':'Show or hide the news ticker, currency ticker, and sports news card. Changes remain drafts until published.','إظهار شريط آخر الأخبار':'Show Latest News Ticker','إظهار شريط أسعار العملات':'Show Currency Rates Ticker','إظهار بطاقة الأخبار الرياضية':'Show Sports News Card','تحديث الأخبار الآن':'Refresh News Now','تحديث أسعار العملات الآن':'Refresh Currency Rates Now','تحديث الأخبار الرياضية الآن':'Refresh Sports News Now',
-          'التحكم الكامل بإضافات الصفحة الرئيسية':'Full Control of Homepage Components','من هنا يمكنك تعديل النصوص، إظهار أو إخفاء أي جزء، إضافة وحذف بطاقات الخدمات والمدن، ثم معاينة التغييرات ونشرها لجميع الزوار.':'Edit text, show or hide any component, add or remove service cards and cities, then preview and publish changes for all visitors.','العنوان الرئيسي بالعربية':'Main Headline in Arabic','Main headline in English':'Main Headline in English','الوصف الرئيسي بالعربية':'Main Description in Arabic','Introduction in English':'Introduction in English','إظهار الواجهة الرئيسية المطوّرة':'Show Enhanced Homepage','إظهار مستطيل الصور المتحرك الرئيسي':'Show Main Slideshow','إظهار شبكة الخدمات':'Show Services Grid','إظهار بطاقة دليل الحياة والدراسة':'Show Life & Study Guide Card','إظهار بطاقة أصحاب الأعمال':'Show Business Owners Card','إظهار قسم المدن':'Show Cities Section','بطاقات الخدمات':'Service Cards','المدن الماليزية':'Malaysian Cities','بطاقات المحتوى التعريفي':'Introductory Content Cards','عنوان دليل الحياة والدراسة بالعربية':'Life & Study Guide Title in Arabic','Life and study title in English':'Life & Study Guide Title in English','وصف دليل الحياة والدراسة بالعربية':'Life & Study Guide Description in Arabic','Life and study description in English':'Life & Study Guide Description in English','عنوان بطاقة أصحاب الأعمال بالعربية':'Business Owners Card Title in Arabic','Business card title in English':'Business Card Title in English','وصف بطاقة أصحاب الأعمال بالعربية':'Business Owners Card Description in Arabic','Business card description in English':'Business Card Description in English','حفظ التعديلات كمسودة':'Save Changes as Draft',
-          'مركز التحكم الفردي':'Individual Element Control Center','كل خدمة وقسم وبطاقة ومدينة وبانر عنصر مستقل. إخفاء عنصر واحد لا يخفي بقية العناصر.':'Each service, section, card, city, and banner is independent. Hiding one item does not hide the others.','ابحث عن خدمة أو قسم أو عنصر...':'Search for a service, section, or item...','كل الأنواع':'All Types','مكونات الصفحة':'Page Components','الخدمات':'Services','عناصر الأقسام':'Section Items','المدن':'Cities','صور الواجهة':'Homepage Images','خدمة جديدة':'New Service','مدينة':'City','قسم':'Section','عنصر داخل قسم':'Item in Section','طريقة العمل':'How It Works','زر «إخفاء» يوقف ظهور العنصر للزوار دون حذفه. زر «تعديل» يغيّر بيانات العنصر. زر «حذف» نهائي ويطلب تأكيداً. بعد الانتهاء استخدم «حفظ ونشر التغييرات» أعلى اللوحة ليظهر التغيير لجميع الزوار.':'“Hide” removes an item from visitor view without deleting it. “Edit” changes its details. “Delete” permanently removes it after confirmation. When finished, select “Save & Publish Changes” at the top so visitors can see the update.',
-          'مكتبة صور الموقع':'Website Image Library','استعراض الصور المستخدمة في الأقسام والبطاقات. لإضافة الصور أو استبدالها أو حذفها، اختر القسم والعنصر من أدوات الإدارة أدناه.':'Browse images used in sections and cards. To add, replace, or delete images, select a section and item from the management tools below.',
-          'دليل الأعمال':'Business Directory','إدارة الأعضاء':'Member Management','المنشورات المجتمعية':'Community Posts','الوظائف والفرص':'Jobs & Opportunities','إعلانات السوق':'Marketplace Listings','طلبات توثيق الأعمال':'Business Verification Requests','المحتوى والمجتمع':'Content & Community','بانتظار المراجعة':'Pending Review','قيد المراجعة':'Under Review','منشور':'Published','مسودة':'Draft','مرفوض':'Rejected','مقبول':'Approved','موقوف':'Suspended','معلّق':'Pending','معلّقة':'Pending','مكتمل':'Completed','مفتوح':'Open','تمت المعالجة':'Resolved','إجراءات':'Actions','عرض التفاصيل':'View Details','عرض':'View','اعتماد':'Approve','اعتماد ونشر':'Approve & Publish','إعادة للمراجعة':'Return for Review','إيقاف':'Suspend','تفعيل':'Activate','حظر':'Ban','فك الحظر':'Unban','تجميد الحساب':'Freeze Account','إلغاء التجميد':'Unfreeze Account','إرسال تحذير':'Send Warning','حذف نهائي':'Permanently Delete','تغيير الحالة':'Change Status','لا توجد سجلات':'No records found','لا توجد نتائج':'No results found','جارٍ تحميل البيانات...':'Loading data...','جاري تحميل البيانات...':'Loading data...','تعذر تحميل البيانات':'Could not load data','إدارة الأعضاء':'Member Management','إدارة المحتوى والمجتمع':'Content & Community Management','إدارة الخدمات والأعمال':'Services & Business Management','التقييمات والمراجعات':'Ratings & Reviews','السجلات والمؤشرات':'Logs & Analytics','السوق العربي':'Arab Marketplace','الوظائف':'Jobs','العقارات':'Properties','المجتمع والفعاليات':'Community & Events','تقييمات الأعمال':'Business Reviews','تقييمات بقية المنصة':'Platform Reviews','تعديلات تقييمات الأعمال':'Business Review Edits','تعديلات تقييمات المنصة':'Platform Review Edits','استثناءات عدد التقييمات':'Review Limit Exceptions','طلبات توثيق الأعمال':'Business Verification Requests','ردود أصحاب الأعمال':'Business Owner Responses','مركز البلاغات':'Reports Center','مراجعة التعليقات':'Comment Moderation','سجل تحذيرات وإجراءات الأعضاء':'Member Warnings & Actions Log','إدارة ومراجعة المجموعات':'Group Management & Review','سجل إجراءات المجموعات':'Group Actions Log','سجل إجراءات الإدارة':'Admin Activity Log','طلبات الأعضاء':'Member Requests','مؤشرات النمو':'Growth Metrics','تحديث البيانات':'Refresh Data','مراجعة واعتماد الأعمال والإعلانات والوظائف والعقارات ومنشورات المجتمع.':'Review and approve businesses, listings, jobs, properties, and community posts.','لا توجد مجموعات حالياً.':'There are currently no groups.','عدد المجموعات:':'Groups:','المنشئ:':'Created by:','خاصة':'Private','عامة':'Public','حتى ':'Until ','السبب:':'Reason:','بانتظار الموافقة':'Pending Approval','معتمدة':'Approved','مرفوضة':'Rejected','نشطة':'Active','مجمّدة':'Frozen','موقوفة مؤقتاً':'Temporarily Suspended','محذوفة إدارياً':'Administratively Deleted','موافقة':'Approve','رفض':'Reject','تحذير المنشئ':'Warn Creator','تجميد':'Freeze','إيقاف مؤقت':'Suspend','إعادة تفعيل':'Reactivate','حذف إداري':'Admin Delete',
-          'لا توجد عناصر تطابق البحث.':'No items match your search.','ظاهر':'Visible','مخفي':'Hidden','إخفاء':'Hide','إظهار':'Show','تعديل':'Edit','حذف':'Delete','إضافة':'Add','حفظ':'Save','إلغاء':'Cancel','تأكيد':'Confirm','إغلاق':'Close','التالي':'Next','السابق':'Previous','بحث':'Search','اختر':'Select','الكل':'All','الحالة':'Status','الاسم':'Name','العنوان':'Title','الوصف':'Description','التاريخ':'Date','المدينة':'City','السعر':'Price','التقييم':'Rating','السبب':'Reason','التفاصيل':'Details','الإجراءات':'Actions','المنشئ':'Creator','المستخدم':'User','عضو':'Member','أعضاء':'Members','محتوى':'Content','صورة':'Image','صور':'Images','بطاقة':'Card','بطاقات':'Cards','عنصر':'Item','عناصر':'Items','قسم':'Section','أقسام':'Sections','خدمة':'Service','خدمات':'Services','مفعّل':'Enabled','معطّل':'Disabled','نعم':'Yes','لا':'No','غير متاح':'Unavailable','غير معروف':'Unknown','تعذر تحميل البيانات:':'Could not load data:','تعذر تحميل المجموعات:':'Could not load groups:','يرجى المحاولة لاحقاً.':'Please try again later.','لا توجد بيانات حالياً.':'There is currently no data.','عدد العناصر:':'Items:','عدد الأعضاء:':'Members:','عدد الطلبات:':'Requests:','تم الحفظ بنجاح.':'Saved successfully.','حدث خطأ:':'An error occurred:','هل أنت متأكد؟':'Are you sure?','هل تريد حذف هذا العنصر نهائياً؟':'Do you want to permanently delete this item?','يرجى إدخال':'Please enter','اختر القسم':'Select Section','اختر العنصر':'Select Item','اختر صورة':'Select Image','رفع صورة':'Upload Image','من الجهاز':'From Device','رابط الصورة':'Image URL','اسم المدينة بالإنجليزية':'City Name in English','الاسم بالعربية':'Name in Arabic','الوصف بالعربية':'Description in Arabic','نوع القسم المرتبط':'Linked Section Type','رابط البطاقة':'Card Link','أيقونة Font Awesome':'Font Awesome Icon','ظاهرة':'Visible','بطاقة':'Card','حذف إداري':'Admin Delete','تعذر تحميل الأخبار حالياً. حاول التحديث لاحقاً.':'News could not be loaded. Please try again later.','تعذر تحميل أسعار الصرف حالياً.':'Exchange rates could not be loaded right now.','تعذر تحميل الأخبار الرياضية حالياً. يرجى المحاولة لاحقاً.':'Sports news could not be loaded. Please try again later.'
-        };
-        const adminUiPhrases = Object.keys(adminUiDict).sort((a,b)=>b.length-a.length);
-        function adminUiTranslateText(value) {
-          if (adminUiLang !== 'en' || !value) return value;
-          const original = String(value);
-          const trimmed = original.trim();
-          if (Object.prototype.hasOwnProperty.call(adminUiDict, trimmed)) return original.replace(trimmed, adminUiDict[trimmed]);
-          let result = original;
-          for (const phrase of adminUiPhrases) {
-            if (phrase.length > 2 && result.includes(phrase)) result = result.split(phrase).join(adminUiDict[phrase]);
-          }
-          return result;
-        }
-        function adminUiInScope(node) {
-          const el = node && (node.nodeType === 1 ? node : node.parentElement);
-          return !!(el && (el.closest('#dashboardBox') || el.closest('#adminDialog')));
-        }
-        function adminUiTranslateTree(root) {
-          if (adminUiLang !== 'en' || !root) return;
-          const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-          let n;
-          while ((n = walker.nextNode())) {
-            if (!n.nodeValue || !n.nodeValue.trim() || !adminUiInScope(n)) continue;
-            const p = n.parentElement;
-            if (!p || p.closest('script,style,textarea,[contenteditable="true"],.admin-user-content,[data-admin-no-translate]')) continue;
-            if (!adminUiOriginalText.has(n)) { adminUiOriginalText.set(n, n.nodeValue); adminUiTrackedTextNodes.add(n); }
-            const translated = adminUiTranslateText(adminUiOriginalText.get(n));
-            if (n.nodeValue !== translated) n.nodeValue = translated;
-            adminUiLastRenderedText.set(n, translated);
-          }
-          const attrs = ['placeholder','title','aria-label'];
-          const elements = [root, ...root.querySelectorAll('*')];
-          for (const el of elements) {
-            if (!el || el.nodeType !== 1 || !adminUiInScope(el)) continue;
-            for (const attr of attrs) {
-              if (!el.hasAttribute(attr)) continue;
-              let originals = adminUiOriginalAttrs.get(el);
-              if (!originals) { originals = {}; adminUiOriginalAttrs.set(el, originals); adminUiTrackedAttrElements.add(el); }
-              if (!(attr in originals)) originals[attr] = el.getAttribute(attr);
-              const next = adminUiTranslateText(originals[attr]);
-              if (el.getAttribute(attr) !== next) el.setAttribute(attr, next);
-            }
-          }
-        }
-        function applyAdminUiLanguage() {
-          const dash = document.getElementById('dashboardBox');
-          const dialog = document.getElementById('adminDialog');
-          const root = dash || dialog;
-          if (!root) return;
-          root.setAttribute('dir', adminUiLang === 'en' ? 'ltr' : 'rtl');
-          root.setAttribute('lang', adminUiLang);
-          root.classList.toggle('admin-ui-english', adminUiLang === 'en');
-          if (adminUiLang === 'en') adminUiTranslateTree(root);
-          else {
-            for (const node of adminUiTrackedTextNodes) { if (node && node.isConnected && adminUiOriginalText.has(node)) node.nodeValue = adminUiOriginalText.get(node); }
-            for (const el of adminUiTrackedAttrElements) { if (el && el.isConnected && adminUiOriginalAttrs.has(el)) { const originals = adminUiOriginalAttrs.get(el); for (const attr of Object.keys(originals)) el.setAttribute(attr, originals[attr]); } }
-          }
-          const btn = document.getElementById('adminUiLanguageToggle');
-          if (btn) { btn.textContent = adminUiLang === 'en' ? 'العربية' : 'English'; btn.setAttribute('aria-label', adminUiLang === 'en' ? 'Switch admin dashboard to Arabic' : 'Switch admin dashboard to English'); }
-          try { localStorage.setItem('arabMalaysiaAdminUiLang', adminUiLang); } catch (_) {}
-        }
-        function toggleAdminUiLanguage() {
-          adminUiLang = adminUiLang === 'ar' ? 'en' : 'ar';
-          applyAdminUiLanguage();
-        }
-        let adminUiObserverStarted = false;
-        function startAdminUiObserver() {
-          if (adminUiObserverStarted || !document.body) return;
-          adminUiObserverStarted = true;
-          const observer = new MutationObserver(records => {
-            if (adminUiLang !== 'en') return;
-            for (const record of records) {
-              if (record.type === 'childList') record.addedNodes.forEach(node => { if (node.nodeType === 1 && adminUiInScope(node)) adminUiTranslateTree(node); });
-              else if (record.type === 'characterData' && adminUiInScope(record.target)) {
-                const node = record.target;
-                if (!adminUiOriginalText.has(node) || (adminUiLastRenderedText.has(node) && node.nodeValue !== adminUiLastRenderedText.get(node))) { adminUiOriginalText.set(node, node.nodeValue); adminUiTrackedTextNodes.add(node); }
-                const next = adminUiTranslateText(adminUiOriginalText.get(node));
-                if (node.nodeValue !== next) node.nodeValue = next;
-                adminUiLastRenderedText.set(node, next);
-              }
-            }
-          });
-          observer.observe(document.body, {subtree:true, childList:true, characterData:true});
-        }
-        document.addEventListener('DOMContentLoaded', startAdminUiObserver, {once:true});
-
         function buildPremiumAdminShell() {
             const dash = document.getElementById('dashboardBox');
             if (!dash || dash.dataset.premiumBuilt === '1') return;
@@ -2937,7 +2823,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             main.className = 'premium-admin-main';
             const topbar = document.createElement('div');
             topbar.className = 'premium-admin-topbar';
-            topbar.innerHTML = `<div><small>ARAB MALAYSIA / ADMIN</small><h2 id="adminPageHeading">نظرة عامة</h2></div><div class="premium-top-actions"><span class="premium-online"><i></i> لوحة الإدارة</span><button type="button" id="adminUiLanguageToggle" onclick="toggleAdminUiLanguage()" aria-label="Switch admin dashboard language">English</button><button type="button" onclick="toggleAdminDarkMode()" title="تبديل المظهر"><i id="adminThemeIcon" class="fa-solid fa-moon"></i></button></div>`;
+            topbar.innerHTML = `<div><small>ARAB MALAYSIA / ADMIN</small><h2 id="adminPageHeading">نظرة عامة</h2></div><div class="premium-top-actions"><span class="premium-online"><i></i> لوحة الإدارة</span><button type="button" onclick="toggleAdminDarkMode()" title="تبديل المظهر"><i id="adminThemeIcon" class="fa-solid fa-moon"></i></button></div>`;
             if (header) {
                 const logout = header.querySelector('button[onclick="handleLogout()"]');
                 if (logout) sidebar.appendChild(logout);
@@ -2982,10 +2868,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
                 });
             });
             applyAdminAppearance();
-            applyAdminUiLanguage();
-            startAdminUiObserver();
             switchTab('overview');
-            applyAdminUiLanguage();
         }
 
         function organizeAdminPanels() {
@@ -3075,7 +2958,6 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             const platformNav = document.querySelector('#dashboardBox .premium-admin-sidebar .premium-overview[aria-label="platform-management"]');
             if (platformNav) platformNav.classList.add('active');
             renderPlatformModuleAccordion();
-            applyAdminUiLanguage();
             refreshPlatformModules();
         }
         const platformModuleGroups = [
@@ -3109,7 +2991,6 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
             document.querySelectorAll('#dashboardBox .panel-tab').forEach(el => el.style.display='none');
             document.getElementById('platformModulesPanel').style.display='block';
             renderPlatformModuleAccordion();
-            applyAdminUiLanguage();
             refreshPlatformModules();
         }
         async function refreshCommunityGroupsPanel(host,status) {
