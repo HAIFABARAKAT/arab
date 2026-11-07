@@ -1571,22 +1571,12 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-overview>i,
     body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .tab-btn>i,
     body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-sidebar-foot>i{
-      transform:translate(-13px,-50%)!important;
+      transform:translate(-7px,-50%)!important;
     }
-  }
-  
-  /* ضبط أيقونة نظرة عامة بشكل مستقل */
-  body.admin-only:not(.mobile-admin-nav-open)
-  #dashboardBox .premium-admin-sidebar
-  .premium-overview[aria-label="نظرة عامة"] > i {
-      transform: translate(-7px, -50%) !important;
-  }
-  
-  /* ضبط أيقونة إدارة المنصة بشكل مستقل */
-  body.admin-only:not(.mobile-admin-nav-open)
-  #dashboardBox .premium-admin-sidebar
-  .premium-overview[aria-label="platform-management"] > i {
-      transform: translate(-7px, -50%) !important;
+    /* Align the brand/logo icon independently; preserve its existing vertical position. */
+    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-brand>span{
+      transform:translateX(-7px)!important;
+    }
   }
 </style>
 <script id="arab-mobile-admin-drawer-controller">
