@@ -1486,6 +1486,27 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
   }
   body.admin-only.mobile-admin-nav-open .mobile-admin-drawer-toggle{left:auto!important;right:7px!important;width:30px!important;height:30px!important}
 
+  /* Restore the logout icon on mobile without changing desktop styling. */
+  body.admin-only #dashboardBox .premium-admin-sidebar > .admin-btn{
+    position:relative!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;
+    gap:7px!important;text-align:right!important;
+  }
+  body.admin-only #dashboardBox .premium-admin-sidebar > .admin-btn > i{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    flex:0 0 18px!important;width:18px!important;min-width:18px!important;font-size:14px!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar > .admin-btn{
+    font-size:0!important;justify-content:flex-start!important;padding:10px 4px!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar > .admin-btn > i{
+    position:absolute!important;right:5px!important;top:50%!important;transform:translateY(-50%)!important;
+  }
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar > .admin-btn > span,
+  body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar > .admin-btn::after{display:none!important;content:none!important}
+  body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar > .admin-btn{
+    font-size:10px!important;padding:9px 8px!important;
+  }
+
   /* Slightly tighter dashboard spacing and typography on phones */
   body.admin-only #dashboardBox .premium-admin-topbar{
     min-height:66px!important;height:66px!important;padding:0 9px!important;gap:5px!important;
@@ -1929,7 +1950,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
         <div class="admin-box" id="dashboardBox" style="display:none;">
             <div class="admin-header">
                 <span id="lblDashTitle">لوحة الإدارة الاحترافية</span>
-                <div style="display:flex;align-items:center;gap:8px;"><button class="admin-btn" style="width:auto;padding:7px 12px;margin:0;background:#757575;" onclick="handleLogout()">تسجيل الخروج</button><button class="admin-close" onclick="closeAdmin()">&times;</button></div>
+                <div style="display:flex;align-items:center;gap:8px;"><button class="admin-btn" style="width:auto;padding:7px 12px;margin:0;background:#757575;" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i><span>تسجيل الخروج</span></button><button class="admin-close" onclick="closeAdmin()">&times;</button></div>
             </div>
             <div class="tab-menu">
                 <button class="tab-btn active" id="tabColorsBtn" onclick="switchTab('colors')">التصميم والألوان</button>
