@@ -1608,37 +1608,28 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
     }
   }
 
-  /* أيقونة زر تسجيل الخروج ومحاذاتها مع أيقونات الشريط الجانبي */
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-logout-btn{
-    position:relative!important;display:flex!important;align-items:center!important;
-    justify-content:center!important;gap:8px!important;
-  }
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-logout-btn > i{
-    display:inline-flex!important;align-items:center!important;justify-content:center!important;
-    width:18px!important;min-width:18px!important;margin:0!important;font-size:14px!important;
-  }
-  body.admin-only #dashboardBox .premium-admin-sidebar .premium-logout-btn::after{content:none!important}
+  /* Mobile only: navigation highlight is temporary while pressing. */
   @media(max-width:760px){
-    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-logout-btn{
-      width:100%!important;min-width:0!important;height:34px!important;min-height:34px!important;
-      padding:5px 0!important;font-size:0!important;overflow:visible!important;
+    body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview.active,
+    body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn.active{
+      background:transparent!important;
+      color:#bdc9df!important;
+      box-shadow:none!important;
     }
-    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-logout-btn > span{
-      display:none!important;
+    body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview:focus,
+    body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn:focus,
+    body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview:focus-visible,
+    body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn:focus-visible{
+      background:transparent!important;
+      color:#bdc9df!important;
+      box-shadow:none!important;
+      outline:none!important;
     }
-    body.admin-only:not(.mobile-admin-nav-open) #dashboardBox .premium-admin-sidebar .premium-logout-btn > i{
-      position:absolute!important;left:5px!important;right:auto!important;top:50%!important;
-      transform:translate(-5px,-50%)!important;width:18px!important;min-width:18px!important;
-      font-size:14px!important;
-    }
-    body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-logout-btn{
-      justify-content:flex-start!important;padding:10px 8px!important;font-size:11px!important;
-    }
-    body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-logout-btn > span{
-      display:inline!important;font-size:11px!important;
-    }
-    body.admin-only.mobile-admin-nav-open #dashboardBox .premium-admin-sidebar .premium-logout-btn > i{
-      position:static!important;transform:none!important;
+    body.admin-only #dashboardBox .premium-admin-sidebar .premium-overview:active,
+    body.admin-only #dashboardBox .premium-admin-sidebar .tab-btn:active{
+      background:linear-gradient(100deg,#2d61cf,#3979ed)!important;
+      color:#fff!important;
+      box-shadow:0 7px 18px #0a142d55!important;
     }
   }
 </style>
@@ -1938,7 +1929,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
         <div class="admin-box" id="dashboardBox" style="display:none;">
             <div class="admin-header">
                 <span id="lblDashTitle">لوحة الإدارة الاحترافية</span>
-                <div style="display:flex;align-items:center;gap:8px;"><button class="admin-btn premium-logout-btn" style="width:auto;padding:7px 12px;margin:0;background:#757575;" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i><span>تسجيل الخروج</span></button><button class="admin-close" onclick="closeAdmin()">&times;</button></div>
+                <div style="display:flex;align-items:center;gap:8px;"><button class="admin-btn" style="width:auto;padding:7px 12px;margin:0;background:#757575;" onclick="handleLogout()">تسجيل الخروج</button><button class="admin-close" onclick="closeAdmin()">&times;</button></div>
             </div>
             <div class="tab-menu">
                 <button class="tab-btn active" id="tabColorsBtn" onclick="switchTab('colors')">التصميم والألوان</button>
