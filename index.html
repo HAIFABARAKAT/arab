@@ -1590,6 +1590,23 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
         transform: translate(-5px, -50%) !important;
     }
   }
+  /* ضبط أيقونة الشعار بشكل مستقل */
+  @media(max-width:760px){
+    body.admin-only:not(.mobile-admin-nav-open)
+    #dashboardBox .premium-admin-sidebar
+    .premium-brand > span {
+        transform: translateX(-5px) !important;
+    }
+  }
+
+  /* ضبط أيقونة وصول آمن للمسؤول بشكل مستقل */
+  @media(max-width:760px){
+    body.admin-only:not(.mobile-admin-nav-open)
+    #dashboardBox .premium-admin-sidebar
+    .premium-sidebar-foot > i {
+        transform: translate(-5px, -50%) !important;
+    }
+  }
 </style>
 <script id="arab-mobile-admin-drawer-controller">
 (function(){
