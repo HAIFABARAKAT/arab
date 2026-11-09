@@ -4237,6 +4237,10 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
           'Title in English': ['Title in English', 'Tajuk dalam bahasa Inggeris'],
           'Description in English': ['Description in English', 'Penerangan dalam bahasa Inggeris'],
         };
+        // Cache prefix labels once instead of filtering/sorting them for every text node.
+        const AM_ADMIN_PREFIX_KEYS = Object.keys(AM_ADMIN_LABELS)
+          .filter(key => key.endsWith(':') || /\s$/.test(key))
+          .sort((a, b) => Number(a.endsWith(': ')) - Number(b.endsWith(': ')) || b.length - a.length);
         const AM_ADMIN_ORIGINAL_TEXT = new WeakMap();
         const AM_ADMIN_ORIGINAL_ATTR = new WeakMap();
         const AM_ADMIN_LAST_TEXT = new WeakMap();
@@ -4249,8 +4253,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
           if (lang === 'ar') return source;
           const index = lang === 'en' ? 0 : 1;
           if (AM_ADMIN_LABELS[trimmed]) return source.replace(trimmed, AM_ADMIN_LABELS[trimmed][index]);
-          const keys = Object.keys(AM_ADMIN_LABELS).filter(k => k.endsWith(':') || /\s$/.test(k)).sort((a,b)=>Number(a.endsWith(': '))-Number(b.endsWith(': ')) || b.length-a.length);
-          for (const key of keys) if (trimmed.startsWith(key)) return source.replace(trimmed, AM_ADMIN_LABELS[key][index] + trimmed.slice(key.length));
+          for (const key of AM_ADMIN_PREFIX_KEYS) if (trimmed.startsWith(key)) return source.replace(trimmed, AM_ADMIN_LABELS[key][index] + trimmed.slice(key.length));
           return source;
         }
         /* Translate native admin prompts without changing public-site dialogs. */
@@ -6729,7 +6732,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 (function(){
  const base='https://haifabarakat.github.io/arab/';
  function applySeoLanguage(){const lang=localStorage.getItem('siteLang')||'ar',en=lang==='en',ms=lang==='ms';document.documentElement.lang=lang;document.documentElement.dir=(en||ms)?'ltr':'rtl';document.title=ms?window.AMPhase6Malay.seo.title:(en?'Arab Malaysia | Trusted Arabic Guide to Life and Services in Malaysia':'عرب ماليزيا | دليلك الموثوق للحياة والخدمات في ماليزيا');const m=document.querySelector('meta[name="description"]');if(m)m.content=ms?window.AMPhase6Malay.seo.description:(en?'Arab Malaysia connects the Arabic community with trusted businesses, jobs, property, marketplace listings, community and events in Malaysia.':'عرب ماليزيا منصة عربية موثوقة تجمع دليل الأعمال والوظائف والعقارات والسوق والمجتمع والفعاليات في ماليزيا.');const sd=document.getElementById('arabMalaysiaStructuredData');if(sd){const data=JSON.parse(sd.textContent);data.description=m?.content||data.description;sd.textContent=JSON.stringify(data);}}
- document.getElementById('langToggleBtn')?.addEventListener('click',()=>setTimeout(applySeoLanguage,20));document.addEventListener('DOMContentLoaded',()=>{applySeoLanguage();if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register(base+'sw.js?v=79').catch(e=>console.warn('PWA worker unavailable',e));});applySeoLanguage();
+ document.getElementById('langToggleBtn')?.addEventListener('click',()=>setTimeout(applySeoLanguage,20));document.addEventListener('DOMContentLoaded',()=>{applySeoLanguage();if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register(base+'sw.js?v=80').catch(e=>console.warn('PWA worker unavailable',e));});applySeoLanguage();
 })();
 </script>
 
