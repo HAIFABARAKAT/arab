@@ -2213,6 +2213,32 @@ body.am-gallery-open{overflow:hidden!important;}
 }
 </style>
 
+
+<style id="arabMalaysiaMessengerExactTwoFixesV12">
+/* V12 / Only the two requested refinements, layered over V10 without removing prior styles. */
+/* Add 10% to the already approved V10 scale (1.10 x 1.10), keeping the fixed right/bottom anchors and all existing gaps unchanged. */
+#amMemberDirectory{zoom:1.21 !important;}
+/* Put the expand/collapse arrow inside the text field, at its far left end (RTL), not above or outside it. */
+#amMemberDirectory.am-directory-chat-open .am-compose-entry{position:relative !important;}
+#amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse{
+  position:absolute !important; left:5px !important; right:auto !important; top:50% !important;
+  transform:translateY(-50%) !important; z-index:5 !important; margin:0 !important;
+  display:grid !important; place-items:center !important; flex:0 0 29px !important;
+  width:29px !important; min-width:29px !important; height:29px !important;
+}
+#amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{
+  padding-left:40px !important; box-sizing:border-box !important;
+}
+@media(max-width:650px){
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse{
+    flex-basis:14.5px !important; width:14.5px !important; min-width:14.5px !important;
+    height:14.5px !important; font-size:6.5px !important; border-radius:50% !important;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse i{font-size:6.5px !important;}
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{padding-left:23px !important;}
+}
+</style>
+
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
@@ -5905,49 +5931,6 @@ db.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'&&user)setPresence(fa
 #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{border:1px solid #2583df!important;outline:none!important;box-shadow:none!important;background:#fff;}
 @media(max-width:650px){
  #amMemberDirectory.am-directory-chat-open .am-compose-entry textarea{height:24px;min-height:24px;max-height:110px;padding:4px 5px;}
-}
-</style>
-
-
-<style id="arabMalaysiaMessengerArrowPlacementV11">
-/* V11: keep the already-approved +10% panel sizing from V10; do not alter panel anchors or gaps. */
-#amMemberDirectory{zoom:1.1;}
-/* Place the expanded-composer collapse arrow inside the text field, at its far end. */
-#amMemberDirectory.am-directory-chat-open .am-compose-entry{position:relative;}
-#amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse{
-  position:absolute!important;
-  left:4px!important;
-  top:15.5px!important;
-  right:auto!important;
-  bottom:auto!important;
-  z-index:3;
-  flex:0 0 29px!important;
-  width:29px!important;
-  height:29px!important;
-  min-width:29px!important;
-  margin:0!important;
-  transform:translateY(-50%);
-}
-#amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{
-  padding-left:38px!important;
-}
-@media(max-width:650px){
-  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse{
-    left:3px!important;
-    top:12px!important;
-    flex:0 0 14.5px!important;
-    width:14.5px!important;
-    height:14.5px!important;
-    min-width:14.5px!important;
-    font-size:7px!important;
-    border-radius:50%;
-  }
-  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse i{
-    font-size:7px!important;
-  }
-  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{
-    padding-left:22px!important;
-  }
 }
 </style>
 
