@@ -5959,5 +5959,37 @@ db.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'&&user)setPresence(fa
   #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{padding-left:23px !important;}
 }
 </style>
+
+<style id="arabMalaysiaDesktopFriendsAndComposerPolishV14">
+/* V14: desktop-only refinements requested by the user. Mobile remains untouched. */
+@media (min-width:651px) {
+  /* Match the friends directory width to the 410px desktop chat panel. */
+  #amMemberDirectory:not(.am-directory-chat-open) {
+    width:min(410px,calc(100vw - 28px)) !important;
+  }
+
+  /* Visually join the collapse arrow to the left edge of the message field. */
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse {
+    left:11px !important;
+    width:25px !important;
+    min-width:25px !important;
+    height:25px !important;
+    flex:0 0 25px !important;
+    border:1px solid #d7e5f5 !important;
+    border-right:0 !important;
+    border-radius:14px 0 0 14px !important;
+    background:#f5f7fa !important;
+    color:#1768ad !important;
+    box-shadow:none !important;
+    font-size:12px !important;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse i {
+    font-size:12px !important;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea {
+    padding-left:34px !important;
+  }
+}
+</style>
 </body>
 </html>
