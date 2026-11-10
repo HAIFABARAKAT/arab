@@ -5934,5 +5934,30 @@ db.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'&&user)setPresence(fa
 }
 </style>
 
+
+<style id="arabMalaysiaOnlyTwoCorrectionsV13">
+/* V13: exactly two placement corrections over V12. No dimensions, typography, scale, or other spacing are changed. */
+/* Keep V12's 1.21 zoom unchanged; compensate only the fixed bottom anchor so the panel meets the launcher. */
+#amMemberDirectory{bottom:66.12px !important;}
+@media(max-width:650px){
+  #amMemberDirectory{bottom:119.01px !important;}
+  #amMemberDirectory.am-directory-chat-open{bottom:119.01px !important;}
+}
+/* The collapse arrow is a sibling of the text-entry wrapper, so its containing block must be the composer row itself. */
+#amMemberDirectory.am-directory-chat-open .am-chat-compose{position:relative !important;}
+#amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse{
+  position:absolute !important; left:11px !important; right:auto !important; top:50% !important; bottom:auto !important;
+  transform:translateY(-50%) !important; z-index:5 !important; margin:0 !important;
+}
+#amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{padding-left:42px !important;}
+@media(max-width:650px){
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse{
+    left:11px !important; width:14.5px !important; min-width:14.5px !important; height:14.5px !important;
+    flex-basis:14.5px !important; font-size:6.5px !important;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse i{font-size:6.5px !important;}
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{padding-left:23px !important;}
+}
+</style>
 </body>
 </html>
