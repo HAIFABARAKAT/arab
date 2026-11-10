@@ -2036,6 +2036,62 @@ body.am-gallery-open{overflow:hidden!important;}
   align-self:flex-end;
 }
 </style>
+
+<style id="arabMalaysiaMessengerChatScaleV5">
+/* V5: match the floating chat width and typography to the approved 65% mobile friends panel.
+   The friends picker, desktop layout, chat behavior and database code remain untouched. */
+@media (max-width:650px){
+  #amMemberDirectory.am-directory-chat-open{
+    width:min(189px,calc(100vw - 24px)) !important;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-head{
+    min-height:42px; padding:4px 5px; gap:3px;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-person{gap:3px;}
+  #amMemberDirectory.am-directory-chat-open .am-chat-head #amMobileBack{
+    flex-basis:16px; width:16px; min-width:16px; height:21px; font-size:16px;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-avatar{
+    width:19px; height:19px; flex-basis:19px;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-person-meta b{
+    max-width:48px; font-size:7px; line-height:1.2;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-person-meta small{
+    font-size:5.5px; line-height:1.2;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions{gap:1px;}
+  #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions button{
+    width:16px; height:16px; min-width:16px; font-size:8px;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions button i{font-size:8px;}
+  #amMemberDirectory.am-directory-chat-open .am-chat-stream{padding:7px 6px; gap:5px;}
+  #amMemberDirectory.am-directory-chat-open .am-bubble{
+    max-width:88%; padding:5px 6px; border-radius:10px;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-bubble-text{font-size:8px; line-height:1.4;}
+  #amMemberDirectory.am-directory-chat-open .am-bubble small{font-size:5.5px; line-height:1.25;}
+  #amMemberDirectory.am-directory-chat-open .am-msg-tools{gap:2px; flex-wrap:wrap;}
+  #amMemberDirectory.am-directory-chat-open .am-msg-tools button{font-size:6px; padding:2px 3px;}
+  #amMemberDirectory.am-directory-chat-open .am-reactions button{font-size:7px; padding:2px 3px;}
+  #amMemberDirectory.am-directory-chat-open .am-chat-typing{font-size:6px; padding:0 7px;}
+  #amMemberDirectory.am-directory-chat-open .am-chat-compose{gap:2px; padding:5px 4px calc(5px + env(safe-area-inset-bottom));}
+  #amMemberDirectory.am-directory-chat-open .am-compose-entry{min-width:0; flex:1 1 auto;}
+  #amMemberDirectory.am-directory-chat-open .am-compose-entry textarea{
+    min-width:0; width:100%; min-height:25px; max-height:64px; padding:5px 6px;
+    font-size:8px; line-height:1.35;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-compose-tools{gap:1px;}
+  #amMemberDirectory.am-directory-chat-open .am-compose-tools .am-msg-btn{
+    width:16px; height:19px; min-width:16px; font-size:8px;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-send-btn{
+    width:19px; height:19px; min-width:19px; font-size:8px;
+  }
+  #amMemberDirectory.am-directory-chat-open .am-msg-note{font-size:7px; padding:6px;}
+  #amMemberDirectory.am-directory-chat-open .am-attachment-label{font-size:6px;}
+}
+</style>
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
