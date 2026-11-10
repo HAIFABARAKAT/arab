@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة المحادثات الذكية</title>
+  <!-- رابط ملف التنسيق (الجزء الثاني) -->
+  <link rel="stylesheet" href="messenger-style.css">
+</head>
+<body>
+
+<div class="ms-app">
+  <!-- ================= العمود الأول: قائمة الدردشات ================= -->
+  <aside class="ms-sidebar">
+    <div class="ms-sidebar-top">
+      <div class="ms-brand-row">
+        <h2>الدردشات</h2>
+        <button class="ms-icon-circle" id="themeToggle" title="تبديل الوضع الليلي">🌙</button>
+      </div>
+      <div class="ms-search-wrap">
+        <span class="ms-search-icon">🔍</span>
+        <input type="text" class="ms-search" placeholder="ابحث عن عضو أو محادثة..." />
+      </div>
+    </div>
+
+    <div class="ms-tabs">
+      <button class="ms-tab active">الكل</button>
+      <button class="ms-tab">غير مقروءة</button>
+      <button class="ms-tab">المتصلون</button>
+    </div>
+
+    <div class="ms-chat-list">
+      <div class="ms-chat-item active">
+        <div class="ms-avatar">س<span class="ms-online-dot"></span></div>
+        <div class="ms-chat-info">
+          <div class="ms-chat-top">
+            <span class="ms-chat-name">سارة المنصور</span>
+            <span class="ms-chat-time">الآن</span>
+          </div>
+          <div class="ms-chat-preview">التصميم الجديد مذهل وسريع جداً! ✨</div>
+        </div>
+      </div>
+
+      <div class="ms-chat-item unread">
+        <div class="ms-avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">خ<span class="ms-online-dot"></span></div>
+        <div class="ms-chat-info">
+          <div class="ms-chat-top">
+            <span class="ms-chat-name">خالد العتيبي</span>
+            <span class="ms-chat-time">14 د</span>
+          </div>
+          <div class="ms-chat-preview">هل يمكنك مراجعة ملف المشروع؟</div>
+        </div>
+        <span class="ms-unread-badge"></span>
+      </div>
+
+      <div class="ms-chat-item">
+        <div class="ms-avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">ن</div>
+        <div class="ms-chat-info">
+          <div class="ms-chat-top">
+            <span class="ms-chat-name">نورة السالم</span>
+            <span class="ms-chat-time">أمس</span>
+          </div>
+          <div class="ms-chat-preview">أنت: تم إرسال التفاصيل، بالتوفيق</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= العمود الثاني: منطقة المحادثة ================= -->
+  <main class="ms-main">
+    <header class="ms-header">
+      <div class="ms-header-user">
+        <div class="ms-avatar sm">س<span class="ms-online-dot"></span></div>
+        <div class="ms-header-meta">
+          <h3>سارة المنصور</h3>
+          <span>● نشطة الآن</span>
+        </div>
+      </div>
+      <div class="ms-header-actions">
+        <button class="ms-action-btn" title="بحث في المحادثة">🔍</button>
+        <button class="ms-action-btn" id="toggleDetails" title="معلومات العضو">ⓘ</button>
+      </div>
+    </header>
+
+    <div class="ms-messages" id="messagesContainer">
+      <div class="ms-date-divider">اليوم، 11:20 م</div>
+
+      <div class="ms-msg-row received">
+        <div class="ms-bubble">أهلاً بك! هل انتهيت من تحديث واجهة المحادثات المستقلة في المنصة؟</div>
+      </div>
+
+      <div class="ms-msg-row sent">
+        <div class="ms-bubble">أهلاً سارة! نعم، لقد أضفنا التصميم الجديد بالكامل.</div>
+      </div>
+      <div class="ms-msg-row sent">
+        <div class="ms-bubble">أصبح يدعم الوضع الليلي وتجميع الرسائل المتتالية بشكل انسيابي.</div>
+        <span class="ms-msg-time">تمت القراءة ✓✓</span>
+      </div>
+
+      <div class="ms-msg-row received">
+        <div class="ms-bubble">التصميم الجديد مذهل وسريع جداً! ✨</div>
+      </div>
+
+      <div class="ms-typing" id="typingIndicator">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <footer class="ms-footer">
+      <button class="ms-action-btn" title="إرفاق ملف أو صورة">＋</button>
+      <div class="ms-input-box">
+        <input type="text" id="msgInput" placeholder="اكتب رسالتك هنا..." autocomplete="off" />
+        <button class="ms-emoji-btn" id="emojiBtn" title="رموز تعبيرية">😊</button>
+      </div>
+      <button class="ms-send-trigger" id="sendBtn" title="إرسال">👍</button>
+    </footer>
+  </main>
+
+  <!-- ================= العمود الثالث: تفاصيل العضو ================= -->
+  <aside class="ms-details" id="detailsPanel">
+    <div class="ms-avatar lg">س</div>
+    <h3>سارة المنصور</h3>
+    <p>عضو نشط في المنصة</p>
+
+    <div class="ms-quick-tools">
+      <div class="ms-tool-item"><div>👤</div><span>الملف</span></div>
+      <div class="ms-tool-item"><div>🔔</div><span>كتم</span></div>
+      <div class="ms-tool-item"><div>🔍</div><span>بحث</span></div>
+    </div>
+
+    <div class="ms-section-title"><span>الوسائط والملفات المشتركة</span><span>▾</span></div>
+    <div class="ms-media-grid">
+      <div class="ms-media-box">🖼️</div>
+      <div class="ms-media-box">📄</div>
+      <div class="ms-media-box">📊</div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeToggle.textContent = isDark ? '🌙' : '☀️';
+  });
+
+  const toggleDetails = document.getElementById('toggleDetails');
+  const detailsPanel = document.getElementById('detailsPanel');
+  toggleDetails.addEventListener('click', () => {
+    detailsPanel.classList.toggle('hidden');
+  });
+
+  const msgInput = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const messagesContainer = document.getElementById('messagesContainer');
+  const typingIndicator = document.getElementById('typingIndicator');
+
+  msgInput.addEventListener('input', () => {
+    sendBtn.textContent = msgInput.value.trim() ? '➤' : '👍';
+    sendBtn.style.transform = msgInput.value.trim() ? 'rotate(180deg)' : 'none';
+  });
+
+  function sendMessage(text) {
+    if (!text) return;
+    const row = document.createElement('div');
+    row.className = 'ms-msg-row sent';
+    row.innerHTML = `<div class="ms-bubble">${text}</div>`;
+    messagesContainer.insertBefore(row, typingIndicator);
+    msgInput.value = '';
+    sendBtn.textContent = '👍';
+    sendBtn.style.transform = 'none';
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  sendBtn.addEventListener('click', () => {
+    const val = msgInput.value.trim();
+    sendMessage(val || '👍');
+  });
+
+  msgInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage(msgInput.value.trim());
+  });
+</script>
+
+</body>
+</html>
+:root {
+  --bg-main: #ffffff;
+  --bg-secondary: #f4f6f9;
+  --bg-hover: #eef1f6;
+  --bg-active: #e7f3ff;
+  --border-color: #e4e6eb;
+  --text-primary: #050505;
+  --text-secondary: #65676b;
+  --accent-gradient: linear-gradient(135deg, #0084ff 0%, #0066ff 50%, #5b51d8 100%);
+  --accent-color: #0084ff;
+  --bubble-received: #f0f2f5;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+[data-theme="dark"] {
+  --bg-main: #18191a;
+  --bg-secondary: #242526;
+  --bg-hover: #3a3b3c;
+  --bg-active: rgba(0, 132, 255, 0.18);
+  --border-color: #2f3031;
+  --text-primary: #e4e6eb;
+  --text-secondary: #b0b3b8;
+  --bubble-received: #303030;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s, border-color 0.2s; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.ms-app { display: flex; height: 100vh; width: 100vw; }
+
+/* العمود الأول: قائمة الدردشات */
+.ms-sidebar {
+  width: 340px; border-left: 1px solid var(--border-color);
+  display: flex; flex-direction: column; background: var(--bg-main);
+}
+.ms-sidebar-top { padding: 18px 16px 12px; }
+.ms-brand-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.ms-brand-row h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+
+.ms-icon-circle {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: var(--bg-secondary); color: var(--text-primary);
+  font-size: 16px; cursor: pointer; display: grid; place-items: center;
+}
+.ms-icon-circle:hover { background: var(--bg-hover); transform: scale(1.05); }
+
+.ms-search-wrap { position: relative; }
+.ms-search {
+  width: 100%; padding: 10px 38px 10px 14px; border-radius: 22px;
+  border: none; background: var(--bg-secondary); color: var(--text-primary);
+  font-size: 14px; outline: none;
+}
+.ms-search-icon {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text-secondary); font-size: 14px;
+}
+
+.ms-tabs { display: flex; gap: 8px; padding: 8px 16px 12px; }
+.ms-tab {
+  padding: 6px 14px; border-radius: 18px; font-size: 13px; font-weight: 600;
+  border: none; background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer;
+}
+.ms-tab.active { background: var(--bg-active); color: var(--accent-color); }
+
+.ms-chat-list { flex: 1; overflow-y: auto; padding: 0 8px; }
+.ms-chat-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  border-radius: 12px; cursor: pointer; position: relative; margin-bottom: 2px;
+}
+.ms-chat-item:hover { background: var(--bg-hover); }
+.ms-chat-item.active { background: var(--bg-active); }
+
+.ms-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff; font-weight: 700; font-size: 18px;
+  display: grid; place-items: center; position: relative; flex-shrink: 0;
+}
+.ms-avatar.sm { width: 40px; height: 40px; font-size: 15px; }
+.ms-avatar.lg { width: 84px; height: 84px; font-size: 28px; margin: 0 auto 12px; box-shadow: 0 8px 20px rgba(0,132,255,0.2); }
+
+.ms-online-dot {
+  width: 13px; height: 13px; background: #31a24c;
+  border: 2.5px solid var(--bg-main); border-radius: 50%;
+  position: absolute; bottom: 1px; right: 1px;
+}
+
+.ms-chat-info { flex: 1; min-width: 0; }
+.ms-chat-top { display: flex; justify-content: space-between; align-items: center; }
+.ms-chat-name { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-chat-time { font-size: 11px; color: var(--text-secondary); }
+.ms-chat-preview {
+  font-size: 13px; color: var(--text-secondary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 3px;
+}
+.ms-chat-item.unread .ms-chat-preview { color: var(--text-primary); font-weight: 700; }
+.ms-unread-badge { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-color); flex-shrink: 0; }
+
+/* العمود الثاني: منطقة المحادثة */
+.ms-main { flex: 1; display: flex; flex-direction: column; background: var(--bg-main); }
+.ms-header {
+  height: 66px; padding: 0 20px; border-bottom: 1px solid var(--border-color);
+  display: flex; justify-content: space-between; align-items: center;
+  box-shadow: var(--shadow-sm); z-index: 2;
+}
+.ms-header-user { display: flex; align-items: center; gap: 12px; }
+.ms-header-meta h3 { font-size: 16px; font-weight: 700; }
+.ms-header-meta span { font-size: 12px; color: #31a24c; font-weight: 500; }
+
+.ms-header-actions { display: flex; gap: 8px; }
+.ms-action-btn {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: transparent; color: var(--accent-color);
+  font-size: 18px; cursor: pointer; display: grid; place-items: center;
+}
+.ms-action-btn:hover { background: var(--bg-secondary); }
+
+.ms-messages {
+  flex: 1; padding: 20px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.ms-date-divider { text-align: center; font-size: 12px; color: var(--text-secondary); margin: 14px 0; }
+
+.ms-msg-row { display: flex; flex-direction: column; max-width: 65%; animation: popIn 0.2s ease-out; }
+@keyframes popIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.ms-msg-row.sent { align-self: flex-end; align-items: flex-end; }
+.ms-msg-row.received { align-self: flex-start; align-items: flex-start; }
+
+.ms-bubble {
+  padding: 10px 15px; font-size: 14.5px; line-height: 1.45;
+  border-radius: 18px; word-wrap: break-word; position: relative;
+}
+.ms-msg-row.sent .ms-bubble { background: var(--accent-gradient); color: #fff; border-bottom-left-radius: 4px; }
+.ms-msg-row.sent + .ms-msg-row.sent .ms-bubble { border-top-left-radius: 4px; }
+.ms-msg-row.received .ms-bubble { background: var(--bubble-received); color: var(--text-primary); border-bottom-right-radius: 4px; }
+.ms-msg-row.received + .ms-msg-row.received .ms-bubble { border-top-right-radius: 4px; }
+.ms-msg-time { font-size: 10px; color: var(--text-secondary); margin-top: 3px; padding: 0 4px; }
+
+.ms-typing {
+  display: inline-flex; align-items: center; gap: 4px; padding: 12px 16px;
+  background: var(--bubble-received); border-radius: 18px; align-self: flex-start; margin-top: 6px;
+}
+.ms-typing span {
+  width: 7px; height: 7px; background: var(--text-secondary);
+  border-radius: 50%; animation: bounce 1.3s infinite ease-in-out;
+}
+.ms-typing span:nth-child(2) { animation-delay: 0.15s; }
+.ms-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+
+.ms-footer {
+  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+  border-top: 1px solid var(--border-color);
+}
+.ms-input-box {
+  flex: 1; display: flex; align-items: center; background: var(--bg-secondary);
+  border-radius: 24px; padding: 4px 14px;
+}
+.ms-input-box input {
+  flex: 1; border: none; background: transparent; color: var(--text-primary);
+  padding: 8px 4px; font-size: 14.5px; outline: none;
+}
+.ms-emoji-btn { background: none; border: none; font-size: 18px; cursor: pointer; }
+.ms-send-trigger {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: transparent; color: var(--accent-color);
+  font-size: 20px; cursor: pointer; display: grid; place-items: center;
+}
+.ms-send-trigger:hover { background: var(--bg-secondary); }
+
+/* العمود الثالث: تفاصيل العضو */
+.ms-details {
+  width: 300px; border-right: 1px solid var(--border-color); padding: 28px 18px;
+  display: flex; flex-direction: column; align-items: center; overflow-y: auto;
+}
+.ms-details.hidden { display: none; }
+.ms-details h3 { font-size: 18px; font-weight: 700; }
+.ms-details p { font-size: 13px; color: var(--text-secondary); margin: 4px 0 18px; }
+
+.ms-quick-tools { display: flex; gap: 18px; margin-bottom: 24px; }
+.ms-tool-item {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-secondary); cursor: pointer;
+}
+.ms-tool-item div {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--bg-secondary);
+  color: var(--text-primary); display: grid; place-items: center; font-size: 16px;
+}
+.ms-tool-item:hover div { background: var(--bg-hover); }
+
+.ms-section-title {
+  width: 100%; font-size: 14px; font-weight: 700; padding: 12px 4px;
+  border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;
+}
+.ms-media-grid { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 6px; }
+.ms-media-box {
+  aspect-ratio: 1; border-radius: 8px; background: var(--bg-secondary);
+  display: grid; place-items: center; font-size: 20px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(136,136,136,0.3); border-radius: 10px; }
+
+@media (max-width: 960px) { .ms-details { display: none; } }
+@media (max-width: 680px) {
+  .ms-sidebar { width: 82px; }
+  .ms-chat-info, .ms-search-wrap, .ms-tabs, .ms-brand-row h2 { display: none; }
+}
