@@ -1810,27 +1810,7 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
   padding:5px 8px;border-radius:14px;font-size:10px;
 }
 #amMemberDirectory .am-directory-empty{padding:12px 9px;font-size:11px}
-/* Keep the full-height layout only while an actual conversation is open. */
-#amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]){
-  height:min(610px,calc(100dvh - 125px));
-}
-#amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]) .am-directory-card{height:100%}
-#amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]) .am-floating-chat{
-  flex:1 1 auto;min-height:0;
-}
-@media(max-width:650px){
-  #amMemberDirectory{
-    right:10px;bottom:148px;width:calc(100vw - 20px);
-    height:auto;max-height:calc(100dvh - 170px);
-  }
-  #amMemberDirectory .am-directory-card{border-radius:18px}
-  #amMemberDirectory .am-directory-list{
-    max-height:min(368px,calc(100dvh - 285px));
-  }
-  #amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]){
-    height:min(72dvh,620px);
-  }
-}
+
 
 </style>
 
@@ -1880,7 +1860,6 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 .am-gallery-arrow.prev{left:16px;}.am-gallery-arrow.next{right:16px;}
 body.am-gallery-open{overflow:hidden!important;}
 @media(max-width:650px){
- #amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]){transform:scale(.65);transform-origin:bottom right;}
  #amMemberDirectory .am-floating-chat .am-chat-head{min-height:58px;padding:8px 9px;}
  #amMemberDirectory .am-chat-avatar{width:32px;height:32px;flex-basis:32px;}
  #amMemberDirectory .am-chat-person-meta b{font-size:12px;}
@@ -1901,6 +1880,64 @@ body.am-gallery-open{overflow:hidden!important;}
  .am-gallery-close{top:10px;right:10px;width:34px;height:34px;font-size:24px;}
 }
 @media(prefers-reduced-motion:no-preference){#amImageGalleryModal{animation:amGalleryFade .16s ease-out;}@keyframes amGalleryFade{from{opacity:0}to{opacity:1}}}
+</style>
+
+
+<style id="arabMalaysiaMessengerFinalResponsiveSkin">
+/* Floating chat: explicit open-state class avoids fragile :has() and transform hit-box issues. */
+#amMemberDirectory.am-directory-chat-open{width:min(410px,calc(100vw - 28px));height:min(610px,calc(100dvh - 125px));max-height:calc(100dvh - 125px);}
+#amMemberDirectory.am-directory-chat-open .am-directory-card{height:100%;max-height:100%;border-radius:20px;overflow:hidden;}
+#amMemberDirectory.am-directory-chat-open .am-directory-top{display:none;}
+#amMemberDirectory.am-directory-chat-open .am-floating-chat{display:flex;flex:1 1 auto;min-width:0;min-height:0;width:100%;height:100%;}
+#amMemberDirectory.am-directory-chat-open .am-floating-chat .am-chat{display:flex;flex:1 1 auto;flex-direction:column;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border-radius:20px;background:#fff;}
+#amMemberDirectory.am-directory-chat-open .am-chat-head{flex:0 0 auto;min-height:68px;padding:10px 13px;gap:8px;flex-wrap:nowrap;background:#fff;border-bottom:1px solid #e6eaf0;}
+#amMemberDirectory.am-directory-chat-open .am-chat-person{gap:9px;}
+#amMemberDirectory.am-directory-chat-open .am-chat-person-meta b{font-size:14px;font-weight:750;}
+#amMemberDirectory.am-directory-chat-open .am-chat-person-meta small{font-size:11px;color:#16834b;}
+#amMemberDirectory.am-directory-chat-open .am-chat-avatar{width:40px;height:40px;flex-basis:40px;border:1px solid #e7edf4;}
+#amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions{display:flex;flex:0 0 auto;gap:5px;flex-wrap:nowrap;margin:0;}
+#amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions button{width:32px;height:32px;min-width:32px;padding:0;border:0;border-radius:50%;background:#edf5ff;color:#0877e8;font-size:14px;}
+#amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions button.danger{background:#fff0f0;color:#c43d4b;}
+#amMemberDirectory.am-directory-chat-open .am-chat-stream{display:flex;flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;padding:16px 14px 18px;gap:11px;background:#fff;}
+#amMemberDirectory.am-directory-chat-open .am-bubble{position:relative;max-width:min(82%,430px);padding:9px 12px;border:0;border-radius:18px;background:#f0f2f5;color:#17202b;box-shadow:none;overflow-wrap:anywhere;}
+#amMemberDirectory.am-directory-chat-open .am-bubble.mine{align-self:flex-end;border-radius:18px;background:#0879f9;color:#fff;}
+#amMemberDirectory.am-directory-chat-open .am-bubble.mine small{color:#e7f2ff;}
+#amMemberDirectory.am-directory-chat-open .am-bubble-text{font-size:13px;line-height:1.5;}
+#amMemberDirectory.am-directory-chat-open .am-bubble small{display:block;margin-top:5px;color:#8b96a5;font-size:9px;}
+#amMemberDirectory.am-directory-chat-open .am-msg-tools{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+#amMemberDirectory.am-directory-chat-open .am-msg-tools button{border:0;border-radius:14px;padding:4px 7px;background:#e7edf5;color:#42536a;font-size:10px;}
+#amMemberDirectory.am-directory-chat-open .am-chat-typing{flex:0 0 auto;min-height:0;padding:0 14px;background:#fff;color:#68788c;font-size:10px;}
+#amMemberDirectory.am-directory-chat-open #amReplyPreview{flex:0 0 auto;margin:0;padding:6px 12px;background:#f5f8fc;text-align:start!important;font-size:11px;}
+#amMemberDirectory.am-directory-chat-open .am-chat-compose{flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:10px 11px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #e8edf3;}
+#amMemberDirectory.am-directory-chat-open .am-compose-entry{flex:1 1 auto;min-width:0;}
+#amMemberDirectory.am-directory-chat-open .am-compose-entry textarea{display:block;width:100%;min-height:40px;max-height:96px;resize:none;padding:10px 13px;border:0;border-radius:22px;background:#f0f2f5;font-size:13px;line-height:1.35;}
+#amMemberDirectory.am-directory-chat-open .am-compose-tools{flex:0 0 auto;display:flex;align-items:center;gap:4px;flex-wrap:nowrap;}
+#amMemberDirectory.am-directory-chat-open .am-compose-tools .am-msg-btn{width:31px;height:31px;min-width:31px;border:0;border-radius:50%;background:transparent;color:#0879e8;font-size:17px;}
+#amMemberDirectory.am-directory-chat-open .am-send-btn{width:35px;height:35px;min-width:35px;border:0;border-radius:50%;background:#0879f9;color:#fff;font-size:17px;}
+#amMemberDirectory.am-directory-chat-open .am-image-grid{width:min(100%,260px);}
+#amMemberDirectory.am-directory-chat-open .am-image-grid img.am-chat-image{height:112px;}
+#amMemberDirectory.am-directory-chat-open .am-image-grid.single img.am-chat-image{height:auto;max-height:230px;}
+@media(max-width:650px){
+ #amMemberDirectory.am-directory-chat-open{right:12px;left:auto;bottom:calc(94px + env(safe-area-inset-bottom));width:min(330px,max(260px,65vw));height:min(460px,max(300px,47dvh));min-height:300px;max-height:47dvh;transform:none;transform-origin:initial;}
+ #amMemberDirectory.am-directory-chat-open .am-directory-card{border-radius:18px;}
+ #amMemberDirectory.am-directory-chat-open .am-floating-chat .am-chat{border-radius:18px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head{min-height:58px;padding:7px 8px;gap:5px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-avatar{width:32px;height:32px;flex-basis:32px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-person{gap:6px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-person-meta b{font-size:12px;max-width:92px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-person-meta small{font-size:9px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head #amMobileBack{width:23px;height:23px;font-size:15px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions{gap:2px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions button{width:25px;height:25px;min-width:25px;font-size:11px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-stream{padding:10px 9px 13px;gap:8px;}
+ #amMemberDirectory.am-directory-chat-open .am-bubble{max-width:88%;padding:7px 9px;}
+ #amMemberDirectory.am-directory-chat-open .am-bubble-text{font-size:11px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-compose{gap:3px;padding:7px 6px calc(7px + env(safe-area-inset-bottom));}
+ #amMemberDirectory.am-directory-chat-open .am-compose-entry textarea{min-height:34px;padding:8px 10px;font-size:11px;}
+ #amMemberDirectory.am-directory-chat-open .am-compose-tools{gap:1px;}
+ #amMemberDirectory.am-directory-chat-open .am-compose-tools .am-msg-btn{width:25px;height:25px;min-width:25px;font-size:14px;}
+ #amMemberDirectory.am-directory-chat-open .am-send-btn{width:28px;height:28px;min-width:28px;font-size:14px;}
+}
 </style>
 
 </head>
@@ -5352,6 +5389,7 @@ window.amOpenConversation=async(id)=>{try{await openConversation(id);}catch(e){s
 async function openConversation(id){selectedConversation=id;const c=conversations.find(x=>x.id===id);const panel=$('amChatPanel');if(!panel)return;let memberRows=await db.from('am_conversation_members').select('user_id,role').eq('conversation_id',id);if(memberRows.error)throw memberRows.error;await profiles((memberRows.data||[]).map(x=>x.user_id));const others=(memberRows.data||[]).filter(x=>x.user_id!==user.id).map(x=>x.user_id);const presence=others.length?await db.from('am_user_presence').select('user_id,is_online,last_seen_at').in('user_id',others):{data:[]};const onlineIds=(presence.data||[]).filter(x=>x.is_online).map(x=>x.user_id);const label=c?.kind==='group'?(c.title||'مجموعة'):nameOf(others[0]);
  const otherProfile=membersCache[others[0]]||{};const avatar=otherProfile.avatar_url?`<img class="am-chat-avatar" src="${esc(otherProfile.avatar_url)}" alt="">`:`<span class="am-chat-avatar am-chat-avatar-fallback">${esc((label||'ع').trim().slice(0,1))}</span>`;
  panel.innerHTML=`<div class="am-chat-head"><div class="am-chat-person"><button class="am-msg-btn" style="display:none" id="amMobileBack" onclick="amMobileBack()" aria-label="العودة للأصدقاء">‹</button>${avatar}<span class="am-chat-person-meta"><b>${esc(label)}</b><small id="amChatPresence">جارٍ التحقق من الاتصال...</small></span></div><div class="am-msg-actions"><button type="button" title="كتم المحادثة" aria-label="كتم المحادثة" onclick="amMute('${id}')">🔕</button><button type="button" title="إخفاء المحادثة" aria-label="إخفاء المحادثة" onclick="amHide('${id}')">⋯</button>${c?.kind==='direct'?`<button type="button" class="danger" title="إبلاغ عن العضو" aria-label="إبلاغ" onclick="amReportMember('${others[0]}')">⚑</button><button type="button" class="danger" title="حظر العضو" aria-label="حظر" onclick="amBlock('${others[0]}')">⊘</button>`:''}</div></div><div id="amRequestActions"></div><div class="am-chat-stream" id="amChatStream"><div class="am-msg-note">جارٍ تحميل الرسائل...</div></div><div id="amTypingStatus" class="am-chat-typing" aria-live="polite"></div><div id="amReplyPreview" class="am-msg-note" style="display:none;text-align:right"></div><div class="am-chat-compose"><div class="am-compose-entry"><textarea id="amMessageText" maxlength="10000" placeholder="اكتب رسالة..." oninput="amTyping()"></textarea><input id="amAttachment" type="file" hidden accept="audio/*,.pdf,.txt,.doc,.docx,.xlsx"><input id="amImageAttachments" type="file" hidden accept="image/jpeg,image/png,image/webp,image/gif" multiple><div id="amAttachmentName" class="am-attachment-label"></div></div><div class="am-compose-tools"><button type="button" class="am-msg-btn" onclick="document.getElementById('amImageAttachments').click()" title="إضافة صور" aria-label="إضافة صور">▧</button><button type="button" class="am-msg-btn" onclick="document.getElementById('amAttachment').click()" title="إرفاق ملف" aria-label="إرفاق ملف">📎</button><button type="button" class="am-msg-btn" id="amRecordBtn" onclick="amToggleRecording()" title="رسالة صوتية" aria-label="رسالة صوتية">🎙️</button><button type="button" class="am-send-btn" onclick="amSendMessage('${id}')" title="إرسال" aria-label="إرسال">➤</button><span id="amRecordingStatus"></span></div></div>`;
+ const messageInput=$('amMessageText');if(messageInput){messageInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();window.amSendMessage(id);}});}
  const layout=panel.closest('.am-msg-layout');if(layout&&window.matchMedia('(max-width:650px)').matches){layout.classList.add('mobile-chat-open');const back=$('amMobileBack');if(back)back.style.display='inline-block';}replyTarget=null;const req=$('amRequestActions');if(c?.request_status==='pending'&&c.created_by!==user.id){req.innerHTML='<div class="am-msg-note">هذه رسالة من عضو ليس ضمن أصدقائك. يمكنك الرد مباشرة؛ وبمجرد إرسال ردك تصبح المحادثة عادية.</div><div class="am-msg-actions" style="padding:8px"><button onclick="amRespondMessageRequest(\''+id+'\',\'ignored\')">تجاهل</button><button class="danger" onclick="amBlock(\''+others[0]+'\')">حظر</button></div>';}
  const updateAttachmentLabel=()=>{const imgs=Array.from($('amImageAttachments')?.files||[]),file=$('amAttachment')?.files?.[0];const labelEl=$('amAttachmentName');if(labelEl)labelEl.textContent=imgs.length?`${imgs.length} صور جاهزة للإرسال`:file?.name||'';};$('amAttachment')?.addEventListener('change',updateAttachmentLabel);$('amImageAttachments')?.addEventListener('change',updateAttachmentLabel);const presenceLabel=$('amChatPresence');if(presenceLabel)presenceLabel.textContent=onlineIds.length?(onlineIds.length===1?'متصل الآن':onlineIds.length+' أعضاء متصلون'):(presence.data||[]).length?'آخر ظهور: '+new Date(presence.data[0].last_seen_at).toLocaleString():'غير متصل';await loadMessages(id);setupConversationRealtime(id);
 }
@@ -5492,7 +5530,7 @@ window.amDirectoryStart=async(id)=>{
   if(portalPanel&&portalPanel.parentElement?.id!=='amFloatingChatView')portalPanel.id='amPortalChatPanel';
   const chatView=$('amFloatingChatView'),friendsView=$('amFloatingFriendsView');
   if(!chatView||!friendsView)throw new Error('تعذر فتح نافذة المحادثة.');
-  friendsView.style.display='none';chatView.style.display='flex';
+  friendsView.style.display='none';chatView.style.display='flex';$('amMemberDirectory')?.classList.add('am-directory-chat-open');
   chatView.innerHTML='<section class="am-msg-panel am-chat" id="amChatPanel"><div class="am-msg-note">جارٍ فتح المحادثة...</div></section>';
   await openConversation(conversationId);
   const back=$('amMobileBack');
@@ -5509,6 +5547,7 @@ window.amFloatingBackToFriends=()=>{
  const cv=$('amFloatingChatView'),fv=$('amFloatingFriendsView');
  if(cv){cv.innerHTML='';cv.style.display='none';}
  if(fv)fv.style.display='flex';
+ const directory=$('amMemberDirectory');if(directory)directory.classList.remove('am-directory-chat-open');
  const search=$('amDirectorySearch');if(search)search.value='';
  window.amRenderDirectory(window.amDirectoryMembers||[]);
 };
@@ -5516,7 +5555,7 @@ window.amFloatingClose=()=>{
  if(channel){db.removeChannel(channel);channel=null;}
  const panel=$('amChatPanel');if(panel&&panel.parentElement?.id==='amFloatingChatView')panel.remove();
  const old=$('amPortalChatPanel');if(old)old.id='amChatPanel';
- const box=$('amMemberDirectory');if(box)box.style.display='none';
+ const box=$('amMemberDirectory');if(box){box.classList.remove('am-directory-chat-open');box.style.display='none';}
  selectedConversation=null;
 };
 function setupHomeChatLauncher(){let b=$('amHomeChatLauncher');if(!b){b=document.createElement('button');b.id='amHomeChatLauncher';b.type='button';b.title='المحادثات';b.setAttribute('aria-label','فتح المحادثات');b.innerHTML='<i class="fa-solid fa-comments"></i>';document.body.appendChild(b);b.addEventListener('click',e=>{e.stopPropagation();const box=$('amMemberDirectory');if(box&&box.style.display==='flex')window.amFloatingClose();else window.amOpenMemberDirectory();});}b.style.display=user?'grid':'none';}
