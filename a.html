@@ -1940,6 +1940,61 @@ body.am-gallery-open{overflow:hidden!important;}
 }
 </style>
 
+
+<style id="arabMalaysiaMessengerRepairV2">
+/* Targeted repair: keep the friend list clear of the launcher and prevent cramped chat controls. */
+@media(max-width:650px){
+ #amMemberDirectory{right:12px;left:auto;bottom:calc(160px + env(safe-area-inset-bottom));width:min(290px,calc(100vw - 24px));max-height:calc(100dvh - 190px);}
+ #amMemberDirectory .am-directory-card{height:auto;max-height:calc(100dvh - 190px);}
+ #amMemberDirectory .am-directory-list{max-height:min(330px,calc(100dvh - 300px));}
+ #amMemberDirectory.am-directory-chat-open{right:12px;left:auto;bottom:calc(160px + env(safe-area-inset-bottom));width:min(267px,calc(100vw - 24px));height:min(397px,calc(100dvh - 190px));min-height:280px;max-height:calc(100dvh - 190px);}
+ #amMemberDirectory.am-directory-chat-open .am-directory-card{height:100%;max-height:100%;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head{min-height:56px;padding:6px 7px;gap:4px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-person{gap:5px;flex:1 1 auto;min-width:0;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head #amMobileBack{display:inline-flex!important;flex:0 0 22px;width:22px;min-width:22px;height:26px;align-items:center;justify-content:center;padding:0;font-size:21px;line-height:1;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-avatar{width:29px;height:29px;flex:0 0 29px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-person-meta{flex:1 1 auto;min-width:0;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-person-meta b{max-width:66px;font-size:11px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-person-meta small{font-size:8px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions{gap:2px;flex:0 0 auto;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions button{width:21px;height:21px;min-width:21px;font-size:10px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-head .am-msg-actions button i{font-size:10px;}
+ #amMemberDirectory.am-directory-chat-open .am-chat-compose{gap:3px;padding:6px 5px calc(6px + env(safe-area-inset-bottom));}
+ #amMemberDirectory.am-directory-chat-open .am-compose-tools .am-msg-btn{width:23px;height:25px;min-width:23px;font-size:12px;}
+ #amMemberDirectory.am-directory-chat-open .am-send-btn{width:26px;height:26px;min-width:26px;font-size:12px;}
+}
+@media(min-width:651px){
+ #amMemberDirectory.am-directory-chat-open{width:min(410px,calc(100vw - 28px));height:min(610px,calc(100dvh - 125px));}
+}
+</style>
+
+<style id="arabMalaysiaMessengerRepairV3">
+/* V3: shrink the friends directory on phones only; leave desktop dimensions untouched. */
+@media (max-width:650px){
+  #amMemberDirectory:not(.am-directory-chat-open){
+    right:12px; left:auto; bottom:calc(160px + env(safe-area-inset-bottom));
+    width:min(267px,calc(100vw - 24px));
+    height:min(397px,calc(100dvh - 190px));
+    min-height:280px; max-height:calc(100dvh - 190px);
+  }
+  #amMemberDirectory:not(.am-directory-chat-open) .am-directory-card{
+    height:100%; max-height:100%;
+  }
+}
+/* A conversation is a vertical timeline: one complete message per row. */
+#amMemberDirectory .am-floating-chat .am-chat-stream,
+#amMemberDirectory.am-directory-chat-open .am-chat-stream{
+  display:flex; flex-direction:column; align-items:stretch;
+}
+#amMemberDirectory .am-floating-chat .am-chat-stream > .am-bubble,
+#amMemberDirectory.am-directory-chat-open .am-chat-stream > .am-bubble{
+  flex:0 0 auto; align-self:flex-start; width:auto;
+}
+#amMemberDirectory .am-floating-chat .am-chat-stream > .am-bubble.mine,
+#amMemberDirectory.am-directory-chat-open .am-chat-stream > .am-bubble.mine{
+  align-self:flex-end;
+}
+</style>
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
@@ -5388,7 +5443,7 @@ window.amFilterConversations=(term)=>{const t=term.toLowerCase();document.queryS
 window.amOpenConversation=async(id)=>{try{await openConversation(id);}catch(e){say(e.message,true);}};
 async function openConversation(id){selectedConversation=id;const c=conversations.find(x=>x.id===id);const panel=$('amChatPanel');if(!panel)return;let memberRows=await db.from('am_conversation_members').select('user_id,role').eq('conversation_id',id);if(memberRows.error)throw memberRows.error;await profiles((memberRows.data||[]).map(x=>x.user_id));const others=(memberRows.data||[]).filter(x=>x.user_id!==user.id).map(x=>x.user_id);const presence=others.length?await db.from('am_user_presence').select('user_id,is_online,last_seen_at').in('user_id',others):{data:[]};const onlineIds=(presence.data||[]).filter(x=>x.is_online).map(x=>x.user_id);const label=c?.kind==='group'?(c.title||'مجموعة'):nameOf(others[0]);
  const otherProfile=membersCache[others[0]]||{};const avatar=otherProfile.avatar_url?`<img class="am-chat-avatar" src="${esc(otherProfile.avatar_url)}" alt="">`:`<span class="am-chat-avatar am-chat-avatar-fallback">${esc((label||'ع').trim().slice(0,1))}</span>`;
- panel.innerHTML=`<div class="am-chat-head"><div class="am-chat-person"><button class="am-msg-btn" style="display:none" id="amMobileBack" onclick="amMobileBack()" aria-label="العودة للأصدقاء">‹</button>${avatar}<span class="am-chat-person-meta"><b>${esc(label)}</b><small id="amChatPresence">جارٍ التحقق من الاتصال...</small></span></div><div class="am-msg-actions"><button type="button" title="كتم المحادثة" aria-label="كتم المحادثة" onclick="amMute('${id}')">🔕</button><button type="button" title="إخفاء المحادثة" aria-label="إخفاء المحادثة" onclick="amHide('${id}')">⋯</button>${c?.kind==='direct'?`<button type="button" class="danger" title="إبلاغ عن العضو" aria-label="إبلاغ" onclick="amReportMember('${others[0]}')">⚑</button><button type="button" class="danger" title="حظر العضو" aria-label="حظر" onclick="amBlock('${others[0]}')">⊘</button>`:''}</div></div><div id="amRequestActions"></div><div class="am-chat-stream" id="amChatStream"><div class="am-msg-note">جارٍ تحميل الرسائل...</div></div><div id="amTypingStatus" class="am-chat-typing" aria-live="polite"></div><div id="amReplyPreview" class="am-msg-note" style="display:none;text-align:right"></div><div class="am-chat-compose"><div class="am-compose-entry"><textarea id="amMessageText" maxlength="10000" placeholder="اكتب رسالة..." oninput="amTyping()"></textarea><input id="amAttachment" type="file" hidden accept="audio/*,.pdf,.txt,.doc,.docx,.xlsx"><input id="amImageAttachments" type="file" hidden accept="image/jpeg,image/png,image/webp,image/gif" multiple><div id="amAttachmentName" class="am-attachment-label"></div></div><div class="am-compose-tools"><button type="button" class="am-msg-btn" onclick="document.getElementById('amImageAttachments').click()" title="إضافة صور" aria-label="إضافة صور">▧</button><button type="button" class="am-msg-btn" onclick="document.getElementById('amAttachment').click()" title="إرفاق ملف" aria-label="إرفاق ملف">📎</button><button type="button" class="am-msg-btn" id="amRecordBtn" onclick="amToggleRecording()" title="رسالة صوتية" aria-label="رسالة صوتية">🎙️</button><button type="button" class="am-send-btn" onclick="amSendMessage('${id}')" title="إرسال" aria-label="إرسال">➤</button><span id="amRecordingStatus"></span></div></div>`;
+ panel.innerHTML=`<div class="am-chat-head"><div class="am-chat-person"><button class="am-msg-btn" style="display:none" id="amMobileBack" onclick="amMobileBack()" aria-label="العودة للأصدقاء">‹</button>${avatar}<span class="am-chat-person-meta"><b>${esc(label)}</b><small id="amChatPresence">جارٍ التحقق من الاتصال...</small></span></div><div class="am-msg-actions"><button type="button" title="كتم المحادثة" aria-label="كتم المحادثة" onclick="amMute('${id}')"><i class="fa-solid fa-bell-slash" aria-hidden="true"></i></button><button type="button" title="إخفاء المحادثة" aria-label="إخفاء المحادثة" onclick="amHide('${id}')"><i class="fa-solid fa-box-archive" aria-hidden="true"></i></button>${c?.kind==='direct'?`<button type="button" class="danger" title="إبلاغ عن العضو" aria-label="إبلاغ" onclick="amReportMember('${others[0]}')"><i class="fa-solid fa-flag" aria-hidden="true"></i></button><button type="button" class="danger" title="حظر العضو" aria-label="حظر" onclick="amBlock('${others[0]}')"><i class="fa-solid fa-ban" aria-hidden="true"></i></button>`:''}</div></div><div id="amRequestActions"></div><div class="am-chat-stream" id="amChatStream"><div class="am-msg-note">جارٍ تحميل الرسائل...</div></div><div id="amTypingStatus" class="am-chat-typing" aria-live="polite"></div><div id="amReplyPreview" class="am-msg-note" style="display:none;text-align:right"></div><div class="am-chat-compose"><div class="am-compose-entry"><textarea id="amMessageText" maxlength="10000" placeholder="اكتب رسالة..." oninput="amTyping()"></textarea><input id="amAttachment" type="file" hidden accept="audio/*,.pdf,.txt,.doc,.docx,.xlsx"><input id="amImageAttachments" type="file" hidden accept="image/jpeg,image/png,image/webp,image/gif" multiple><div id="amAttachmentName" class="am-attachment-label"></div></div><div class="am-compose-tools"><button type="button" class="am-msg-btn" onclick="document.getElementById('amImageAttachments').click()" title="إضافة صور" aria-label="إضافة صور"><i class="fa-regular fa-image" aria-hidden="true"></i></button><button type="button" class="am-msg-btn" onclick="document.getElementById('amAttachment').click()" title="إرفاق ملف" aria-label="إرفاق ملف"><i class="fa-solid fa-paperclip" aria-hidden="true"></i></button><button type="button" class="am-msg-btn" id="amRecordBtn" onclick="amToggleRecording()" title="رسالة صوتية" aria-label="رسالة صوتية"><i class="fa-solid fa-microphone" aria-hidden="true"></i></button><button type="button" class="am-send-btn" onclick="amSendMessage('${id}')" title="إرسال" aria-label="إرسال"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button><span id="amRecordingStatus"></span></div></div>`;
  const messageInput=$('amMessageText');if(messageInput){messageInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();window.amSendMessage(id);}});}
  const layout=panel.closest('.am-msg-layout');if(layout&&window.matchMedia('(max-width:650px)').matches){layout.classList.add('mobile-chat-open');const back=$('amMobileBack');if(back)back.style.display='inline-block';}replyTarget=null;const req=$('amRequestActions');if(c?.request_status==='pending'&&c.created_by!==user.id){req.innerHTML='<div class="am-msg-note">هذه رسالة من عضو ليس ضمن أصدقائك. يمكنك الرد مباشرة؛ وبمجرد إرسال ردك تصبح المحادثة عادية.</div><div class="am-msg-actions" style="padding:8px"><button onclick="amRespondMessageRequest(\''+id+'\',\'ignored\')">تجاهل</button><button class="danger" onclick="amBlock(\''+others[0]+'\')">حظر</button></div>';}
  const updateAttachmentLabel=()=>{const imgs=Array.from($('amImageAttachments')?.files||[]),file=$('amAttachment')?.files?.[0];const labelEl=$('amAttachmentName');if(labelEl)labelEl.textContent=imgs.length?`${imgs.length} صور جاهزة للإرسال`:file?.name||'';};$('amAttachment')?.addEventListener('change',updateAttachmentLabel);$('amImageAttachments')?.addEventListener('change',updateAttachmentLabel);const presenceLabel=$('amChatPresence');if(presenceLabel)presenceLabel.textContent=onlineIds.length?(onlineIds.length===1?'متصل الآن':onlineIds.length+' أعضاء متصلون'):(presence.data||[]).length?'آخر ظهور: '+new Date(presence.data[0].last_seen_at).toLocaleString():'غير متصل';await loadMessages(id);setupConversationRealtime(id);
@@ -5534,9 +5589,7 @@ window.amDirectoryStart=async(id)=>{
   chatView.innerHTML='<section class="am-msg-panel am-chat" id="amChatPanel"><div class="am-msg-note">جارٍ فتح المحادثة...</div></section>';
   await openConversation(conversationId);
   const back=$('amMobileBack');
-  if(back){back.style.display='inline-block';back.textContent='‹ الأصدقاء';back.onclick=()=>window.amFloatingBackToFriends();}
-  const head=$('amChatPanel')?.querySelector('.am-chat-head');
-  if(head){const actions=head.querySelector('.am-msg-actions');if(actions){const b=document.createElement('button');b.className='am-msg-btn';b.type='button';b.textContent='⋯';b.title='العودة للأصدقاء';b.onclick=()=>window.amFloatingBackToFriends();actions.prepend(b);}}
+  if(back){back.style.display='inline-flex';back.textContent='‹';back.title='العودة إلى قائمة الأصدقاء';back.setAttribute('aria-label','العودة إلى قائمة الأصدقاء');back.onclick=()=>window.amFloatingBackToFriends();}
  }catch(e){say(e.message,true);}
 };
 window.amFloatingBackToFriends=()=>{
