@@ -1732,12 +1732,39 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 #memberPortal .am-chat-compose textarea{grid-column:1/-1;}
 #memberPortal .am-compose-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
 #memberPortal .am-recording{color:#b91c1c;font-size:12px;font-weight:700;padding:5px;}
-#amHomeChatLauncher{position:fixed;right:20px;bottom:22px;z-index:9997;width:54px;height:54px;border:0;border-radius:50%;background:#0756a5;color:white;box-shadow:0 5px 22px #0004;font-size:23px;cursor:pointer;display:none;}
-#amMemberDirectory{position:fixed;inset:0;z-index:10001;background:#0f172a99;display:none;align-items:center;justify-content:center;padding:14px;}
-#amMemberDirectory .am-directory-card{width:min(520px,100%);max-height:82vh;overflow:auto;background:#fff;color:#1e293b;border-radius:16px;padding:16px;direction:rtl;}
-#amMemberDirectory .am-directory-list{display:grid;gap:7px;margin-top:10px;}
-#amMemberDirectory .am-directory-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;border:1px solid #e2e8f0;border-radius:10px;}
-#amMemberDirectory .am-directory-item button{border:0;border-radius:8px;padding:8px 11px;background:#0756a5;color:white;cursor:pointer;}
+#amHomeChatLauncher{position:fixed;right:20px;bottom:22px;z-index:9997;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(145deg,#1877f2,#0756a5);color:#fff;box-shadow:0 7px 24px #0756a555,0 2px 7px #0002;font-size:23px;cursor:pointer;display:none;place-items:center;transition:transform .2s ease,box-shadow .2s ease;}
+#amHomeChatLauncher:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 11px 28px #0756a566,0 2px 7px #0002;}
+#amHomeChatLauncher i{font-size:23px}
+/* Floating Messenger-style panel: isolated to the messaging launcher */
+#amMemberDirectory{position:fixed;right:20px;bottom:88px;z-index:10001;width:min(410px,calc(100vw - 28px));height:min(610px,calc(100dvh - 125px));display:none;align-items:stretch;justify-content:stretch;padding:0;background:transparent;direction:rtl;filter:drop-shadow(0 16px 38px #0f172a30);animation:amFloatIn .22s ease-out;}
+#amMemberDirectory .am-directory-card{width:100%;height:100%;max-height:none;overflow:hidden;display:flex;flex-direction:column;background:#fff;color:#172033;border:1px solid #e6ebf2;border-radius:20px;padding:0;direction:rtl;box-shadow:0 12px 40px #0f172a20;}
+#amMemberDirectory .am-directory-top{display:flex;align-items:center;gap:10px;padding:16px 17px;background:linear-gradient(135deg,#0756a5,#1877f2);color:#fff;}
+#amMemberDirectory .am-directory-top h3{margin:0;font-size:17px;font-weight:800;flex:1}
+#amMemberDirectory .am-directory-top p{margin:3px 0 0;font-size:11px;color:#dbeafe}
+#amMemberDirectory .am-directory-top button{width:34px;height:34px;border:0;border-radius:50%;background:#ffffff24;color:#fff;font-size:18px;cursor:pointer}
+#amMemberDirectory .am-directory-search{margin:13px 14px 8px;width:calc(100% - 28px);border:1px solid #e2e8f0;border-radius:12px;padding:11px 13px;background:#f8fafc;outline:none;font:inherit}
+#amMemberDirectory .am-directory-search:focus{border-color:#60a5fa;box-shadow:0 0 0 3px #3b82f622}
+#amMemberDirectory .am-directory-list{display:grid;gap:4px;margin:0;padding:4px 10px 12px;overflow:auto;flex:1;overscroll-behavior:contain}
+#amMemberDirectory .am-directory-item{display:flex;align-items:center;gap:10px;padding:10px;border:0;border-radius:13px;background:#fff;transition:background .18s ease,transform .18s ease}
+#amMemberDirectory .am-directory-item:hover{background:#f1f6fd;transform:translateX(-2px)}
+#amMemberDirectory .am-directory-avatar{width:43px;height:43px;flex:0 0 43px;border-radius:50%;object-fit:cover;background:#e8eef7;display:grid;place-items:center;color:#0756a5;font-weight:800}
+#amMemberDirectory .am-directory-meta{min-width:0;flex:1}
+#amMemberDirectory .am-directory-meta b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#amMemberDirectory .am-directory-meta small{display:block;margin-top:3px;color:#64748b;font-size:11px}
+#amMemberDirectory .am-directory-presence{display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;margin-inline-end:5px;box-shadow:0 0 0 3px #16a34a1c}
+#amMemberDirectory .am-directory-presence.offline{background:#a8b2c1;box-shadow:none}
+#amMemberDirectory .am-directory-item button{border:0;border-radius:20px;padding:8px 13px;background:#eaf3ff;color:#0756a5;cursor:pointer;font-weight:700;font-size:12px;white-space:nowrap;transition:all .18s ease}
+#amMemberDirectory .am-directory-item button:hover{background:#0756a5;color:#fff}
+#amMemberDirectory .am-floating-chat{display:flex;flex:1;min-height:0;overflow:hidden}
+#amMemberDirectory .am-floating-chat .am-chat{width:100%;min-height:0;height:100%;border:0;border-radius:0;display:flex}
+#amMemberDirectory .am-floating-chat .am-chat-stream{flex:1;min-height:0;max-height:none;background:#f5f8fc}
+#amMemberDirectory .am-floating-chat .am-chat-head{align-items:center;padding:12px 14px}
+#amMemberDirectory .am-floating-chat .am-chat-compose{flex-shrink:0;background:#fff}
+#amMemberDirectory .am-floating-chat .am-msg-actions{gap:4px}
+#amMemberDirectory .am-floating-chat .am-msg-actions button{padding:6px 8px;font-size:11px}
+#amMemberDirectory .am-directory-empty{padding:28px 12px;text-align:center;color:#8290a3;font-size:13px}
+@keyframes amFloatIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:650px){#amMemberDirectory{right:10px;bottom:148px;width:calc(100vw - 20px);height:min(72dvh,620px)}#amHomeChatLauncher{right:14px;bottom:86px}#amMemberDirectory .am-directory-card{border-radius:18px}#amMemberDirectory .am-floating-chat .am-chat-stream{max-height:none;min-height:0}}
 @media(max-width:650px){#memberPortal .am-msg-layout.mobile-chat-open>section:first-child{display:none}#memberPortal .am-msg-layout.mobile-chat-open>section:last-child{display:flex}#memberPortal .am-chat-stream{max-height:calc(100dvh - 330px);min-height:42vh}#memberPortal .am-chat-compose{position:sticky;bottom:0;background:#fff;grid-template-columns:minmax(0,1fr) auto auto;}#amHomeChatLauncher{right:14px;bottom:86px}}
 </style>
 </head>
@@ -5206,11 +5233,100 @@ window.amTogglePin=async(id)=>{try{const c=conversations.find(x=>x.id===id);cons
 window.amViewImage=async(el)=>{const path=el.dataset.privatePath;const r=await db.storage.from('member-messages').createSignedUrl(path,180);if(!r.error)window.open(r.data.signedUrl,'_blank','noopener');};
 window.amToggleRecording=async()=>{try{if(mediaRecorder&&mediaRecorder.state==='recording'){mediaRecorder.stop();return;}if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw new Error('تسجيل الصوت غير مدعوم في هذا المتصفح.');const stream=await navigator.mediaDevices.getUserMedia({audio:true});recordedChunks=[];mediaRecorder=new MediaRecorder(stream);mediaRecorder.ondataavailable=e=>{if(e.data?.size)recordedChunks.push(e.data);};mediaRecorder.onstop=()=>{const mime=mediaRecorder.mimeType||'audio/webm';const blob=new Blob(recordedChunks,{type:mime});const ext=mime.includes('mp4')?'m4a':mime.includes('ogg')?'ogg':'webm';const file=new File([blob],'voice-message-'+Date.now()+'.'+ext,{type:mime});const dt=new DataTransfer();dt.items.add(file);$('amAttachment').files=dt.files;$('amAttachmentName').textContent='رسالة صوتية جاهزة للإرسال';$('amRecordingStatus').textContent='';stream.getTracks().forEach(t=>t.stop());$('amRecordBtn').textContent='🎙️';};mediaRecorder.start();$('amRecordBtn').textContent='⏹️ إيقاف';$('amRecordingStatus').innerHTML='<span class="am-recording">● جارٍ التسجيل… اضغط للإيقاف</span>';}catch(e){say(e.message,true);}};
 window.amMobileBack=()=>{const l=document.querySelector('#memberPortal .am-msg-layout');l?.classList.remove('mobile-chat-open');const panel=$('amChatPanel');if(panel)panel.innerHTML='<div class="am-msg-note">اختر محادثة لعرض الرسائل</div>';if(channel){db.removeChannel(channel);channel=null;}selectedConversation=null;};
-window.amOpenMemberDirectory=async()=>{try{if(!user){window.mpOpen?.();return;}let modal=$('amMemberDirectory');if(!modal){modal=document.createElement('div');modal.id='amMemberDirectory';modal.innerHTML='<div class="am-directory-card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>الأعضاء — ابدأ محادثة</h3><button class="am-msg-btn" onclick="document.getElementById(\'amMemberDirectory\').style.display=\'none\'">إغلاق ✕</button></div><input id="amDirectorySearch" placeholder="ابحث عن عضو بالاسم..." oninput="amFilterDirectory(this.value)"><div id="amDirectoryList" class="am-directory-list">جارٍ تحميل الأعضاء...</div></div>';document.body.appendChild(modal);modal.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none';});}modal.style.display='flex';const q=await db.from('member_public_profiles').select('id,display_name,city').neq('id',user.id).order('display_name').limit(100);if(q.error)throw q.error;window.amDirectoryMembers=q.data||[];const blocked=await db.from('am_user_blocks').select('blocked_id,blocker_id').or(`blocker_id.eq.${user.id},blocked_id.eq.${user.id}`);const blockedIds=new Set((blocked.data||[]).flatMap(x=>[x.blocker_id,x.blocked_id]));window.amDirectoryMembers=window.amDirectoryMembers.filter(x=>!blockedIds.has(x.id));window.amRenderDirectory(window.amDirectoryMembers);}catch(e){say(e.message,true);}};
-window.amRenderDirectory=(rows)=>{const h=$('amDirectoryList');if(!h)return;h.innerHTML=rows.length?rows.map(x=>`<div class="am-directory-item"><span><b>${esc(x.display_name||'عضو')}</b><small style="display:block;color:#64748b">${esc(x.city||'ماليزيا')}</small></span><button onclick="amDirectoryStart('${x.id}')">مراسلة</button></div>`).join(''):'<div class="am-msg-note">لا يوجد أعضاء مطابقون.</div>';};
-let amDirectorySearchSeq=0;window.amFilterDirectory=async(term)=>{const t=String(term||'').trim();const seq=++amDirectorySearchSeq;if(!t){window.amRenderDirectory(window.amDirectoryMembers||[]);return;}const local=(window.amDirectoryMembers||[]).filter(x=>(x.display_name||'').toLowerCase().includes(t.toLowerCase())||(x.city||'').toLowerCase().includes(t.toLowerCase()));window.amRenderDirectory(local);try{const q=await db.from('member_public_profiles').select('id,display_name,city').neq('id',user.id).ilike('display_name','%'+t.replace(/[%_]/g,'')+'%').order('display_name').limit(50);if(seq!==amDirectorySearchSeq||q.error)return;const blocked=await db.from('am_user_blocks').select('blocked_id,blocker_id').or(`blocker_id.eq.${user.id},blocked_id.eq.${user.id}`);const blockedIds=new Set((blocked.data||[]).flatMap(x=>[x.blocker_id,x.blocked_id]));window.amRenderDirectory((q.data||[]).filter(x=>!blockedIds.has(x.id)));}catch(e){console.warn('Directory search',e);}};
-window.amDirectoryStart=async(id)=>{const m=$('amMemberDirectory');if(m)m.style.display='none';await window.mpOpen?.();await window.amShowSection('messages',document.querySelector('#memberPortal .mp-tab[data-kind=\"am-messages\"]'));await window.amStartChat(id);};
-function setupHomeChatLauncher(){let b=$('amHomeChatLauncher');if(!b){b=document.createElement('button');b.id='amHomeChatLauncher';b.type='button';b.title='دردشة الأعضاء';b.setAttribute('aria-label','دردشة الأعضاء');b.textContent='💬';document.body.appendChild(b);b.addEventListener('click',()=>window.amOpenMemberDirectory());}b.style.display=user?'block':'none';}
+window.amOpenMemberDirectory=async()=>{
+ try{
+  if(!user){window.mpOpen?.();return;}
+  let box=$('amMemberDirectory');
+  if(!box){
+   box=document.createElement('div');box.id='amMemberDirectory';box.setAttribute('role','dialog');box.setAttribute('aria-label','المحادثات');
+   box.innerHTML=`<div class="am-directory-card">
+    <div class="am-directory-top"><div style="width:39px;height:39px;border-radius:13px;background:#ffffff24;display:grid;place-items:center;font-size:20px">💬</div><div style="flex:1"><h3>المحادثات</h3><p>أصدقاؤك — ابدأ الدردشة فوراً</p></div><button type="button" aria-label="إغلاق" onclick="amFloatingClose()">×</button></div>
+    <div id="amFloatingFriendsView" style="display:flex;flex:1;min-height:0;flex-direction:column">
+     <input id="amDirectorySearch" class="am-directory-search" placeholder="ابحث عن صديق بالاسم..." oninput="amFilterDirectory(this.value)">
+     <div id="amDirectoryList" class="am-directory-list"><div class="am-directory-empty">جارٍ تحميل الأصدقاء...</div></div>
+    </div>
+    <div id="amFloatingChatView" class="am-floating-chat" style="display:none"></div>
+   </div>`;
+   document.body.appendChild(box);
+   box.addEventListener('click',e=>e.stopPropagation());
+  }
+  box.style.display='flex';
+  await window.amLoadFloatingFriends();
+ }catch(e){say(e.message,true);}
+};
+window.amLoadFloatingFriends=async()=>{
+ const list=$('amDirectoryList');if(!list||!user)return;
+ list.innerHTML='<div class="am-directory-empty">جارٍ تحميل قائمة الأصدقاء...</div>';
+ const q=await db.from('am_friendships').select('user_low,user_high').or(`user_low.eq.${user.id},user_high.eq.${user.id}`).order('created_at',{ascending:false});
+ if(q.error)throw q.error;
+ const ids=(q.data||[]).map(x=>x.user_low===user.id?x.user_high:x.user_low);
+ await profiles(ids);
+ let presence={data:[]};
+ if(ids.length)presence=await db.from('am_user_presence').select('user_id,is_online,last_seen_at').in('user_id',ids);
+ const online=new Set((presence.data||[]).filter(x=>x.is_online).map(x=>x.user_id));
+ const blocked=await db.from('am_user_blocks').select('blocked_id,blocker_id').or(`blocker_id.eq.${user.id},blocked_id.eq.${user.id}`);
+ if(blocked.error)throw blocked.error;
+ const blockedIds=new Set((blocked.data||[]).flatMap(x=>[x.blocker_id,x.blocked_id]));
+ window.amDirectoryMembers=ids.filter(id=>!blockedIds.has(id)).map(id=>({id,...(membersCache[id]||{}),is_online:online.has(id)}));
+ window.amRenderDirectory(window.amDirectoryMembers);
+};
+window.amRenderDirectory=(rows)=>{
+ const h=$('amDirectoryList');if(!h)return;
+ h.innerHTML=rows.length?rows.map(x=>{
+  const avatar=x.avatar_url?`<img class="am-directory-avatar" src="${esc(x.avatar_url)}" alt="">`:`<span class="am-directory-avatar">${esc((x.display_name||'ع').trim().slice(0,1))}</span>`;
+  return `<div class="am-directory-item">${avatar}<div class="am-directory-meta"><b>${esc(x.display_name||'عضو')}</b><small><i class="am-directory-presence ${x.is_online?'':'offline'}"></i>${x.is_online?'متصل الآن':esc(x.city||'ماليزيا')}</small></div><button type="button" onclick="amDirectoryStart('${x.id}')">مراسلة</button></div>`;
+ }).join(''):'<div class="am-directory-empty">لا يوجد أصدقاء بعد.<br>ستظهر أصدقاؤك هنا لتبدأ المحادثة مباشرة.</div>';
+};
+let amDirectorySearchSeq=0;
+window.amFilterDirectory=(term)=>{
+ const t=String(term||'').trim().toLocaleLowerCase();
+ const rows=window.amDirectoryMembers||[];
+ window.amRenderDirectory(t?rows.filter(x=>(x.display_name||'').toLocaleLowerCase().includes(t)||(x.city||'').toLocaleLowerCase().includes(t)):rows);
+};
+window.amDirectoryStart=async(id)=>{
+ try{
+  if(!user)throw new Error('يرجى تسجيل الدخول أولاً.');
+  const friend=(window.amDirectoryMembers||[]).find(x=>x.id===id);
+  if(!friend)throw new Error('هذا العضو غير موجود في قائمة أصدقائك.');
+  const r=await db.rpc('am_start_direct_conversation',{p_recipient:id});
+  if(r.error)throw r.error;
+  const conversationId=r.data;
+  const cq=await db.from('am_conversations').select('id,kind,title,created_by,request_status,last_message_at').eq('id',conversationId).single();
+  if(cq.error)throw cq.error;
+  const conversation={...cq.data,conversation_id:conversationId,other_user_ids:[id]};
+  conversations=[conversation,...conversations.filter(x=>x.id!==conversationId)];
+  const portalPanel=$('amChatPanel');
+  if(portalPanel&&portalPanel.parentElement?.id!=='amFloatingChatView')portalPanel.id='amPortalChatPanel';
+  const chatView=$('amFloatingChatView'),friendsView=$('amFloatingFriendsView');
+  if(!chatView||!friendsView)throw new Error('تعذر فتح نافذة المحادثة.');
+  friendsView.style.display='none';chatView.style.display='flex';
+  chatView.innerHTML='<section class="am-msg-panel am-chat" id="amChatPanel"><div class="am-msg-note">جارٍ فتح المحادثة...</div></section>';
+  await openConversation(conversationId);
+  const back=$('amMobileBack');
+  if(back){back.style.display='inline-block';back.textContent='‹ الأصدقاء';back.onclick=()=>window.amFloatingBackToFriends();}
+  const head=$('amChatPanel')?.querySelector('.am-chat-head');
+  if(head){const actions=head.querySelector('.am-msg-actions');if(actions){const b=document.createElement('button');b.className='am-msg-btn';b.type='button';b.textContent='⋯';b.title='العودة للأصدقاء';b.onclick=()=>window.amFloatingBackToFriends();actions.prepend(b);}}
+ }catch(e){say(e.message,true);}
+};
+window.amFloatingBackToFriends=()=>{
+ if(channel){db.removeChannel(channel);channel=null;}
+ selectedConversation=null;
+ const panel=$('amChatPanel');if(panel)panel.remove();
+ const old=$('amPortalChatPanel');if(old)old.id='amChatPanel';
+ const cv=$('amFloatingChatView'),fv=$('amFloatingFriendsView');
+ if(cv){cv.innerHTML='';cv.style.display='none';}
+ if(fv)fv.style.display='flex';
+ const search=$('amDirectorySearch');if(search)search.value='';
+ window.amRenderDirectory(window.amDirectoryMembers||[]);
+};
+window.amFloatingClose=()=>{
+ if(channel){db.removeChannel(channel);channel=null;}
+ const panel=$('amChatPanel');if(panel&&panel.parentElement?.id==='amFloatingChatView')panel.remove();
+ const old=$('amPortalChatPanel');if(old)old.id='amChatPanel';
+ const box=$('amMemberDirectory');if(box)box.style.display='none';
+ selectedConversation=null;
+};
+function setupHomeChatLauncher(){let b=$('amHomeChatLauncher');if(!b){b=document.createElement('button');b.id='amHomeChatLauncher';b.type='button';b.title='المحادثات';b.setAttribute('aria-label','فتح المحادثات');b.innerHTML='<i class="fa-solid fa-comments"></i>';document.body.appendChild(b);b.addEventListener('click',e=>{e.stopPropagation();const box=$('amMemberDirectory');if(box&&box.style.display==='flex')window.amFloatingClose();else window.amOpenMemberDirectory();});}b.style.display=user?'grid':'none';}
 window.amReportMessage=async(id)=>{const reason=prompt('ما سبب الإبلاغ عن هذه الرسالة؟');if(reason===null||!reason.trim())return;try{const m=await db.from('am_messages').select('sender_id,body,attachment_name,conversation_id').eq('id',id).single();if(m.error)throw m.error;const details='بلاغ عن رسالة خاصة\nمعرّف المحادثة: '+m.data.conversation_id+'\nمرسل الرسالة: '+m.data.sender_id+'\nنص الرسالة: '+(m.data.body||'—')+'\nالمرفق: '+(m.data.attachment_name||'لا يوجد');const q=await db.from('reports').insert({reporter_id:user.id,target_type:'message',target_id:id,reason:reason.trim(),details,status:'open'});if(q.error)throw q.error;say('تم إرسال البلاغ إلى الإدارة مع تفاصيل الرسالة.');}catch(e){say(e.message,true);}};
 window.amDownloadAttachment=async(path)=>{try{const r=await db.storage.from('member-messages').createSignedUrl(path,180);if(r.error)throw r.error;window.open(r.data.signedUrl,'_blank','noopener');}catch(e){say(e.message,true);}};
 window.amMute=async(id)=>{try{const c=await db.from('am_conversation_members').select('muted_at').eq('conversation_id',id).eq('user_id',user.id).single();if(c.error)throw c.error;const r=await db.from('am_conversation_members').update({muted_at:c.data.muted_at?null:new Date().toISOString()}).eq('conversation_id',id).eq('user_id',user.id);if(r.error)throw r.error;say(c.data.muted_at?'تم إلغاء كتم المحادثة.':'تم كتم المحادثة.');await renderMessages();}catch(e){say(e.message,true);}};
@@ -5220,7 +5336,7 @@ window.amNewGroup=async()=>{try{const q=await db.from('am_friendships').select('
 window.amShowBlocked=async()=>{try{const q=await db.from('am_user_blocks').select('blocked_id,created_at').eq('blocker_id',user.id).order('created_at',{ascending:false});if(q.error)throw q.error;await profiles((q.data||[]).map(x=>x.blocked_id));const h=host();h.innerHTML=sectionHeader('الأعضاء المحظورون',`<button class="am-msg-btn" onclick="amShowSection('messages',document.querySelector('[data-kind=am-messages]'))">عودة للرسائل</button>`)+((q.data||[]).map(x=>`<div class="am-msg-row"><b>${esc(nameOf(x.blocked_id))}</b><button class="am-msg-btn" onclick="amUnblock('${x.blocked_id}')">إلغاء الحظر</button></div>`).join('')||'<div class="am-msg-note">لا يوجد أعضاء محظورون</div>');}catch(e){say(e.message,true);}};
 let presenceHeartbeat=null;async function setPresence(online){if(!user)return;const now=new Date().toISOString();const q=await db.from('am_user_presence').upsert({user_id:user.id,is_online:online,last_seen_at:now,updated_at:now});if(q.error)console.warn('Presence update',q.error);}
 async function init(){try{await session();setupHomeChatLauncher();if(!user)return;await setPresence(true);if(presenceHeartbeat)clearInterval(presenceHeartbeat);presenceHeartbeat=setInterval(()=>setPresence(true),90000);await refreshBadges();if(realtime)db.removeChannel(realtime);realtime=db.channel('am-user-notifications-'+user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'am_friend_requests',filter:'recipient_id=eq.'+user.id},()=>{refreshBadges();if(section==='friends')renderFriends();}).on('postgres_changes',{event:'UPDATE',schema:'public',table:'am_friend_requests',filter:'recipient_id=eq.'+user.id},()=>{refreshBadges();if(section==='friends')renderFriends();}).on('postgres_changes',{event:'INSERT',schema:'public',table:'am_conversation_members',filter:'user_id=eq.'+user.id},()=>{refreshBadges();if(section==='messages')renderMessages();}).on('postgres_changes',{event:'INSERT',schema:'public',table:'am_friendships'},payload=>{if(payload.new?.user_low===user.id||payload.new?.user_high===user.id){if(section==='friends')renderFriends();refreshBadges();}}).on('postgres_changes',{event:'INSERT',schema:'public',table:'am_messages'},()=>refreshBadges()).on('postgres_changes',{event:'UPDATE',schema:'public',table:'am_user_presence'},payload=>{const label=$('amChatPresence');if(label&&selectedConversation){const id=payload.new?.user_id;if(id&&id!==user.id)label.textContent=payload.new.is_online?'متصل الآن':'آخر ظهور: '+new Date(payload.new.last_seen_at).toLocaleString();}}).subscribe();}catch(e){console.warn('Messaging init',e);}}
-db.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'&&user)setPresence(false);setTimeout(init,0);});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&user){setPresence(true);refreshBadges();}});window.addEventListener('pagehide',()=>{if(user)setPresence(false);if(channel)db.removeChannel(channel);if(realtime)db.removeChannel(realtime);});
+db.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'&&user)setPresence(false);setTimeout(init,0);});document.addEventListener('click',e=>{const box=$('amMemberDirectory'),launcher=$('amHomeChatLauncher');if(box&&box.style.display==='flex'&&!box.contains(e.target)&&!launcher?.contains(e.target))window.amFloatingClose();});document.addEventListener('keydown',e=>{if(e.key==='Escape')window.amFloatingClose?.();});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&user){setPresence(true);refreshBadges();}});window.addEventListener('pagehide',()=>{if(user)setPresence(false);if(channel)db.removeChannel(channel);if(realtime)db.removeChannel(realtime);});
 })();
 </script>
 </body>
