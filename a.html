@@ -1767,6 +1767,72 @@ body{font-family:var(--am-font,system-ui,-apple-system,'Segoe UI',Tahoma,Arial,s
 @media(max-width:650px){#amMemberDirectory{right:10px;bottom:148px;width:calc(100vw - 20px);height:min(72dvh,620px)}#amHomeChatLauncher{right:14px;bottom:86px}#amMemberDirectory .am-directory-card{border-radius:18px}#amMemberDirectory .am-floating-chat .am-chat-stream{max-height:none;min-height:0}}
 @media(max-width:650px){#memberPortal .am-msg-layout.mobile-chat-open>section:first-child{display:none}#memberPortal .am-msg-layout.mobile-chat-open>section:last-child{display:flex}#memberPortal .am-chat-stream{max-height:calc(100dvh - 330px);min-height:42vh}#memberPortal .am-chat-compose{position:sticky;bottom:0;background:#fff;grid-template-columns:minmax(0,1fr) auto auto;}#amHomeChatLauncher{right:14px;bottom:86px}}
 </style>
+<style>
+
+/* Compact adaptive friends popup - test 1
+   Scoped only to the floating friends directory; the chat view keeps its existing usable size. */
+#amMemberDirectory{
+  width:min(330px,calc(100vw - 28px));
+  height:auto;
+  max-height:calc(100dvh - 125px);
+  align-items:flex-end;
+}
+#amMemberDirectory .am-directory-card{height:auto;max-height:100%}
+#amMemberDirectory .am-directory-top{flex:0 0 auto;gap:8px;padding:9px 11px}
+#amMemberDirectory .am-directory-top>div:first-child{
+  width:30px!important;height:30px!important;border-radius:10px!important;font-size:16px!important;
+}
+#amMemberDirectory .am-directory-top h3{font-size:14px}
+#amMemberDirectory .am-directory-top p{font-size:10px;margin-top:2px}
+#amMemberDirectory .am-directory-top button{width:28px;height:28px;font-size:16px}
+#amMemberDirectory .am-directory-search{
+  flex:0 0 auto;margin:7px 10px 4px;width:calc(100% - 20px);
+  border-radius:9px;padding:7px 9px;font-size:12px;
+}
+#amMemberDirectory #amFloatingFriendsView{flex:0 1 auto!important;min-height:0}
+#amMemberDirectory .am-directory-list{
+  flex:0 1 auto;min-height:0;max-height:min(368px,calc(100dvh - 260px));
+  display:grid;grid-auto-rows:minmax(34px,auto);gap:2px;margin:0;padding:3px 7px 5px;
+  overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;
+}
+#amMemberDirectory .am-directory-item{
+  min-height:34px;gap:6px;padding:4px 6px;border-radius:9px;
+}
+#amMemberDirectory .am-directory-avatar{
+  width:24px;height:24px;flex:0 0 24px;font-size:11px;
+}
+#amMemberDirectory .am-directory-meta b{font-size:10px;line-height:1.2}
+#amMemberDirectory .am-directory-meta small{font-size:9px;margin-top:1px;line-height:1.2}
+#amMemberDirectory .am-directory-presence{
+  width:6px;height:6px;margin-inline-end:3px;box-shadow:0 0 0 2px #16a34a1c;
+}
+#amMemberDirectory .am-directory-item button{
+  padding:5px 8px;border-radius:14px;font-size:10px;
+}
+#amMemberDirectory .am-directory-empty{padding:12px 9px;font-size:11px}
+/* Keep the full-height layout only while an actual conversation is open. */
+#amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]){
+  height:min(610px,calc(100dvh - 125px));
+}
+#amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]) .am-directory-card{height:100%}
+#amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]) .am-floating-chat{
+  flex:1 1 auto;min-height:0;
+}
+@media(max-width:650px){
+  #amMemberDirectory{
+    right:10px;bottom:148px;width:calc(100vw - 20px);
+    height:auto;max-height:calc(100dvh - 170px);
+  }
+  #amMemberDirectory .am-directory-card{border-radius:18px}
+  #amMemberDirectory .am-directory-list{
+    max-height:min(368px,calc(100dvh - 285px));
+  }
+  #amMemberDirectory:has(#amFloatingChatView[style*="display: flex"]){
+    height:min(72dvh,620px);
+  }
+}
+
+</style>
 </head>
 <body>
     <a class="skip-to-content" href="#sectionsWrapper">تجاوز إلى محتوى الموقع / Skip to content</a>
