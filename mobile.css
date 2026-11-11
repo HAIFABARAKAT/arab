@@ -9324,5 +9324,17 @@ body.am-gallery-open {
 #scrollTopBtn.scroll-top.visible:hover {
     opacity: 1;
 }
+@media (max-width: 768px) {
+    
+    #amMemberDirectory.am-directory-chat-open {
+        position: fixed !important;
+        top: auto !important; /* إلغاء التثبيت من الأعلى لأن الشريط العلوي يختلف من متصفح لآخر */
+        bottom: calc(125px + env(safe-area-inset-bottom)) !important; /* تثبيت موحد من الأسفل مع احترام حواف الآيفون */
+          /* ارتفاع موحد يعتمد على المساحة الصافية في كل المتصفحات */
+        max-height: 550px !important; /* حد أقصى للارتفاع حتى لا يلمس أعلى الشاشة أبداً */
+        margin: 0 !important;
+        transform: none !important;
+    }
+}
 
 }
