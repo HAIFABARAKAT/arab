@@ -2010,7 +2010,7 @@ body.am-gallery-open{overflow:hidden!important;}
 /* The collapse arrow is a sibling of the text-entry wrapper, so its containing block must be the composer row itself. */
 #amMemberDirectory.am-directory-chat-open .am-chat-compose{position:relative !important;}
 #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse{
-  position:absolute !important; left:11px !important; right:auto !important; top:50% !important; bottom:auto !important;
+  position:absolute !important; left:11px !important; right:auto !important; top:55% !important; bottom:auto !important;
   transform:translateY(-50%) !important; z-index:5 !important; margin:0 !important;
 }
 #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea{padding-left:42px !important;}
@@ -2035,6 +2035,8 @@ body.am-gallery-open{overflow:hidden!important;}
     color:#1768ad !important;
     box-shadow:none !important;
     font-size:12px !important;
+	background: transparent !important;
+	border: none !important;
   }
   #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse i {
     font-size:12px !important;
