@@ -7793,12 +7793,23 @@ body.am-gallery-open {
   }
 
   #amMemberDirectory.am-directory-chat-open .am-chat-head #amMobileBack {
-    flex-basis: 16px;
-    width: 16px;
-    min-width: 16px;
-    height: 21px;
+    flex-basis: 20px;
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
     font-size: 16px;
+    background: transparent !important;
+	  border: none !important;
+    margin-top: 0px;
+    padding-bottom: 2px !important;
+    
   }
+  #amMemberDirectory.am-directory-chat-open .am-chat-head #amMobileBack:active {
+    background-color: #007bff !important; /* لون الخلفية الزرقاء */
+    color: #ffffff !important;            /* تحويل لون السهم للأبيض ليبرز فوق الأزرق */
+    border-radius: 50% !important;        /* جعل الخلفية دائرة كاملة */
+  }
+  
 
   #amMemberDirectory.am-directory-chat-open .am-chat-avatar {
     width: 19px;
@@ -9256,7 +9267,7 @@ body.am-gallery-open {
   right: auto !important;
   top: 50% !important;
   bottom: auto !important;
-  transform: translateY(-50%) !important;
+  transform: translateY(-55%) !important;
   z-index: 5 !important;
   margin: 0 !important;
 }
@@ -9267,16 +9278,18 @@ body.am-gallery-open {
 
 @media(max-width:650px) {
   #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse {
-    left: 11px !important;
+    left: 5px !important;
     width: 14.5px !important;
     min-width: 14.5px !important;
     height: 14.5px !important;
     flex-basis: 14.5px !important;
     font-size: 6.5px !important;
+    background: transparent !important;
+  	border: none !important;
   }
 
   #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-collapse i {
-    font-size: 6.5px !important;
+    font-size: 9.5px !important;
   }
 
   #amMemberDirectory.am-directory-chat-open .am-chat-compose.am-compose-expanded .am-compose-entry textarea {
@@ -9311,4 +9324,5 @@ body.am-gallery-open {
 #scrollTopBtn.scroll-top.visible:hover {
     opacity: 1;
 }
+
 }
